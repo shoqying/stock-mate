@@ -1,4 +1,16 @@
-# 빌드 결과물 및 자동 생성 파일 무시
+# Maven 빌드 결과물
 target/
-*.MF
-**/pom.properties
+
+# Eclipse 설정 파일
+.classpath
+.project
+.settings/
+.springBeans
+
+# Maven/Eclipse 통합 플러그인 (M2E-WTP)
+**/m2e-wtp/
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+desktop.ini
