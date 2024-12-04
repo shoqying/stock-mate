@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class InverntoryTransaction {
+public class ReceivingShipmentVO {
     private int transactionId;         // 고유 트랜잭션 ID
     private int stockId;               // 재고 ID
     private Integer productId;         // 관련 상품 ID
