@@ -30,3 +30,6 @@ desktop.ini
 # Gradle
 .gradle/
 build/
+
+# Ignore compiled class files
+*.class
