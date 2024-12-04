@@ -14,3 +14,19 @@ target/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# IntelliJ IDEA 설정 파일
+.idea/
+*.iml
+
+# 환경 설정 파일
+*.properties
+*.yml
+.env
+
+# 로그 파일
+*.log
+
+# Gradle
+.gradle/
+build/
