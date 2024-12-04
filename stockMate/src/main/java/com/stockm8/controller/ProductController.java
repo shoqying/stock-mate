@@ -8,22 +8,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.stockm8.service.WarehouseService;
+import com.stockm8.service.ProductService;
 
 @Controller
-@RequestMapping(value = "/warehouse/*") // 공통 URI 주소
-public class WarehouseController {
-
-	private static final Logger logger = LoggerFactory.getLogger(WarehouseController.class);
+@RequestMapping(value = "/product/*") // 공통 URI 주소 
+public class ProductController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
 	@Inject
-	private WarehouseService wService;
-	// http://localhost:8088/warehouse/create
-	// 창고 등록하기
+	private ProductService pService;
+	
+	// http://localhost:8088/product/create
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public void createGET() throws Exception {
-		logger.info("/warehouse/create 호출");
+	public void registGET() throws Exception {
+		logger.info("/product/create 호출");
 		logger.info("연결된 뷰페이지(/board/create.jsp) 이동");
 	}
+	
+	 
 	
 }
