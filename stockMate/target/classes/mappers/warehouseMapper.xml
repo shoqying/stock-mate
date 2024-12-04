@@ -16,13 +16,13 @@
     </resultMap>
 
     <!-- 창고 등록 -->
-    <insert id="addWarehouse" parameterType="com.stockm8.domain.WarehouseVO">
+    <insert id="insertWarehouse" parameterType="com.stockm8.domain.WarehouseVO">
         INSERT INTO warehouses (warehouse_name, location, business_id, manager_id)
         VALUES (#{warehouseName}, #{location}, #{businessId}, #{managerId})
     </insert>
 
     <!-- 창고 조회 -->
-    <select id="findWarehouseById" parameterType="int" resultMap="WarehouseResultMap">
+    <select id="SelectWarehouseById" parameterType="int" resultMap="WarehouseResultMap">
         SELECT * FROM warehouses WHERE warehouse_id = #{warehouseId}
     </select>
 

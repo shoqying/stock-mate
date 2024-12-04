@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class WerehouseVO {
+public class WarehouseVO {
 	private int warehouseId; 		// 창고 고유 ID
 	private String warehouseName;   // 창고 이름
 	private String location;	    // 창고 위치
