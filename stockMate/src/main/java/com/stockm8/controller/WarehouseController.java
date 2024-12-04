@@ -23,10 +23,7 @@ public class WarehouseController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public void createGET() throws Exception {
 		logger.info("/warehouse/create 호출");
-		logger.info("연결된 뷰페이(/board/create.jsp) 이동");
+		logger.info("연결된 뷰페이지(/board/create.jsp) 이동");
 	}
-	
-	
-	
 	
 }
