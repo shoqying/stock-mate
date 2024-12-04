@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.stockm8.domain.ReceivingShipmentVO;
-import com.stockm8.domain.ReceivingVO;
 import com.stockm8.persistence.ReceivingDAO;
 import com.stockm8.service.ReceivingService;
 
