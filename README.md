@@ -1,1 +1,1 @@
-* Stock Mate
+# Stock Mate
