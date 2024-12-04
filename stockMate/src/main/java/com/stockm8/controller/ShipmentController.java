@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.stockm8.service.ReceivingService;
 
 @Controller
-@RequestMapping(value = "/receiving/*")
+@RequestMapping(value = "/shipment/*")
 
 public class ShipmentController {
 	
@@ -23,7 +23,7 @@ public class ShipmentController {
 	// http://localhost:8088/receiving/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void mainGET() throws Exception {
-		logger.info("mainGET() È£Ãâ");
+		logger.info("mainGET() í˜¸ì¶œ");
 		
 		logger.info("");
 		
