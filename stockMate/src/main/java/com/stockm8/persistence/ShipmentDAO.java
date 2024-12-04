@@ -2,11 +2,11 @@ package com.stockm8.persistence;
 
 import java.util.List;
 
-import com.stockm8.domain.ShipmentVO;
+import com.stockm8.domain.ReceivingShipmentVO;
 
 public interface ShipmentDAO {
 	
-	// ÀÔ°í ¸ŞÀÎ ¿À´Ã µé¾î¿Ã ¸®½ºÆ®
-		public List<ShipmentVO> todayReceivingList() throws Exception;
+	// ì¶œê³  ë©”ì¸ ì˜¤ëŠ˜ ë“¤ì–´ì˜¬ ë¦¬ìŠ¤íŠ¸
+	public List<ReceivingShipmentVO> todayReceivingList() throws Exception;
 
 } // ReceivingDAO end

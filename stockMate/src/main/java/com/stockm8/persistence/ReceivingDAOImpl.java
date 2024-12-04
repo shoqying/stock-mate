@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.stockm8.domain.ReceivingVO;
+import com.stockm8.domain.ReceivingShipmentVO;
 
 @Repository
 public class ReceivingDAOImpl implements ReceivingDAO {
@@ -23,7 +23,7 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	private SqlSession sqlSession;
 	
 	// 입고 메인 오늘 들어올 리스트
-	public List<ReceivingVO> selectTodayReceivingList() throws Exception {
+	public List<ReceivingShipmentVO> selectTodayReceivingList() throws Exception {
 		logger.info("todayReceivingList() 호출");
 		
 		return sqlSession.selectList(NAMESPACE + "getTodayReceivingList"); 
