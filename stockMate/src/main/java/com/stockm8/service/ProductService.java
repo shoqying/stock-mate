@@ -1,6 +1,6 @@
 package com.stockm8.service;
 
-import com.stockm8.domain.ProductVO;
+import com.stockm8.domain.vo.ProductVO;
 
 public interface ProductService {
 	

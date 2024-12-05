@@ -2,7 +2,7 @@ package com.stockm8.service;
 
 import java.util.List;
 
-import com.stockm8.domain.ReceivingShipmentVO;
+import com.stockm8.domain.vo.ReceivingShipmentVO;
 
 
 public interface ReceivingService {

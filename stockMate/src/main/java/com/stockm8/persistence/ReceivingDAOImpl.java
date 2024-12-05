@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.stockm8.domain.ReceivingShipmentVO;
+import com.stockm8.domain.vo.ReceivingShipmentVO;
 
 @Repository
 public class ReceivingDAOImpl implements ReceivingDAO {
