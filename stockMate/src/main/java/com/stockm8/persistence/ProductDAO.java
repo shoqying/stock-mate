@@ -1,6 +1,6 @@
 package com.stockm8.persistence;
 
-import com.stockm8.domain.ProductVO;
+import com.stockm8.domain.vo.ProductVO;
 
 public interface ProductDAO {
 	

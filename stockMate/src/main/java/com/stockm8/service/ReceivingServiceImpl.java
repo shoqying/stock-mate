@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.stockm8.domain.ReceivingShipmentVO;
+import com.stockm8.domain.vo.ReceivingShipmentVO;
 import com.stockm8.persistence.ReceivingDAO;
 
 @Service
@@ -31,9 +31,5 @@ public class ReceivingServiceImpl implements ReceivingService {
 		logger.info("getYesterdayReceivingList() 호출");
 		return null;
 	}
-	
-	
-	
-	
 
 } // ReceivingServiceImpl end

@@ -1,6 +1,6 @@
 package com.stockm8.persistence;
 
-import com.stockm8.domain.WarehouseVO;
+import com.stockm8.domain.vo.WarehouseVO;
 
 public interface WarehouseDAO {
 

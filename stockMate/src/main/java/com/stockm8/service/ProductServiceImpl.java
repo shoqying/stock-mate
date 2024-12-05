@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.stockm8.domain.ProductVO;
+import com.stockm8.domain.vo.ProductVO;
 
 @Service
 public class ProductServiceImpl implements ProductService {

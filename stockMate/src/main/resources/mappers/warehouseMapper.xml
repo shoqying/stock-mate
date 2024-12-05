@@ -6,7 +6,7 @@
 <mapper namespace="com.stockm8.mapper.WarehouseMapper">
 
     <!-- ResultMap 정의 -->
-    <resultMap id="WarehouseResultMap" type="com.stockm8.domain.WarehouseVO">
+    <resultMap id="WarehouseResultMap" type="com.stockm8.domain.vo.WarehouseVO">
         <id property="warehouseId" column="warehouse_id" />
         <result property="warehouseName" column="warehouse_name" />
         <result property="location" column="location" />
@@ -16,7 +16,7 @@
     </resultMap>
 
     <!-- 창고 등록 -->
-    <insert id="insertWarehouse" parameterType="com.stockm8.domain.WarehouseVO">
+    <insert id="insertWarehouse" parameterType="com.stockm8.domain.vo.WarehouseVO">
         INSERT INTO warehouses (warehouse_name, location, business_id, manager_id)
         VALUES (#{warehouseName}, #{location}, #{businessId}, #{managerId})
     </insert>
@@ -32,7 +32,7 @@
     </select>
 
     <!-- 창고 정보 수정 -->
-    <update id="updateWarehouse" parameterType="com.stockm8.domain.WarehouseVO">
+    <update id="updateWarehouse" parameterType="com.stockm8.domain.vo.WarehouseVO">
         UPDATE warehouses
         SET warehouse_name = #{warehouseName},
             location = #{location},
