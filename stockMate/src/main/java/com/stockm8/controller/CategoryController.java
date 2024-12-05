@@ -33,18 +33,6 @@ public class CategoryController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerCategory(CategoryVO vo) throws Exception {
         
-        int businessId = 1;  // 예시로 설정 (실제 환경에서는 로그인된 사용자의 ID를 가져와야 함)
-        
-        // 상위 카테고리가 없으면 대분류(1), 있으면 소분류(2)로 설정
-        if (vo.getParentId() == null) {
-            vo.setLevel(1);  // 대분류
-        } else {
-            vo.setLevel(2);  // 소분류
-        }
-        
-        // 카테고리 생성 시간 (현재 시간)
-        vo.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        
         // 서비스 호출
         cService.addCategory(vo);
         
