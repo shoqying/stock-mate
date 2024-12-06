@@ -1,5 +1,7 @@
 package com.stockm8.persistence;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,4 +25,12 @@ public class WarehouseDAOImpl implements WarehouseDAO {
 		sqlSession.insert(NAMESPACE + "insertWarehouse", wVO);
 	}
 
+	@Override
+	public List<WarehouseVO> selectWarehousesByBusinessId(Long businessId) throws Exception {
+		logger.info("getWarehousesByBusinessId(Long businessId) 호출");
+
+		return sqlSession.selectList(NAMESPACE + "selectWarehousesByBusinessId", businessId);
+	}
+
+	
 }
