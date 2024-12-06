@@ -5,6 +5,25 @@
 
 <mapper namespace="com.stockm8.mapper.CategoryMapper">
 
+product_03
+	<!-- 카테고리 등록 -->
+	<insert id="insertCategory"
+		parameterType="com.stockm8.domain.vo.CategoryVO">
+		insert into categories (parentId, businessId,
+		categoryName, level,
+		createdAt)
+		values (#{parentId}, #{businessId},
+		#{categoryName}, #{level},
+		#{createdAt})
+	</insert>
+
+	<!-- 카테고리 목록 조회 -->
+	<select id="selectAllCategories"
+		resultType="com.stockm8.domain.vo.CategoryVO">
+		select *
+		from categories
+	</select>
+
     <!-- 카테고리 등록 -->
     <insert id="insertCategory" parameterType="com.stockm8.domain.vo.CategoryVO">
         insert into categories (parentId, businessId, categoryName, level, createdAt)
@@ -16,6 +35,7 @@
         select * from categories
         order by level asc, categoryName asc;
     </select>
+
 
     <!-- 카테고리 수정 -->
     <update id="updateCategory" parameterType="com.stockm8.domain.vo.CategoryVO">

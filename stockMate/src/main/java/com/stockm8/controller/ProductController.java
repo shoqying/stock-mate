@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.stockm8.domain.vo.CategoryVO;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.WarehouseVO;
+import com.stockm8.service.CategoryService;
 import com.stockm8.service.ProductService;
+import com.stockm8.service.UserService;
 import com.stockm8.service.WarehouseService;
 
 @Controller
@@ -29,21 +30,24 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@Autowired
-	private WarehouseService warehouseService;
+//	@Autowired
+//	private WarehouseService warehouseService;
 
-	@Autowired
+//	@Autowired
 //	private CategoryService categoryService;
+	
+//	@Autowired
+//	private UserService userService;
 
 	// http://localhost:8088/product/create
 	// 상품 등록 페이지로 이동
 	@GetMapping("/create")
-public String registGET(/* HttpSession session, Model model */) throws Exception {
+public String registGET(HttpSession session, Model model) throws Exception {
 
 		logger.info("/product/create 호출");
 
 	    // 세션에서 유저 ID 가져오기
-//        Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
 
         // 유저 확인 및 역할 확인
 //        var user = userService.getUserById(userId);

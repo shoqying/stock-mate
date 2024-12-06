@@ -1,5 +1,7 @@
 package com.stockm8.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -15,7 +17,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 	private static final Logger logger = LoggerFactory.getLogger(WarehouseServiceImpl.class);
 
 	@Inject
-	private WarehouseDAO wdao;
+	private WarehouseDAO warehouseDAO;
 	
 	@Override
 	public void createWarehouse(WarehouseVO wVO) throws Exception {
@@ -23,7 +25,19 @@ public class WarehouseServiceImpl implements WarehouseService {
 		logger.info("createWarehouse(WarehouseVO wVO) 호출");
 		
 		logger.info("Service -> DAO 메서드 호출");
-		wdao.insertWarehouse(wVO);
+		warehouseDAO.insertWarehouse(wVO);
 	}
+
+	@Override
+	public List<WarehouseVO> getWarehousesByBusinessId(Long businessId) throws Exception {
+
+		logger.info("getWarehousesByBusinessId(Long businessId) 호출");
+		
+		
+		logger.info("Service -> DAO 메서드 호출");
+		return warehouseDAO.selectWarehousesByBusinessId(businessId);
+	}
+	
+	
 
 }
