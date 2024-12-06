@@ -44,4 +44,35 @@ public class CategoryServiceImpl implements CategoryService {
     	
         return cdao.selectAllCategories(); 
     }
+    
+    // 카테고리 수정
+    @Override
+    public void updateCategory(CategoryVO vo) throws Exception {
+        // 카테고리 수정
+        cdao.updateCategory(vo);
+    }
+
+
+    // 카테고리와 상위 카테고리 정보 조회
+    @Override
+    public CategoryVO getCategoryWithParents(int cId) throws Exception {
+        // 카테고리 정보 조회
+        CategoryVO vo = cdao.selectCategoryById(cId);
+
+        // 상위 카테고리 조회
+        CategoryVO parentCategory = null;
+        if (vo.getParentId() != null) {
+            parentCategory = cdao.selectCategoryById(vo.getParentId());  // vo.getParentId() 사용
+        }
+
+        // 상위 카테고리 정보를 별도로 처리 (VO에 저장하지 않음)
+        return vo;  // 단순히 카테고리 정보만 반환
+    }
+    
+    // 카테고리 삭제
+    @Override
+    public void deleteCategory(int cId) throws Exception {
+    	// 카테고리 삭제
+    	cdao.deleteCategory(cId);
+    }
 }
