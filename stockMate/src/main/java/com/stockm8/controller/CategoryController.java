@@ -1,6 +1,5 @@
 package com.stockm8.controller;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.stockm8.domain.CategoryVO;
+import com.stockm8.domain.vo.CategoryVO;
 import com.stockm8.service.CategoryService;
 
 @Controller

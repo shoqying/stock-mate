@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.stockm8.domain.CategoryVO;
+import com.stockm8.domain.vo.CategoryVO;
 
 @Repository
 public class CategoryDAOImpl implements CategoryDAO {

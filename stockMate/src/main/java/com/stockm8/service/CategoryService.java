@@ -1,7 +1,8 @@
 package com.stockm8.service;
 
 import java.util.List;
-import com.stockm8.domain.CategoryVO;
+
+import com.stockm8.domain.vo.CategoryVO;
 
 public interface CategoryService {
 	

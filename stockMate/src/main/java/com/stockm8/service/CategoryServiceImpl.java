@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.stockm8.domain.CategoryVO;
+import com.stockm8.domain.vo.CategoryVO;
 import com.stockm8.persistence.CategoryDAO;
 
 @Service
