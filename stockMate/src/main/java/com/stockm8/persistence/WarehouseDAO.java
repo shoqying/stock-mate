@@ -12,4 +12,6 @@ public interface WarehouseDAO {
 	// 회사정보를 통한 창고ID 조회
 	List<WarehouseVO> selectWarehousesByBusinessId(Long businessId) throws Exception;
 	
+	// 창고 목록 유효성 조회
+    boolean existsById(int warehouseId, int businessId) throws Exception;
 }

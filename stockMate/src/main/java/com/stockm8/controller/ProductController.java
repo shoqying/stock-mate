@@ -39,12 +39,12 @@ public class ProductController {
 //	@Autowired
 //	private UserService userService;
 
-	// http://localhost:8088/product/create
+	// http://localhost:8088/product/register
 	// 상품 등록 페이지로 이동
-	@GetMapping("/create")
+	@GetMapping("/register")
 public String registGET(HttpSession session, Model model) throws Exception {
 
-		logger.info("/product/create 호출");
+		logger.info("/product/register 호출");
 
 	    // 세션에서 유저 ID 가져오기
         Long userId = (Long) session.getAttribute("userId");
@@ -80,20 +80,20 @@ public String registGET(HttpSession session, Model model) throws Exception {
 //        model.addAttribute("hasCategories", !categories.isEmpty());
 
 
-		logger.info("연결된 뷰페이지(/board/create.jsp) 이동");
-		return "product/create"; // 상품 등록 페이지로 이동
+		logger.info("연결된 뷰페이지(/board/register.jsp) 이동");
+		return "product/register"; // 상품 등록 페이지로 이동
 	}
 
 	// 상품 등록
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registPOST(ProductVO pVO, RedirectAttributes rttr) throws Exception {
-		logger.info("/product/create 호출");
+		logger.info("/product/register 호출");
 
 		// 전달정보(파라메터) 저장
 		logger.info("pVO: {}", pVO);
 
 		// Service -> DAO -> mapper(sql 호출)
-		productService.createProduct(pVO);
+		productService.registerProduct(pVO);
 
 		// 정보 전달
 		rttr.addFlashAttribute("result", "complete");
