@@ -30,7 +30,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 	}
 
 	@Override
-	public List<WarehouseVO> getWarehousesByBusinessId(Long businessId) throws Exception {
+	public List<WarehouseVO> getWarehousesByBusinessId(Integer businessId) throws Exception {
 
 		logger.info("getWarehousesByBusinessId(Long businessId) 호출");
 		

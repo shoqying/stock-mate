@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,14 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 
 	@Override
-	public void userJoin(UserVO userVO) {
+	public void userJoin(UserVO userVO) throws Exception {
 		userDAO.userJoin(userVO);
 		// userDAO.userJoinOracle(userVO); // 각각의 비지니스 로직을 처리
 		// userDAO.userJoinMysql(userVO);
 	}
 
 	@Override
-	public UserVO userLogin(UserVO userVO) {
+	public UserVO userLogin(UserVO userVO) throws Exception {
 		logger.info(" userLogin(UserVO vo) 호출 ");
 
 		// DAO 로그인체크 동작 실행
@@ -36,14 +37,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO getuser(String userId) {
+	public UserVO getUser(Long userId) throws Exception {
 		logger.info(" getuser(String user_id)호출 ");
 
 		return userDAO.getUser(userId);
 	}
 
 	@Override
-	public void updateuser(UserVO userVO) {
+	public void updateUser(UserVO userVO) throws Exception {
 		logger.info("updateuser(UserVO userVO) 실행");
 
 		// DAO 회원정보 수정메서드 호출
@@ -51,16 +52,30 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int deleteuser(UserVO userVO) {
+	public int deleteUser(UserVO userVO) throws Exception {
 		logger.info(" deleteuser(UserVO dvo) 실행 ");
 
 		return userDAO.deleteUser(userVO);
 	}
 
 	@Override
-	public List<UserVO> userList() {
-		logger.info(" userList()  호출 ");
+	public List<UserVO> userList() throws Exception {
+		logger.info("userList() 호출");
 
 		return userDAO.getUserList();
 	}
+	
+    @Override
+    public UserVO getUserById(Long userId) throws Exception {
+		logger.info("getUserById(Long userId) 호출");
+		// 사용자 유효성 확인
+        return userDAO.getUserById(userId);
+    }
+	
+    @Override
+    public int getIsDeleted(Long userId) throws Exception {
+		logger.info("getIsDeleted(Long userId)  호출 ");
+
+        return userDAO.getIsDeleted(userId);
+    }
 }

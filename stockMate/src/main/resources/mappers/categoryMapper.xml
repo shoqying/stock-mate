@@ -56,7 +56,7 @@
 	<!-- 카테고리 수정 -->
 	<update id="updateCategory"
 		parameterType="com.stockm8.domain.vo.CategoryVO">
-		update categories
+		update test_categories
 		set parentId = #{parentId},
 		categoryName = #{categoryName}, level =
 		#{level}
@@ -66,21 +66,21 @@
 
 	<!-- 카테고리 삭제 -->
 	<delete id="deleteCategory" parameterType="int">
-		delete from categories
+		delete from test_categories
 		where categoryId = #{categoryId}
 	</delete>
 
 	<!-- 카테고리 ID로 조회 -->
 	<select id="selectCategoryById"
 		resultType="com.stockm8.domain.vo.CategoryVO">
-		select * from categories
+		select * from test_categories
 		where categoryId = #{categoryId}
 	</select>
 
 	<!-- 상위 카테고리만 조회 -->
 	<select id="selectParentCategories"
 		resultType="com.stockm8.domain.vo.CategoryVO">
-		select * from categories
+		select * from test_categories
 		where parentId is null
 	</select>
 
@@ -89,7 +89,7 @@
 		resultMap="categoryWithParentsResultMap">
 		select c.*, p.categoryName as parentCategoryName
 		from
-		categories c
+		test_categories c
 		left join categories p on c.parentId = p.categoryId
 		where
 		c.categoryId = #{categoryId}

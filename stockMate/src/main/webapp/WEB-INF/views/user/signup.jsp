@@ -74,12 +74,12 @@ footer {
 	<div class="container">
 		<img src="https://via.placeholder.com/100" alt="Logo">
 		<h2>회원가입</h2>
-		<form id="signupForm" action="/user/join" method="post">
+		<form id="signupForm" action="/user/signup" method="post">
 			<input type="text" name="email" placeholder="이메일" required>
 			<input type="password" name="password" placeholder="비밀번호" required>
 			<input type="text" name="name" placeholder="이름" required>
 			<input type="text" name="phone" placeholder="전화번호" required>
-			<input type="text" name="role" placeholder="역할 (admin, manager, member)" required>
+			<input type="text" name="role" placeholder="역할 (admin, manager, staff)" required>
 
 			<div class="actions">
 				<button type="submit">가입하기</button>
