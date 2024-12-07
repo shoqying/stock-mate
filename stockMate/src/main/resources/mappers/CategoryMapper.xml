@@ -44,6 +44,14 @@
 	<!-- </select> -->
 	<!-- select절 id가 똑같이 작성 되었습니다. 확인 부탁드려요 -->
 
+    <!-- existsById 쿼리 -->
+	<select id="existsById" parameterType="map" resultType="int">
+		SELECT EXISTS(
+		SELECT 1
+		FROM test_categories
+		WHERE category_id = #{categoryId} AND business_id = #{businessId}
+		)
+	</select>
 
 	<!-- 카테고리 수정 -->
 	<update id="updateCategory"
