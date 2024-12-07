@@ -24,9 +24,9 @@ public class WarehouseDAOImpl implements WarehouseDAO {
 	private static final String NAMESPACE = "com.stockm8.mapper.WarehouseMapper.";
 
 	@Override
-	public void insertWarehouse(WarehouseVO wVO) throws Exception {
+	public void insertWarehouse(WarehouseVO warehouse) throws Exception {
 		logger.info("insertWarehouse(WarehouseVO wVO) 호출");
-		sqlSession.insert(NAMESPACE + "insertWarehouse", wVO);
+		sqlSession.insert(NAMESPACE + "insertWarehouse", warehouse);
 	}
 
 	@Override

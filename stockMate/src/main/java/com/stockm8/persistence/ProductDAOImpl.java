@@ -21,12 +21,12 @@ public class ProductDAOImpl implements ProductDAO {
 	private static final String NAMESPACE = "com.stockm8.mapper.ProductMapper.";
 	
 	@Override
-	public void insertProduct(ProductVO productVO) throws Exception {
+	public void insertProduct(ProductVO product) throws Exception {
 		logger.info("insertProduct(ProductVO pVO) 호출");
 		logger.info("DAO -> mapper(sql) 실행");
 		
 		// mapper 호출 및 실행 
-		sqlSession.insert(NAMESPACE + "insertProduct", productVO);
+		sqlSession.insert(NAMESPACE + "insertProduct", product);
 		
 	}
 

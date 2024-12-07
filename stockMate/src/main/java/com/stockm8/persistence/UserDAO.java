@@ -7,19 +7,19 @@ import com.stockm8.domain.vo.UserVO;
 public interface UserDAO {
 	
 	// 회원가입 동작
-	public void userJoin(UserVO vo);
+	public void userJoin(UserVO user);
 	
 	// 로그인 체크 동작
-	public UserVO userLogin(UserVO vo);
+	public UserVO userLogin(UserVO user);
 	
 	// 회원정보 조회동작
-	public UserVO getUser(Long user_id);
+	public UserVO getUser(Long userId);
 	
 	// 회원정보 수정동작
-	public void updateUser (UserVO uvo);
+	public void updateUser (UserVO user);
 	
 	// 회원정보 삭제동작
-	public int deleteUser (UserVO dvo);
+	public int deleteUser (UserVO user);
 	
 	// 회원정보 목록(list)
 	public List<UserVO> getUserList();

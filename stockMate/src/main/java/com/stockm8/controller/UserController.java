@@ -191,14 +191,14 @@ public class UserController {
 	// 회원정보 수정 - POST
 	// (수정된 정보를 전달받아서 정보 수정)
 	@RequestMapping(value = "/editInfo2", method = RequestMethod.POST)
-	public String userUpdatePOST(UserVO uservo) throws Exception {
+	public String userUpdatePOST(UserVO user) throws Exception {
 		logger.info(" userUpdatePOST() ");
 
 		// 전달정보(수정정보) 저장
-		logger.info("vo : " + uservo);
+		logger.info("vo : " + user);
 
 		// 서비스 -> DAO 호출 (회원정보 수정)
-		userService.updateUser(uservo);
+		userService.updateUser(user);
 
 		// 수정완료시 메인페이지로 이동
 		return "redirect:/user/dash";
@@ -215,14 +215,14 @@ public class UserController {
 
 	// 회원정보 삭제 - 아이디/비밀번호 확인후 정보 삭제 (POST)
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String userDeletePOST(UserVO uservo, HttpSession session) throws Exception {
+	public String userDeletePOST(UserVO user, HttpSession session) throws Exception {
 		logger.info(" userDeletePOST() 실행 ");
 
 		// 전달된 파라메터(id,pw)를 저장
-		logger.info(" vo : " + uservo);
+		logger.info(" vo : " + user);
 
 		// 서비스 -> DAO 호출 (정보 삭제)
-		int result = userService.deleteUser(uservo);
+		int result = userService.deleteUser(user);
 
 		if (result == 0) {
 			// 삭제 실패

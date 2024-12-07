@@ -69,14 +69,14 @@ public String registGET(HttpSession session, Model model) throws Exception {
 
 	// 상품 등록
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String registPOST(ProductVO pVO, RedirectAttributes rttr) throws Exception {
+	public String registPOST(ProductVO product, RedirectAttributes rttr) throws Exception {
 		logger.info("registPOST() 호출");
 
 		// 전달정보(파라메터) 저장
-		logger.info("pVO: {}", pVO);
+		logger.info("pVO: {}", product);
 
 		// Service -> DAO -> mapper(sql 호출)
-		productService.registerProduct(pVO);
+		productService.registerProduct(product);
 
 		// 정보 전달
 		rttr.addFlashAttribute("result", "complete");

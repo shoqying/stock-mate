@@ -17,14 +17,14 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDAO productDAO;
 
 	@Override
-	public void registerProduct(ProductVO productVO) throws Exception {
+	public void registerProduct(ProductVO product) throws Exception {
 	    logger.info("registerProduct(ProductVO productVO) 호출");
-	    if (productVO == null || productVO.getName() == null) {
+	    if (product == null || product.getName() == null) {
 	        throw new IllegalArgumentException("상품 정보가 유효하지 않습니다.");
 	    }
 
 	    // DAO를 통해 상품 등록
-	    productDAO.insertProduct(productVO);
-	    logger.info("상품 등록 완료: {}", productVO);
+	    productDAO.insertProduct(product);
+	    logger.info("상품 등록 완료: {}", product);
 	}
 }
