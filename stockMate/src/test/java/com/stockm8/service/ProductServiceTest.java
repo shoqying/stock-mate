@@ -46,7 +46,7 @@ public class ProductServiceTest {
 		System.out.println("테스트 데이터 정리 완료.");
 	}
 
-	@Test
+	@Test //테스트 완료
 	public void testRegisterProductWithExistingData() throws Exception {
 		// Given
 		Integer businessId = jdbcTemplate
