@@ -30,7 +30,7 @@ public class WarehouseDAOImpl implements WarehouseDAO {
 	}
 
 	@Override
-	public List<WarehouseVO> selectWarehousesByBusinessId(Long businessId) throws Exception {
+	public List<WarehouseVO> selectWarehousesByBusinessId(Integer businessId) throws Exception {
 		logger.info("getWarehousesByBusinessId(Long businessId) 호출");
 
 		return sqlSession.selectList(NAMESPACE + "selectWarehousesByBusinessId", businessId);

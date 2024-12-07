@@ -25,14 +25,14 @@
 
     <!-- 상품 등록 -->
 	<insert id="insertProduct" parameterType="com.stockm8.domain.vo.ProductVO" useGeneratedKeys="true" keyProperty="productId">
-	    INSERT INTO products (name, barcode, business_id, warehouse_id, category_id, base_unit, set_size, price, description)
+	    INSERT INTO test_products (name, barcode, business_id, warehouse_id, category_id, base_unit, set_size, price, description)
 	    VALUES (#{name}, #{barcode}, #{businessId}, #{warehouseId}, #{categoryId}, #{baseUnit}, #{setSize}, #{price}, #{description})
 	</insert>
 
     <!-- 상품 조회 -->
     <select id="getProductById" parameterType="int" resultType="com.stockm8.domain.vo.ProductVO">
         SELECT *
-        FROM products
+        FROM test_products
         WHERE product_id = #{productId}
     </select>
 

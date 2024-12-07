@@ -22,7 +22,7 @@ import com.stockm8.service.UserService;
 import com.stockm8.service.WarehouseService;
 
 @Controller
-@RequestMapping(value = "/product/*") // 공통 URI 주소
+@RequestMapping(value = "/product") // 공통 URI 주소
 public class ProductController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -35,40 +35,24 @@ public class ProductController {
 
 //	@Autowired
 //	private CategoryService categoryService;
-	
-//	@Autowired
-//	private UserService userService;
 
 	// http://localhost:8088/product/register
 	// 상품 등록 페이지로 이동
 	@GetMapping("/register")
 public String registGET(HttpSession session, Model model) throws Exception {
 
-		logger.info("/product/register 호출");
+		logger.info("registGET() 호출");
 
 	    // 세션에서 유저 ID 가져오기
         Long userId = (Long) session.getAttribute("userId");
-
-        // 유저 확인 및 역할 확인
-//        var user = userService.getUserById(userId);
-//        if (user == null) {
-//            return "redirect:/login"; // 유저가 없으면 로그인 페이지로 리다이렉트
+        
+//        if (userId == null) {
+//            logger.warn("세션이 만료되었습니다. 로그인 페이지로 이동합니다.");
+//            return "redirect:/user/login";
 //        }
-
-        // 역할이 매니저인지 확인
-//        if (!user.getRole().equals("MANAGER")) {
-//            return "redirect:/access-denied"; // 권한이 없으면 접근 거부 페이지로 이동
-//        }
-
-        // 유저의 회사 정보 확인
-//        var business = user.getBusinessId();
-//        if (business == null) {
-//            return "redirect:/company/register"; // 회사 정보가 없으면 회사 등록 페이지로 이동
-//        }
-
         // DB에서 창고 정보와 카테고리 정보 가져오기
         // 회사정보를 통한 warehouseID가져오기 여러중복된 businessID를 group by하여 
-//        List<WarehouseVO> warehouses = warehouseService.getWarehousesByBusinessId(business.getId());
+//        List<WarehouseVO> warehouses = warehouseService.getWarehousesByBusinessId(business);
 //        List<CategoryVO> categories = categoryService.getCategoriesByBusinessId(business.getId());
 
         // 모델에 데이터 추가
@@ -79,7 +63,6 @@ public String registGET(HttpSession session, Model model) throws Exception {
 //        model.addAttribute("hasWarehouses", !warehouses.isEmpty());
 //        model.addAttribute("hasCategories", !categories.isEmpty());
 
-
 		logger.info("연결된 뷰페이지(/board/register.jsp) 이동");
 		return "product/register"; // 상품 등록 페이지로 이동
 	}
@@ -87,7 +70,7 @@ public String registGET(HttpSession session, Model model) throws Exception {
 	// 상품 등록
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registPOST(ProductVO pVO, RedirectAttributes rttr) throws Exception {
-		logger.info("/product/register 호출");
+		logger.info("registPOST() 호출");
 
 		// 전달정보(파라메터) 저장
 		logger.info("pVO: {}", pVO);

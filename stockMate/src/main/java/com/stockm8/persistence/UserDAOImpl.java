@@ -21,7 +21,6 @@ public class UserDAOImpl implements UserDAO {
 
 	private static final String NAMESPACE = "com.stockm8.mapper.UserMapper.";
 
-
 	@Override
 	public void userJoin(UserVO userVO) {
 		logger.info("userJoin 실행: " + userVO);
@@ -38,7 +37,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public UserVO getUser(String user_id) {
+	public UserVO getUser(Long user_id) {
 		logger.info("getUser 실행: user_id = " + user_id);
 		return sqlSession.selectOne(NAMESPACE + "getUser", user_id);
 	}
@@ -61,5 +60,18 @@ public class UserDAOImpl implements UserDAO {
 		logger.info("getMemberList 실행");
 		return sqlSession.selectList(NAMESPACE + "userList");
 	}
+
+	@Override
+	public int getIsDeleted(Long userId) throws Exception{
+
+		logger.info("getIsDeleted(Long userId) 실행");
+
+		return sqlSession.selectOne(NAMESPACE + "getIsDeleted", userId);
+	}
+	
+    @Override
+    public UserVO getUserById(Long userId) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + "getUserById", userId);
+    }
 
 }
