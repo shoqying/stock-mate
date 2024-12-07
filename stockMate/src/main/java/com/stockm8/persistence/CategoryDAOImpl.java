@@ -1,6 +1,8 @@
 package com.stockm8.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -34,6 +36,14 @@ public class CategoryDAOImpl implements CategoryDAO {
         return sqlSession.selectList(NAMESPACE + ".selectAllCategories"); 
     }
     
+    @Override
+    public boolean existsById(int categoryId, int businessId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("categoryId", categoryId);
+        params.put("businessId", businessId);
+        return sqlSession.selectOne(NAMESPACE + "existsById", params);
+    }
+    
     // 카테고리 수정
     @Override
     public void updateCategory(CategoryVO vo) throws Exception {
@@ -42,8 +52,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     // 카테고리 ID로 조회
     @Override
-    public CategoryVO selectCategoryById(int cId) throws Exception {
-        return sqlSession.selectOne(NAMESPACE + ".selectCategoryById", cId);
+    public CategoryVO selectCategoryById(int catergoryId) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + ".selectCategoryById", catergoryId);
     }
     
     // 카테고리 삭제
