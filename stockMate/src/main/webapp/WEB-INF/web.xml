@@ -10,8 +10,7 @@
 		<param-value>/WEB-INF/spring/*-context.xml</param-value>
 	</context-param>
 
-	<context:component-scan
-		base-package="com.stockm8" />
+	<context:component-scan base-package="com.stockm8" />
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

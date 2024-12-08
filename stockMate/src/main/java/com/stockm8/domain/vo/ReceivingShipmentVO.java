@@ -16,6 +16,7 @@ public class ReceivingShipmentVO {
     private String transactionType;    // 입출고 유형 (in, out, adjustment, transfer)
     private int createdBy;             // 입출고 생성자 ID
     private Timestamp createdAt;       // 입출고 생성 날짜
+    private Timestamp updatedAt;       // 입출고 수정 날짜
     private String status;             // 트랜잭션 상태
     private String description;        // 작업 사유
 }

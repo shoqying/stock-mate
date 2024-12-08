@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.stockm8.domain.enums.Role;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
 
@@ -48,9 +49,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		// 세션 확인 및 사용자 ID 가져오기
 		HttpSession session = request.getSession(false); // 세션이 없으면 null 반환
 		Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
-        
-		logger.info("현재 세션 ID: {}", session.getId());
-        
+                
         // 1. 세션에서 사용자 ID 확인
         if (userId == null) {
             logger.warn("세션에 유저 ID가 없음. 로그인 페이지로 이동.");
@@ -116,8 +115,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
      */
     private boolean isValidUser(HttpServletRequest request, HttpServletResponse response, UserVO user) throws Exception {
         // 권한 확인
-        List<String> allowedRoles = Arrays.asList("manager", "admin");
-        if (!allowedRoles.contains(user.getRole())) {
+        List<Role> allowedRoles = Arrays.asList(Role.MANAGER, Role.ADMIN);
+        if (user.getRole() == null || !allowedRoles.contains(user.getRole())) {
             logger.warn("권한이 없는 유저입니다. 대시보드로 리다이렉트합니다. (유저 ID: {}, 역할: {})", user.getUserId(), user.getRole());
             return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
         }
