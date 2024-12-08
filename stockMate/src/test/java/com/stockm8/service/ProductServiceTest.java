@@ -62,7 +62,6 @@ public class ProductServiceTest {
 		productVO.setName("테스트 상품");
 		productVO.setBarcode("123456789");
 		productVO.setBusinessId(businessId);
-		productVO.setWarehouseId(warehouseId);
 		productVO.setCategoryId(categoryId);
 		productVO.setBaseUnit("개");
 		productVO.setSetSize(10);

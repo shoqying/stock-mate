@@ -15,20 +15,7 @@
 
 	<!-- 상품 등록 폼 시작 -->
 	<form method="post" action="" enctype="multipart/form-data">
-		<!-- 창고 드롭다운 -->
-		<div>
-			<!-- 			<label for="warehouse">창고 선택:</label> <select id="warehouse" -->
-			<%-- 				name="warehouse" th:if="${hasWarehouses}" --%>
-			<%-- 				th:each="warehouse : ${warehouses}" th:value="${warehouse.id}" --%>
-			<%-- 				th:text="${warehouse.name}"></select> --%>
-			<%-- 			<button th:if="${!hasWarehouses}" --%>
-			<!-- 				onclick="location.href='/warehouse/register'">창고 등록</button> -->
-			<label for="warehouseSearch">창고 검색:</label> <input type="text"
-				id="warehouseSearch" placeholder="창고 검색..." autocomplete="off">
-			<div id="warehouseDropdown" style="display: none;"></div>
-			<button id="warehouseRegister" style="display: none;"
-				onclick="location.href='/warehouse/register'">창고 등록</button>
-		</div>
+	
 		<!-- 카테고리 드롭다운 -->
 		<label for="category">카테고리 선택:</label> <select id="category"
 			name="category" th:if="${hasCategories}"
