@@ -102,12 +102,13 @@ public class UserController {
 	    if (resultVO != null) {
 	        logger.info("로그인 성공, 사용자 ID: {}", resultVO.getUserId());
 	        session.setAttribute("userId", resultVO.getUserId()); // 세션에 사용자 ID 저장
+	        return "redirect:/user/main";
 	    }
 
 	    // 로그인 실패 처리
 	    logger.warn("로그인 실패, 사용자 정보를 찾을 수 없습니다.");
 	    rttr.addFlashAttribute("errorMessage", "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
-	    return "redirect:/user/login";
+	    return "redirect:/user/login"; // 로그인 페이지 이동
 	}
 
 	// 메인페이지 - GET
