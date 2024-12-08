@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -69,6 +70,7 @@ public class WebConfig implements WebMvcConfigurer {
     
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
+        // JSP 파일 위치와 확장자 설정
         registry.jsp("/WEB-INF/views/", ".jsp");
     }
     
@@ -101,6 +103,7 @@ public class WebConfig implements WebMvcConfigurer {
         validator.setValidationMessageSource(messageSource());
         return validator;
 	}
+	
     
     // 이하 WebMvcConfigurer의 기타 메서드는 필요에 따라 구현
 	@Override
@@ -120,7 +123,7 @@ public class WebConfig implements WebMvcConfigurer {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		// TODO Auto-generated method stub
@@ -132,8 +135,6 @@ public class WebConfig implements WebMvcConfigurer {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -158,7 +159,7 @@ public class WebConfig implements WebMvcConfigurer {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		// TODO Auto-generated method stub

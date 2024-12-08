@@ -25,8 +25,10 @@
 
     <!-- 상품 등록 -->
 	<insert id="insertProduct" parameterType="com.stockm8.domain.vo.ProductVO" useGeneratedKeys="true" keyProperty="productId">
-	    INSERT INTO test_products (name, barcode, business_id, warehouse_id, category_id, base_unit, set_size, price, description)
-	    VALUES (#{name}, #{barcode}, #{businessId}, #{warehouseId}, #{categoryId}, #{baseUnit}, #{setSize}, #{price}, #{description})
+	    INSERT INTO test_products
+	    (name, business_id, category_id, price, base_unit, set_size, description, created_at, updated_at)
+	    VALUES
+	    (#{name}, #{businessId}, #{categoryId}, #{price}, #{baseUnit}, #{setSize}, #{description}, NOW(), NOW())
 	</insert>
 
     <!-- 상품 조회 -->

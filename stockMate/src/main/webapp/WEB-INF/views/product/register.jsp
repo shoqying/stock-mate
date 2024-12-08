@@ -1,211 +1,73 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>상품 등록</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- jQuery 라이브러리 -->
 
 </head>
 <body>
 	<h1>상품 등록</h1>
 
-	<!-- 상품 등록 폼 시작 -->
-	<form method="post" action="" enctype="multipart/form-data">
-	
-		<!-- 카테고리 드롭다운 -->
-		<label for="category">카테고리 선택:</label> <select id="category"
-			name="category" th:if="${hasCategories}"
-			th:each="category : ${categories}" th:value="${category.id}"
-			th:text="${category.name}"></select>
-		<button th:if="${!hasCategories}"
-			onclick="location.href='/category/register'">카테고리 등록</button>
-		<!-- 카테고리 선택 -->
-		<div>
-			<label for="categoryId">*카테고리:</label> <select id="categoryId"
-				name="categoryId" required="required">
-				<option value="" disabled selected>카테고리를 선택하세요</option>
-				<!-- 카테고리 목록을 드롭다운으로 표시 -->
-				<c:forEach var="category" items="${categories}">
-					<option value="${category.categoryId}">${category.categoryName}</option>
-				</c:forEach>
-			</select>
-		</div>
+	<!-- 상품 등록 폼 -->
+	<form method="post" action="/product/register">
+		
+        <!-- 카테고리 선택 필드 -->
+        <label for="categoryId">카테고리 선택:</label> 
+        <select id="categoryId" name="categoryId" required>
+            <option value="">-- 카테고리 선택 --</option> <!-- 기본값 옵션 추가 -->
+            <c:forEach var="cat" items="${categoryList}">
+                <option value="${cat.categoryId}">${cat.categoryName}</option>
+            </c:forEach>
+        </select><br><br>
 
-		<!-- 상품명 -->
-		<div>
-			<label for="name">*상품명:</label> <input id="name"
-				placeholder="상품명을 입력하세요" required="required" />
-		</div>
+		<!-- 상품명 필드 -->
+		<label for="name">상품명:</label> 
+		<input type="text" id="name" name="name" required autofocus placeholder="예: 무선 마우스" /><br>
+		<br>
+		
+		<!-- 바코드와 자동 생성 버튼 -->
+		<label for="barcode">바코드:</label> 
+		<input type="text" id="barcode" name="barcode" placeholder="예: 1234567890123" pattern="\d{13}"/>
+		<button type="button" id="generateBarcode">자동 생성</button><br>
+		<br>
 
-		<!-- 바코드 -->
-		<div>
-			<label for="barcode">바코드:</label> <input id="barcode"
-				placeholder="바코드 (NULL 가능)" />
-		</div>
+		<!-- 기본 단위 필드: 예를 들어 '개', '박스' 등을 placeholder -->
+		<label for="baseUnit">기본 단위:</label> 
+		<input type="text" id="baseUnit" name="baseUnit" required placeholder="예: 박스" /><br>
+		<br>
 
-		<!-- 기본 단위 드롭다운 -->
-		<div>
-			<label for="baseUnit">*기본 단위:</label> <input id="baseUnit"
-				placeholder="단위를 입려해주세요 (예: 개, 박스)" required="required" />
-			<!-- <select path="baseUnit" -->
-			<!-- 				id="baseUnit" required="true"> -->
-			<!-- 				<option value="개">개</option> -->
-			<!-- 				<option value="박스">박스</option> -->
-			<!-- 				<option value="롤">롤</option> -->
-			<!-- 				<option value="팩">팩</option> -->
-			<!-- 				<option value="세트">세트</option> -->
-			</
-			<!-- select -->
-		</div>
+		<!-- 세트 크기 필드: number로 입력받고 예시 표시 -->
+		<label for="setSize">세트 크기:</label> 
+		<input type="number" id="setSize" name="setSize" required placeholder="예: 10 (한 세트 당 10개)" /><br>
+		<br>
 
-		<!-- 세트 크기 -->
-		<div>
-			<label for="setSize">*세트 크기:</label> <input id="setSize"
-				placeholder="세트 크기를 입력하세요 (예: 1박스 = 100개)" required="required" />
-		</div>
+		<!-- 기본 단가 필드: 숫자/가격에 맞는 placeholder -->
+		<label for="price">기본 단가:</label> 
+		<input type="number" id="price" name="price" required placeholder="예: 15000" /><br>
+		<br>
+		
+		<!-- 상품 설명 필드: textarea에 placeholder -->
+		<label for="description">상품 설명:</label><br>
+		<textarea id="description" name="description"
+			placeholder="상품에 대한 추가 설명을 입력하세요." rows="5" cols="50"></textarea>
+		<br>
+		<br>
 
-		<!-- 상품 가격 -->
-		<div>
-			<label for="price">*상품 가격:</label> <input id="price" type="number"
-				placeholder="상품 가격을 입력하세요" required="required" />
-		</div>
-
-		<!-- 사업자 ID -->
-		<div>
-			<label for="businessId">사업자 ID:</label> <input id="businessId"
-				placeholder="사업자 ID를 입력하세요" required="required" />
-		</div>
-
-		<!-- QR 코드 경로 -->
-		<div>
-			<label for="qrCodePath">QR 코드 경로:</label> <input id="qrCodePath"
-				placeholder="QR 코드 경로" />
-		</div>
-
-		<!-- 바코드 이미지 경로 -->
-		<div>
-			<label for="barcodePath">바코드 이미지 경로:</label> <input id="barcodePath"
-				placeholder="바코드 이미지 경로" />
-		</div>
-
-		<!-- 상품 설명 -->
-		<div>
-			<label for="description">상품 설명:</label>
-			<textarea id="description" placeholder="상품에 대한 설명을 입력하세요" rows="4"
-				cols="50"></textarea>
-		</div>
-
-		<!-- 제출 버튼 -->
-		<div>
-			<button type="submit">등록</button>
-		</div>
+		<!-- 등록 버튼 -->
+		<button type="submit">상품 등록</button>
 	</form>
-	<!-- JavaScript 코드는 바디 끝에서 실행 -->
-	<script>
-		$(document)
-				.ready(
-						function() {
-							const $searchInput = $('#warehouseSearch');
-							const $dropdown = $('#warehouseDropdown');
-							const $registerButton = $('#warehouseRegister');
-
-							// 검색어 입력 시 처리
-							$searchInput.on('input', function() {
-								const query = $(this).val().trim();
-								if (query === '') {
-									// 검색어가 없으면 전체 목록 요청
-									loadAllWarehouses();
-								} else {
-									// 검색어로 필터링된 목록 요청
-									searchWarehouses(query);
-								}
-							});
-
-							function loadAllWarehouses() {
-								// 전체 창고 목록 가져오기 (Ajax)
-								$.ajax({
-									url : '/api/warehouses/all',
-									method : 'GET',
-									success : function(data) {
-										updateDropdown(data);
-										$dropdown.show();
-										$registerButton.hide();
-									},
-									error : function() {
-										console.error('전체 목록 로드 실패');
-										$dropdown.hide();
-										$registerButton.show();
-									}
-								});
-							}
-							function searchWarehouses(keyword) {
-								// 검색 결과 가져오기 (Ajax)
-								$.ajax({
-									url : '/api/warehouses/search',
-									method : 'GET',
-									data : {
-										keyword : keyword
-									},
-									success : function(data) {
-										if (data.length > 0) {
-											// 검색 결과가 있을 때
-											updateDropdown(data); // 드롭다운 업데이트
-											$dropdown.show(); // 드롭다운 표시
-											$registerButton.hide(); // 등록 버튼 숨김
-										} else {
-											// 검색 결과가 없을 때
-											$dropdown.hide(); // 드롭다운 숨김
-											$registerButton.show(); // 등록 버튼 표시
-										}
-									},
-									error : function() {
-										console.error('검색 실패');
-										$dropdown.hide();
-										$registerButton.show();
-									}
-								});
-							}
-							function updateDropdown(data) {
-								$dropdown.empty();
-								data
-										.forEach(function(warehouse) {
-											const item = $(`<div class="dropdown-item">${warehouse.name}</div>`);
-											$dropdown.append(item);
-										});
-							}
-							// 드롭다운 항목 선택 시 처리
-							$dropdown.on('click', '.dropdown-item', function() {
-								const warehouseId = $(this).data('id');
-								const warehouseName = $(this).text();
-
-								// 선택한 창고 이름을 입력 필드에 표시
-								$searchInput.val(warehouseName);
-
-								// 선택된 창고 ID를 처리
-								console.log(`선택된 창고 ID: ${warehouseId}`);
-
-								$dropdown.hide(); // 드롭다운 숨김
-							});
-
-							// 페이지 로드 시 전체 목록 로드
-							loadAllWarehouses();
-
-							// 드롭다운 외부 클릭 시 숨김 처리
-							$(document)
-									.on(
-											'click',
-											function(e) {
-												if (!$(e.target)
-														.closest(
-																'#warehouseDropdown, #warehouseSearch').length) {
-													$dropdown.hide();
-												}
-											});
-						});
-	</script>
+	
+    <!-- JavaScript -->
+    <script>
+        // 바코드 자동 생성 버튼 동작
+        document.getElementById('generateBarcode').addEventListener('click', function() {
+            const randomBarcode = String(Math.floor(1000000000000 + Math.random() * 9000000000000));
+            document.getElementById('barcode').value = randomBarcode;
+        });
+    </script>
 </body>
 </html>
