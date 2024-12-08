@@ -41,10 +41,10 @@
 	r.transaction_unit,
 	r.memo,
 	b.company_name
-	from receiving_shipment r
-	join products p on r.product_id = p.product_id
-	join warehouses w on w.warehouse_id = r.warehouse_id
-	join businesses b on w.business_id = b.business_id
+	from test_receiving_shipment r
+	join test_products p on r.product_id = p.product_id
+	join test_warehouses w on w.warehouse_id = r.warehouse_id
+	join test_businesses b on w.business_id = b.business_id
 	where Date(r.created_at) = CURRENT_DATE and r.status = 'pending'
 	order by r.created_at
 	limit 0, 20
