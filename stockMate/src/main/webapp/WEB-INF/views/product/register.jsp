@@ -15,23 +15,29 @@
 	<!-- 상품 등록 폼 -->
 	<form method="post" action="/product/register">
 		
-		<!-- 카테고리 선택 필드: 드롭다운으로 categoryId 직접 전달 -->
-		<label for="categoryId">카테고리 선택:</label> 
-		<select id="categoryId" name="categoryId" required>
-			<c:forEach var="cat" items="${categoryList}">
-				<option value="${cat.categoryId}">${cat.categoryName}</option>
-			</c:forEach>
-		</select><br>
-		<br>
+        <!-- 카테고리 선택 필드 -->
+        <label for="categoryId">카테고리 선택:</label> 
+        <select id="categoryId" name="categoryId" required>
+            <option value="">-- 카테고리 선택 --</option> <!-- 기본값 옵션 추가 -->
+            <c:forEach var="cat" items="${categoryList}">
+                <option value="${cat.categoryId}">${cat.categoryName}</option>
+            </c:forEach>
+        </select><br><br>
 
-		<!-- 상품명 필드: autofocus로 페이지 로드 시 자동 포커스 -->
+		<!-- 상품명 필드 -->
 		<label for="name">상품명:</label> 
 		<input type="text" id="name" name="name" required autofocus placeholder="예: 무선 마우스" /><br>
+		<br>
+		
+		<!-- 바코드와 자동 생성 버튼 -->
+		<label for="barcode">바코드:</label> 
+		<input type="text" id="barcode" name="barcode" placeholder="예: 1234567890123" pattern="\d{13}"/>
+		<button type="button" id="generateBarcode">자동 생성</button><br>
 		<br>
 
 		<!-- 기본 단위 필드: 예를 들어 '개', '박스' 등을 placeholder -->
 		<label for="baseUnit">기본 단위:</label> 
-		<input type="text" id="baseUnit" name="baseUnit" required placeholder="예: 개" /><br>
+		<input type="text" id="baseUnit" name="baseUnit" required placeholder="예: 박스" /><br>
 		<br>
 
 		<!-- 세트 크기 필드: number로 입력받고 예시 표시 -->
@@ -55,5 +61,13 @@
 		<button type="submit">상품 등록</button>
 	</form>
 	
+    <!-- JavaScript -->
+    <script>
+        // 바코드 자동 생성 버튼 동작
+        document.getElementById('generateBarcode').addEventListener('click', function() {
+            const randomBarcode = String(Math.floor(1000000000000 + Math.random() * 9000000000000));
+            document.getElementById('barcode').value = randomBarcode;
+        });
+    </script>
 </body>
 </html>
