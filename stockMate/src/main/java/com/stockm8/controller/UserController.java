@@ -1,6 +1,7 @@
 package com.stockm8.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
@@ -73,15 +76,15 @@ public class UserController {
 	public String userLoginGET(HttpServletRequest request, Model model) {
 		logger.info("userLoginGET(HttpServletRequest request, Model model) 호출 ");
 		
-	    // HttpSession에서 에러 메시지 확인
-	    HttpSession session = request.getSession(false);
-	    if (session != null) {
-	        String errorMessage = (String) session.getAttribute("errorMessage");
+		// FlashMap에서 에러 메시지 확인
+	    Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+	    if (flashMap != null) {
+	        String errorMessage = (String) flashMap.get("errorMessage");
 	        if (errorMessage != null) {
 	            model.addAttribute("errorMessage", errorMessage);
-	            session.removeAttribute("errorMessage"); // 사용 후 메시지 삭제
 	        }
 	    }
+	    
 	    return "/user/login";
 	}
 
@@ -100,8 +103,7 @@ public class UserController {
 	    if (resultVO != null) {
 	        logger.info("로그인 성공, 사용자 ID: {}", resultVO.getUserId());
 	        session.setAttribute("userId", resultVO.getUserId()); // 세션에 사용자 ID 저장
-	        
-	        return "redirect:/user/main";
+	        int timeout = session.getMaxInactiveInterval(); // 초 단위 반환
 	    }
 
 	    // 로그인 실패 처리
