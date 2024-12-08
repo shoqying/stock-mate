@@ -1,10 +1,14 @@
 package com.stockm8.config;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.validation.MessageCodesResolver;
@@ -13,6 +17,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -24,6 +29,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.stockm8.interceptor.AuthorizationInterceptor;
 
@@ -46,10 +53,56 @@ public class WebConfig implements WebMvcConfigurer {
                         "/resources/**",   // 정적 리소스
                         "/user/**",	       // 로그인 및 회원가입 관련 요청
                         "/static/**"
-                );         
+                );     
+        
+        // LocaleChangeInterceptor를 추가하면, 요청 파라미터 (예: ?lang=ko)로 Locale을 변경할 수 있음
+        LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
+        localeInterceptor.setParamName("lang");
+        registry.addInterceptor(localeInterceptor);
     }
     
-    // WebMvcConfigurer의 다른 추상 메서드들 (필요한 경우만 구현)
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/favicon.ico").addResourceLocations("/resources/");
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+    }
+    
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.jsp("/WEB-INF/views/", ".jsp");
+    }
+    
+    // LocaleResolver 빈 등록
+    // AcceptHeaderLocaleResolver: 브라우저의 Accept-Language 헤더를 기반으로 Locale 결정
+    @Bean
+    public LocaleResolver localeResolver() {
+        AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+        // 기본 로케일 설정 (예: 한국어)
+        localeResolver.setDefaultLocale(Locale.KOREAN);
+        return localeResolver;
+    }
+    
+    // MessageSource 빈 등록
+    // messages.properties, messages_ko.properties, messages_en.properties 등을 사용
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        // classpath 상의 messages로 시작하는 프로퍼티 파일들을 로딩
+        messageSource.setBasename("messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        // 필요하다면 CacheSeconds 등 추가 설정 가능
+        return messageSource;
+    }
+    
+	@Override
+	public Validator getValidator() {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        // Bean Validation 메시지 국제화 지원을 위해 messageSource를 등록
+        validator.setValidationMessageSource(messageSource());
+        return validator;
+	}
+    
+    // 이하 WebMvcConfigurer의 기타 메서드는 필요에 따라 구현
 	@Override
 	public void configurePathMatch(PathMatchConfigurer configurer) {
 		// TODO Auto-generated method stub
@@ -80,11 +133,7 @@ public class WebConfig implements WebMvcConfigurer {
 		
 	}
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/resources/");
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-    }
+
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -97,11 +146,6 @@ public class WebConfig implements WebMvcConfigurer {
 		// TODO Auto-generated method stub
 		
 	}
-
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.jsp("/WEB-INF/views/", ".jsp");
-    }
 
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -140,14 +184,11 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 
 	@Override
-	public Validator getValidator() {
-	    return new LocalValidatorFactoryBean();
-	}
-
-	@Override
 	public MessageCodesResolver getMessageCodesResolver() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
 
 }

@@ -46,14 +46,14 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		logger.info("AuthorizationInterceptor: 요청 URI - {}", request.getRequestURI());
 
 		// 세션 확인 및 사용자 ID 가져오기
-		HttpSession session = request.getSession();
-		
-        Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
-        logger.info("현재 세션 ID: {}", session.getId());
+		HttpSession session = request.getSession(false); // 세션이 없으면 null 반환
+		Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
+        
+		logger.info("현재 세션 ID: {}", session.getId());
         
         // 1. 세션에서 사용자 ID 확인
         if (userId == null) {
-            logger.warn("세션에 유저 ID가 없습니다. 로그인 페이지로 리다이렉트합니다.");
+            logger.warn("세션에 유저 ID가 없음. 로그인 페이지로 이동.");
             return sendErrorMessage(request, response, "세션이 만료되었습니다. 다시 로그인해주세요.", "/user/login");
         }
         
@@ -61,13 +61,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         UserVO user = userService.getUserById(userId);
         
         if (user == null) {
-            logger.warn("유저 정보를 찾을 수 없습니다. 회원가입 페이지로 리다이렉트합니다. (유저 ID: {})", userId);
+            logger.warn("해당 유저({}) 정보를 찾을 수 없음. 회원가입 페이지로 이동.", userId);
             return sendErrorMessage(request, response, "유저 정보를 찾을 수 없습니다. 회원가입을 진행해주세요.", "/user/signup");
         }
         
         // 3. 삭제된 계정 확인
         if (userService.getIsDeleted(userId) == 1) {
-            logger.warn("삭제된 유저입니다. 로그인 페이지로 리다이렉트합니다. (유저 ID: {})", userId);
+            logger.warn("삭제된 유저({}). 로그인 페이지로 이동.", userId);
             return sendErrorMessage(request, response, "삭제된 계정입니다. 관리자에게 문의해주세요.", "/user/login");
         }
 		
