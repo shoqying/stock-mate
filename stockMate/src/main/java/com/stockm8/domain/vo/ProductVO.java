@@ -21,4 +21,5 @@ public class ProductVO {
     private String qrCodePath;     // QR 코드 경로
     private String barcodePath;    // 바코드 이미지 저장 경로
     private String description;    // 상품 설명
+    private boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
 }
