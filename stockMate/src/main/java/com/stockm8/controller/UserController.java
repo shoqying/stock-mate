@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -103,7 +102,6 @@ public class UserController {
 	    if (resultVO != null) {
 	        logger.info("로그인 성공, 사용자 ID: {}", resultVO.getUserId());
 	        session.setAttribute("userId", resultVO.getUserId()); // 세션에 사용자 ID 저장
-	        int timeout = session.getMaxInactiveInterval(); // 초 단위 반환
 	    }
 
 	    // 로그인 실패 처리
