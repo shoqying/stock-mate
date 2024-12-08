@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.stockm8.domain.enums.Role;
 import com.stockm8.domain.vo.UserVO;
@@ -91,17 +93,21 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
      */
 	private boolean sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String message, String redirectUrl)
 	        throws Exception {
-	    // HttpSession에 에러 메시지 저장
-	    HttpSession session = request.getSession();
-	    session.setAttribute("errorMessage", message);
+	    
+	    // FlashMap 객체 생성 및 에러 메시지 저장
+	    FlashMap flashMap = new FlashMap();
+	    flashMap.put("errorMessage", message);
+	    
+	    // FlashMap 저장소에 FlashMap 추가
+	    RequestContextUtils.getFlashMapManager(request).saveOutputFlashMap(flashMap, request, response);
 
 	    // 로그 출력
-	    logger.info("HttpSession에 저장된 에러 메시지: {}", message);
+	    logger.info("FlashMap에 저장된 에러 메시지: {}", message);
 	    logger.info("리다이렉트 대상 URL: {}", redirectUrl);
 
 	    // 리다이렉트 수행
 	    response.sendRedirect(redirectUrl);
-	    return false; // Interceptor 처리 중단
+	    return false; // handlerInterceptor 처리 중단
 	}
     
     /**
