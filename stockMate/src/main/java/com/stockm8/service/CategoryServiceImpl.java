@@ -17,25 +17,25 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryDAO categoryDAO;
 
     @Override
-    public void addCategory(CategoryVO vo) throws Exception {
+    public void addCategory(CategoryVO category) throws Exception {
     	
     	System.out.println(" 카테고리 등록 실행 ");
     	
     	// 기본 businessId 설정
-        vo.setBusinessId(1);  
+        category.setBusinessId(1);  
 
         // 상위 카테고리가 없으면 대분류, 있으면 소분류로 설정
-        if (vo.getParentId() == null) {
-            vo.setLevel(1);  // 대분류
+        if (category.getParentId() == null) {
+            category.setLevel(1);  // 대분류
         } else {
-            vo.setLevel(2);  // 소분류
+            category.setLevel(2);  // 소분류
         }
 
         // 현재 시간을 생성 시간으로 설정
-        vo.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        category.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
     	System.out.println(" DAO의 카테고리 등록 메서드 호출");
-    	categoryDAO.insertCategory(vo);
+    	categoryDAO.insertCategory(category);
     }
 
     @Override
@@ -55,25 +55,25 @@ public class CategoryServiceImpl implements CategoryService {
     
     // 카테고리 수정
     @Override
-    public void updateCategory(CategoryVO vo) throws Exception {
+    public void updateCategory(CategoryVO category) throws Exception {
         // 카테고리 수정
-    	categoryDAO.updateCategory(vo);
+    	categoryDAO.updateCategory(category);
     }
 
 	// 카테고리와 상위 카테고리 정보 조회
     @Override
     public CategoryVO getCategoryWithParents(int cId) throws Exception {
         // 카테고리 정보 조회
-        CategoryVO vo = categoryDAO.selectCategoryById(cId);
+        CategoryVO category = categoryDAO.selectCategoryById(cId);
 
         // 상위 카테고리 조회
         CategoryVO parentCategory = null;
-        if (vo.getParentId() != null) {
-            parentCategory = categoryDAO.selectCategoryById(vo.getParentId());  // vo.getParentId() 사용
+        if (category.getParentId() != null) {
+            parentCategory = categoryDAO.selectCategoryById(category.getParentId());  // vo.getParentId() 사용
         }
 
         // 상위 카테고리 정보를 별도로 처리 (VO에 저장하지 않음)
-        return vo;  // 단순히 카테고리 정보만 반환
+        return category;  // 단순히 카테고리 정보만 반환
     }
     
     // 카테고리 삭제
