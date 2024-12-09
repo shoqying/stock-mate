@@ -6,133 +6,224 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대시보드</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Reset and Global Styles */
+        body, html {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
             color: #333;
+            height: 100%;
         }
+
+        /* Flex Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* 화면 전체 높이를 채우기 */
+        }
+
+        /* Content Section */
+        .content {
+            flex: 1; /* 콘텐츠 영역이 화면에서 확장되도록 설정 */
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        /* Header Section */
         .header {
-            background-color: #222;
+            background-color: #007BFF;
+            color: white;
             padding: 20px;
             text-align: center;
-            color: white;
+            font-size: 24px;
+            font-weight: bold;
         }
-        .header img {
-            width: 80px;
-        }
-        .nav {
+
+        .menu-bar {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 10px; /* 간격을 줄임 */
             background-color: #007BFF;
-            padding: 10px 0;
+            padding: 15px 0;
         }
-        .nav a {
+
+        .menu-bar a {
+            display: flex;
+            align-items: center; /* 세로 중앙 정렬 */
+            justify-content: center; /* 가로 중앙 정렬 */
             color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            border-radius: 5px;
-        }
-        .nav a:hover {
+            padding: 15px 30px; /* 넓고 크게 설정 */
             background-color: #0056b3;
+            border-radius: 10px;
+            font-size: 18px; /* 글자 크기 증가 */
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
         }
-        .dashboard {
-            display: flex;
-            margin: 20px;
+
+        .menu-bar a:hover {
+            background-color: #003f8c;
+            transform: translateY(-5px);
         }
+
+        /* Sidebar */
         .sidebar {
-            width: 20%;
-            background-color: #fff;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            background-color: #ffffff;
             padding: 20px;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
         }
+
         .sidebar a {
             display: block;
-            text-decoration: none;
-            color: #333;
-            margin: 10px 0;
-            padding: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #007BFF;
             border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
         }
+
         .sidebar a:hover {
-            background-color: #007BFF;
-            color: white;
+            background-color: #f0f0f0;
         }
-        .content {
+
+        .sidebar .disabled {
+            color: red;
+            pointer-events: none;
+        }
+
+        /* Main Content */
+        .main-content {
             flex: 1;
-            background-color: #fff;
-            margin-left: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .chart {
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+            flex-direction: column;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .chart-item {
-            width: 45%;
+
+        .main-content h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
         }
-        .footer {
-            background-color: #222;
+
+        .charts {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .chart {
+            flex: 1 1 45%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .chart canvas {
+            width: 100%;
+            height: 250px;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #333;
             color: white;
             text-align: center;
-            padding: 10px;
-            margin-top: 20px;
+            padding: 15px;
+            font-size: 14px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <img src="https://via.placeholder.com/80" alt="Logo">
-        <h1>대시보드</h1>
-    </div>
-
-    <!-- Navigation -->
-    <div class="nav">
-        <a href="#">주문</a>
-        <a href="#">입고</a>
-        <a href="#">출고</a>
-        <a href="#">재고</a>
-        <a href="#">관리자 페이지</a>
-    </div>
-
-    <!-- Dashboard Layout -->
-    <div class="dashboard">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <a href="#">Dashboard</a>
-            <a href="#">내정보 조회/수정</a>
-            <a href="#">비밀번호 변경</a>
-            <a href="#">대시보드 사용법</a>
-            <a href="#">환경 설정</a>
-            <a href="#" style="color: red;">Log out</a>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            대시보드
+        </div>
+        <div class="menu-bar">
+            <a href="order.jsp">주문</a>
+            <a href="stock.jsp">입고</a>
+            <a href="shipment.jsp">출고</a>
+            <a href="inventory.jsp">재고</a>
+            <a href="admin.jsp">관리자 페이지</a>
         </div>
 
-        <!-- Main Content -->
+        <!-- Content Section -->
         <div class="content">
-            <h2>Order Time</h2>
-            <p>From 1-6 Dec, 2020</p>
-            <div class="chart">
-                <div class="chart-item">
-                    <h3>Donut Chart</h3>
-                    <img src="https://via.placeholder.com/300x200" alt="Donut Chart">
-                </div>
-                <div class="chart-item">
-                    <h3>Bar Chart</h3>
-                    <img src="https://via.placeholder.com/300x200" alt="Bar Chart">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="disabled">Dashboard</div>
+                <a href="profile.jsp">내정보 조회/수정</a>
+                <a href="password.jsp">비밀번호 변경</a>
+                <a href="help.jsp">대시보드 사용법</a>
+                <a href="logout.jsp" style="color: red;">Log out</a>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <h2>Order Time</h2>
+                <div class="charts">
+                    <!-- Donut Chart -->
+                    <div class="chart">
+                        <h3>Donut Chart</h3>
+                        <canvas id="donutChart"></canvas>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div class="chart">
+                        <h3>Bar Chart</h3>
+                        <canvas id="barChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Footer Section -->
+        <footer>
+            회사 정보 - 사업자 번호, 연락처 등 Footer 내용
+        </footer>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        회사 정보 - 사업자 번호, 연락처 등 유의 내용
-    </div>
+    <!-- Chart.js Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const donutChart = new Chart(document.getElementById('donutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Morning', 'Afternoon', 'Evening'],
+                datasets: [{
+                    data: [20, 40, 30],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            }
+        });
+
+        const barChart = new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Orders',
+                    data: [50, 75, 100, 150, 200, 250, 300],
+                    backgroundColor: '#36A2EB'
+                }]
+            }
+        });
+    </script>
 </body>
 </html>
+
