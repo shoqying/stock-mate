@@ -54,7 +54,7 @@ public class ReceivingController {
 	    logger.info("historyGET() 호출");
 
 	    List<ReceivingShipmentVO> ReceivingList;
-
+	    
 	    // 날짜와 키워드가 모두 있는 경우
 	    if (startDate != null && endDate != null && keyword != null) {
 	        logger.info("기간별 검색 및 키워드 검색: 시작 날짜 - " + startDate + ", 종료 날짜 - " + endDate + ", 키워드 - " + keyword);
