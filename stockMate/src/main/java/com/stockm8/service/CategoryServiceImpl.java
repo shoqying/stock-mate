@@ -53,7 +53,15 @@ public class CategoryServiceImpl implements CategoryService {
     	return categoryDAO.selectCategoriesByBusinessId(businessId);
 	}
     
-    // 카테고리 수정
+    // 카테고리ID로 카테고리명 조회
+    @Override
+	public void getCategoryNameById(int categoryId) throws Exception {
+    	System.out.println(" getCategoryNameById() 호출 ");
+    	
+    	categoryDAO.selectCategoryNameById(categoryId);
+	}
+
+	// 카테고리 수정
     @Override
     public void updateCategory(CategoryVO vo) throws Exception {
         // 카테고리 수정

@@ -16,6 +16,9 @@ public interface CategoryDAO {
     
     // 특정 사업자(businessId) 소속의 카테고리 목록 조회
     List<CategoryVO> selectCategoriesByBusinessId(@Param("businessId") int businessId) throws Exception;
+
+    // 카테고리ID로 카테고리명 조회
+    public String selectCategoryNameById(int categoryId) throws Exception;
     
     // 카테고리 목록 유효성 조회
     boolean existsById(int categoryId, int businessId);

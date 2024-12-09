@@ -101,7 +101,17 @@ public class UserController {
 	    // 로그인 성공 처리
 	    if (resultVO != null) {
 	        logger.info("로그인 성공, 사용자 ID: {}", resultVO.getUserId());
-	        session.setAttribute("userId", resultVO.getUserId()); // 세션에 사용자 ID 저장
+	        
+	        // 세션에 사용자 ID 저장
+	        session.setAttribute("userId", resultVO.getUserId()); 
+	        
+	        // 원래 요청 URL로 리다이렉트
+	        String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+	        
+	        if (redirectUrl != null) {
+	            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
+	            return "redirect:" + redirectUrl;
+	        }
 	        return "redirect:/user/main";
 	    }
 
