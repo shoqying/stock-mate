@@ -25,14 +25,14 @@ public class CategoryServiceImpl implements CategoryService {
         category.setBusinessId(1);  
 
         // 상위 카테고리가 없으면 대분류, 있으면 소분류로 설정
-        if (vo.getParentId() == null) {
+        if (category.getParentId() == null) {
             category.setLevel(1);  // 대분류
         } else {
             category.setLevel(2);  // 소분류
         }
 
         // 현재 시간을 생성 시간으로 설정
-        vo.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        category.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
     	System.out.println(" DAO의 카테고리 등록 메서드 호출");
     	categoryDAO.insertCategory(category);
@@ -64,7 +64,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryVO getCategoryWithParents(int cId) throws Exception {
         // 카테고리 정보 조회
-        CategoryVO vo = categoryDAO.selectCategoryById(cId);
+        CategoryVO category = categoryDAO.selectCategoryById(cId);
 
         // 상위 카테고리 조회
         CategoryVO parentCategory = null;
@@ -73,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         // 상위 카테고리 정보를 별도로 처리 (VO에 저장하지 않음)
-        return vo;  // 단순히 카테고리 정보만 반환
+        return category;  // 단순히 카테고리 정보만 반환
     }
     
     // 카테고리 삭제
