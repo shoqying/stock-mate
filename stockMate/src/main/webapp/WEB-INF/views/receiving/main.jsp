@@ -15,9 +15,9 @@
 
 <a href="/receiving/history">입고 내역</a>
 
-${ReceivingList }
-${YesterdayReceivingList }
-${TDBYReceivingList }
+<%-- ${ReceivingList } --%>
+<%-- ${YesterdayReceivingList } --%>
+<%-- ${TDBYReceivingList } --%>
 
 <!-- 그래프 추가 -->
 <h2>가장 많이 나간 상품 수량</h2>
@@ -76,7 +76,7 @@ ${TDBYReceivingList }
 	<tr>
 		<td>${vo.receivingShipmentNo }</td>
 		<td>${vo.transactionType }</td>
-		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd" /></td>
+		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 		<td>${vo.status }</td>
 		<td>${vo.productId }</td>
 		<td>${vo.name }</td>
