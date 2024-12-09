@@ -25,13 +25,46 @@
 
     <!-- 상품 등록 -->
 	<insert id="insertProduct" parameterType="com.stockm8.domain.vo.ProductVO" useGeneratedKeys="true" keyProperty="productId">
-	    INSERT INTO test_products
-	    (name, business_id, category_id, price, base_unit, set_size, description, created_at, updated_at)
-	    VALUES
-	    (#{name}, #{businessId}, #{categoryId}, #{price}, #{baseUnit}, #{setSize}, #{description}, NOW(), NOW())
+    INSERT INTO test_products
+    (
+        name,
+        barcode,
+        business_id,
+        category_id,
+        base_unit,
+        set_size,
+        price,
+        description,
+        qr_code_path,
+        barcode_path,
+        created_at,
+        updated_at
+    )
+    VALUES
+    (
+        #{name},
+        #{barcode},
+        #{businessId},
+        #{categoryId},
+        #{baseUnit},
+        #{setSize},
+        #{price},
+        #{description},
+        #{qrCodePath},
+        #{barcodePath},
+        NOW(),
+        NOW()
+   	 	)
 	</insert>
+	
+	<!-- QR 코드 경로 업데이트 -->
+	<update id="updateQRCodePath" parameterType="com.stockm8.domain.vo.ProductVO">
+    UPDATE test_products
+    SET qr_code_path = #{qrCodePath}
+    WHERE product_id = #{productId}
+	</update>
 
-    <!-- 상품 조회 -->
+    <!-- 상품 상세 조회 -->
     <select id="getProductById" parameterType="int" resultType="com.stockm8.domain.vo.ProductVO">
         SELECT *
         FROM test_products

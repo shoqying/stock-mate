@@ -54,7 +54,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                 
         // 1. 세션에서 사용자 ID 확인
         if (userId == null) {
-            logger.warn("세션에 유저 ID가 없음. 로그인 페이지로 이동.");
+            logger.warn("세션에 유저 ID가 없습니다. 로그인 페이지로 이동합니다.");
+            saveRequestedUrlToSession(request);
             return sendErrorMessage(request, response, "세션이 만료되었습니다. 다시 로그인해주세요.", "/user/login");
         }
         
@@ -62,13 +63,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         UserVO user = userService.getUserById(userId);
         
         if (user == null) {
-            logger.warn("해당 유저({}) 정보를 찾을 수 없음. 회원가입 페이지로 이동.", userId);
+            logger.warn("해당 유저({}) 정보를 찾을 수 없습니다. 회원가입 페이지로 이동합니다.", userId);
             return sendErrorMessage(request, response, "유저 정보를 찾을 수 없습니다. 회원가입을 진행해주세요.", "/user/signup");
         }
         
         // 3. 삭제된 계정 확인
         if (userService.getIsDeleted(userId) == 1) {
-            logger.warn("삭제된 유저({}). 로그인 페이지로 이동.", userId);
+            logger.warn("삭제된 유저({})입니다. 로그인 페이지로 이동합니다.", userId);
             return sendErrorMessage(request, response, "삭제된 계정입니다. 관리자에게 문의해주세요.", "/user/login");
         }
 		
@@ -76,11 +77,18 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         if (!isValidUser(request, response, user)) {
             return false; // 유효성 검사 실패 시 요청 중단
         }
-        logger.info("(회사 ID: {})", user.getBusinessId());
-
+        
+        logger.info("유효한 사용자 확인 (유저 ID: {}, 회사 ID: {})", userId, user.getBusinessId());
         return true; // 유효성 검사 통과
+        
 	}
-
+	
+	// 원래 요청 URL 저장 메서드
+	private void saveRequestedUrlToSession(HttpServletRequest request) {
+	    String requestedUrl = request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
+	    HttpSession session = request.getSession(true);
+	    session.setAttribute("redirectAfterLogin", requestedUrl); // 세션에 저장
+	}
 	 /**
      * Flash 메시지를 설정하고 리다이렉트합니다.
      *
@@ -123,13 +131,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         // 권한 확인
         List<Role> allowedRoles = Arrays.asList(Role.MANAGER, Role.ADMIN);
         if (user.getRole() == null || !allowedRoles.contains(user.getRole())) {
-            logger.warn("권한이 없는 유저입니다. 대시보드로 리다이렉트합니다. (유저 ID: {}, 역할: {})", user.getUserId(), user.getRole());
+            logger.warn("권한이 없는 유저({})입니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getRole());
             return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
         }
         
         // 회사 정보 확인
         if (user.getBusinessId() == null) {
-            logger.warn("사용자의 회사 정보가 없습니다. 회사 등록 페이지로 리다이렉트합니다. (회사 ID: {})", user.getBusinessId());
+            logger.warn("사용자의 회사 정보({})가 없습니다. 회사 등록 페이지로 이동합니다.", user.getBusinessId());
             return sendErrorMessage(request, response, "회사 정보가 없습니다. 회사를 등록해주세요.", "/company/register");
         }
 

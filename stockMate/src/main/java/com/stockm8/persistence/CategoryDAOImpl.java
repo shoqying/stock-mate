@@ -42,6 +42,13 @@ public class CategoryDAOImpl implements CategoryDAO {
         
     	return sqlSession.selectList(NAMESPACE + "selectCategoriesByBusinessId", businessId); 
 	}
+    
+    // 카테고리ID로 카테고리명 조회
+	@Override
+	public String selectCategoryNameById(int categoryId) throws Exception {
+		
+        return sqlSession.selectOne(NAMESPACE + "selectCategoryNameById", categoryId);
+	}
 
 	@Override
     public boolean existsById(int categoryId, int businessId) {
