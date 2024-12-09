@@ -68,8 +68,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         // 상위 카테고리 조회
         CategoryVO parentCategory = null;
-        if (vo.getParentId() != null) {
-            parentCategory = categoryDAO.selectCategoryById(vo.getParentId());  // vo.getParentId() 사용
+        if (category.getParentId() != null) {
+            parentCategory = categoryDAO.selectCategoryById(category.getParentId());  // vo.getParentId() 사용
         }
 
         // 상위 카테고리 정보를 별도로 처리 (VO에 저장하지 않음)
