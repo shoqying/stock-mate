@@ -14,5 +14,11 @@ public interface ReceivingDAO {
 		
 	// 입고 메인 오늘 들어올 리스트
 	public List<ReceivingShipmentVO> selectTDBYReceivingList() throws Exception;
+	
+	// 입고 내역 히스토리
+	public List<ReceivingShipmentVO> selectReceivingHistoryList() throws Exception;
+	
+	// 입고 내역 검색
+	public List<ReceivingShipmentVO> selectHistoryByDateRange(String startDate, String endDate, String keyword) throws Exception;
 
 } // ReceivingDAO end

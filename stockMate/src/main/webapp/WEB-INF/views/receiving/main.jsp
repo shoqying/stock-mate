@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>입고 메인 페이지</title>
+<title>입고 메인</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -18,43 +18,6 @@
 <%-- ${ReceivingList } --%>
 <%-- ${YesterdayReceivingList } --%>
 <%-- ${TDBYReceivingList } --%>
-
-<!-- 그래프 추가 -->
-<h2>가장 많이 나간 상품 수량</h2>
-<canvas id="myChart" width="400" height="200"></canvas>
-
-<script>
-    const labels = ["그저께", "어제", "오늘"];
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: '가장 많이 나간 상품 수량',
-            data: [
-                /* 데이터 추출 로직 작성 */
-            ],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    };
-
-    window.onload = function () {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx, config);
-    };
-</script>
 
 
 <!-- 오늘 입고 리스트 -->
@@ -109,7 +72,7 @@
 	<tr>
 		<td>${vo.receivingShipmentNo }</td>
 		<td>${vo.transactionType }</td>
-		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd" /></td>
+		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 		<td>${vo.status }</td>
 		<td>${vo.productId }</td>
 		<td>${vo.name }</td>
@@ -143,7 +106,7 @@
 	<tr>
 		<td>${vo.receivingShipmentNo }</td>
 		<td>${vo.transactionType }</td>
-		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd" /></td>
+		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 		<td>${vo.status }</td>
 		<td>${vo.productId }</td>
 		<td>${vo.name }</td>
