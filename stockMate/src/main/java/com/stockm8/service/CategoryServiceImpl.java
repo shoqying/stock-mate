@@ -14,7 +14,7 @@ import com.stockm8.persistence.CategoryDAO;
 public class CategoryServiceImpl implements CategoryService {
 
     @Inject
-    private CategoryDAO categoryDAO;
+    private CategoryDAO cdao;
 
     @Override
     public void addCategory(CategoryVO vo) throws Exception {
@@ -35,14 +35,14 @@ public class CategoryServiceImpl implements CategoryService {
         vo.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
     	System.out.println(" DAO의 카테고리 등록 메서드 호출");
-    	categoryDAO.insertCategory(vo);
+    	cdao.insertCategory(vo);
     }
 
     @Override
     public List<CategoryVO> getAllCategories() throws Exception {
     	System.out.println(" getAllCategories() 호출 ");
     	
-        return categoryDAO.selectAllCategories(); 
+        return cdao.selectAllCategories(); 
     }
     
     // 특정 사업자(businessId) 소속의 카테고리 목록을 조회
@@ -50,26 +50,26 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryVO> getCategoriesByBusinessId(int businessId) throws Exception {
     	System.out.println(" getCategoriesByBusinessId() 호출 ");
 
-    	return categoryDAO.selectCategoriesByBusinessId(businessId);
+    	return cdao.selectCategoriesByBusinessId(businessId);
 	}
     
     // 카테고리 수정
     @Override
     public void updateCategory(CategoryVO vo) throws Exception {
         // 카테고리 수정
-    	categoryDAO.updateCategory(vo);
+    	cdao.updateCategory(vo);
     }
 
 	// 카테고리와 상위 카테고리 정보 조회
     @Override
     public CategoryVO getCategoryWithParents(int cId) throws Exception {
         // 카테고리 정보 조회
-        CategoryVO vo = categoryDAO.selectCategoryById(cId);
+        CategoryVO vo = cdao.selectCategoryById(cId);
 
         // 상위 카테고리 조회
         CategoryVO parentCategory = null;
         if (vo.getParentId() != null) {
-            parentCategory = categoryDAO.selectCategoryById(vo.getParentId());  // vo.getParentId() 사용
+            parentCategory = cdao.selectCategoryById(vo.getParentId());  // vo.getParentId() 사용
         }
 
         // 상위 카테고리 정보를 별도로 처리 (VO에 저장하지 않음)
@@ -80,7 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(int cId) throws Exception {
     	// 카테고리 삭제
-    	categoryDAO.deleteCategory(cId);
+    	cdao.deleteCategory(cId);
     }
 
 
