@@ -19,10 +19,11 @@ public class StockController {
 
     @Inject
     private StockService stockService;
-
+    
+    // http://localhost:8088/stock/list
     // 사업자별 재고 목록 조회
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model, @RequestParam int businessId) throws Exception {
+    public String list(Model model, @RequestParam(defaultValue = "1") int businessId) throws Exception {
         // 사업자에 속한 재고 목록을 서비스에서 조회
         List<StockVO> stockList = stockService.getAllStock(businessId);
 
@@ -33,7 +34,6 @@ public class StockController {
         return "/stock/list";
     }
 
-    // 필터링된 재고 목록 조회
     @RequestMapping(value = "/filter", method = RequestMethod.GET)
     public String filter(Model model,
                          @RequestParam(required = false) String warehouseName,
@@ -48,6 +48,7 @@ public class StockController {
         model.addAttribute("categoryList", stockService.getAllCategories());  // 카테고리 목록
         model.addAttribute("sortOrder", sortOrder);  // sortOrder 파라미터 전달
 
+        // 필터링된 데이터를 기존 list.jsp로 전달
         return "/stock/list";
     }
 }

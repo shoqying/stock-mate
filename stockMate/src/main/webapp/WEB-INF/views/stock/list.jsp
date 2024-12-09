@@ -8,12 +8,12 @@
 <title>재고 리스트</title>
 <script>
     // 정렬 상태를 저장할 변수 (초기값은 내림차순으로 설정)
-    let sortOrder = '${param.sortOrder != null ? param.sortOrder : "DESC"}';
+    let sortOrder = '${param.sortOrder != null ? param.sortOrder : "desc"}';
 
     // 수량 클릭 시 정렬을 변경
     function sortByStock() {
         // 정렬 순서를 변경
-        sortOrder = (sortOrder === 'DESC') ? 'ASC' : 'DESC';
+        sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
         
         // URL에 sortOrder 파라미터를 추가하여 페이지를 갱신
         let currentUrl = "<c:url value='/stock/filter' />";
@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <h1>/views/stock/list.jsp</h1>
+    <h1>재고 리스트</h1>
     
     <!-- 필터링 폼 -->
     <form action="<c:url value='/stock/filter' />" method="get">
