@@ -25,10 +25,11 @@
     <select id="loginCheck" parameterType="com.stockm8.domain.vo.UserVO" resultMap="UserResultMap">
         SELECT 
             user_id, 
-            business_id, 
-            email, 
+            email,
+            password,
             name, 
             role, 
+            business_id, 
             is_deleted 
         FROM test_users
         WHERE email = #{email} AND password = #{password}
