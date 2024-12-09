@@ -83,7 +83,7 @@
     <!-- Navigation -->
     <div class="nav">
         <a href="signup">회원가입</a>
-        <a href="login">로그인</a>
+        <a href="signin">로그인</a>
         <a href="dashboard">대시보드 사용법</a>
         <a href="contact">상담문의</a>
         <a href="about">회사소개</a>

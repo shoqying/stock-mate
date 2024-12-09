@@ -56,7 +56,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         if (userId == null) {
             logger.warn("세션에 유저 ID가 없습니다. 로그인 페이지로 이동합니다.");
             saveRequestedUrlToSession(request);
-            return sendErrorMessage(request, response, "세션이 만료되었습니다. 다시 로그인해주세요.", "/user/login");
+            return sendErrorMessage(request, response, "세션이 만료되었습니다. 다시 로그인해주세요.", "/user/signin");
         }
         
         // 2. DB에서 사용자 정보 조회
@@ -70,7 +70,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         // 3. 삭제된 계정 확인
         if (userService.getIsDeleted(userId) == 1) {
             logger.warn("삭제된 유저({})입니다. 로그인 페이지로 이동합니다.", userId);
-            return sendErrorMessage(request, response, "삭제된 계정입니다. 관리자에게 문의해주세요.", "/user/login");
+            return sendErrorMessage(request, response, "삭제된 계정입니다. 관리자에게 문의해주세요.", "/user/signin");
         }
 		
         // 4. 권한 및 회사 정보 유효성 검사

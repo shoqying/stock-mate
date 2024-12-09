@@ -67,12 +67,12 @@ public class UserController {
 //		userService.userJoin(user);
 
 		// 로그인 페이지로 이동
-		return "redirect:/user/login";
+		return "redirect:/user/signin";
 	}
 
 	// http://localhost:8088/user/login (GET)
 	// 로그인 - 정보입력 / GET
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/signin", method = RequestMethod.GET)
 	public String userLoginGET(HttpServletRequest request, Model model) {
 		logger.info("userLoginGET(HttpServletRequest request, Model model) 호출 ");
 		logger.info("!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -87,11 +87,11 @@ public class UserController {
 	        }
 	    }
 	    
-	    return "/user/login";
+	    return "/user/signin";
 	}
 
 	// 로그인 - 정보처리 / POST
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	public String userLoginPOST(UserVO user, RedirectAttributes rttr, HttpSession session) throws Exception {
 	    logger.info("userLoginPOST() 호출");
 
@@ -141,7 +141,7 @@ public class UserController {
 	}
 
 	// 로그아웃 - GET
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public String userLogoutGET(HttpSession session) throws Exception {
 		logger.info(" userLogoutGET() 호출");
 

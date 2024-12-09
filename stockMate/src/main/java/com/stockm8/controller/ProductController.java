@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.nio.file.Files;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +29,7 @@ import com.stockm8.service.ProductService;
 import com.stockm8.service.UserService;
 
 @Controller
-@RequestMapping(value = "/product") // 공통 URI 주소
+@RequestMapping(value = "/product/*") // 공통 URI 주소
 public class ProductController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);

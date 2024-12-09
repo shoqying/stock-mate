@@ -155,11 +155,11 @@
             대시보드
         </div>
         <div class="menu-bar">
-            <a href="order.jsp">주문</a>
-            <a href="stock.jsp">입고</a>
-            <a href="shipment.jsp">출고</a>
-            <a href="inventory.jsp">재고</a>
-            <a href="admin.jsp">관리자 페이지</a>
+            <a href="order">주문</a>
+            <a href="stock">입고</a>
+            <a href="shipment">출고</a>
+            <a href="stock">재고</a>
+            <a href="admin">관리자 페이지</a>
         </div>
 
         <!-- Content Section -->
@@ -167,10 +167,11 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="disabled">Dashboard</div>
-                <a href="profile.jsp">내정보 조회/수정</a>
-                <a href="password.jsp">비밀번호 변경</a>
-                <a href="help.jsp">대시보드 사용법</a>
-                <a href="logout.jsp" style="color: red;">Log out</a>
+                <a href="product/register">상품 등록</a>
+                <a href="profile">내정보 조회/수정</a>
+                <a href="password">비밀번호 변경</a>
+                <a href="help">대시보드 사용법</a>
+                <a href="user/signout" style="color: red;">Sign out</a>
             </div>
 
             <!-- Main Content -->
