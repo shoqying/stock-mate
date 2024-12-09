@@ -38,6 +38,20 @@ public class ReceivingServiceImpl implements ReceivingService {
 		return rdao.selectTDBYReceivingList();
 	}
 
+	@Override
+	public List<ReceivingShipmentVO> getReceivingHistoryList() throws Exception {
+		logger.info("getReceivingHistoryList() 호출");
+		return rdao.selectReceivingHistoryList();
+	}
+	
+	@Override
+	public List<ReceivingShipmentVO> getHistoryByDateRange(String startDate, String endDate, String keyword) throws Exception{
+		logger.info("getHistoryByDateRange() 호출");
+	    return rdao.selectHistoryByDateRange(startDate, endDate, keyword);
+	}
+	
+	
+
 	
 	
 	

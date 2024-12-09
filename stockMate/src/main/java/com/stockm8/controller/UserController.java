@@ -21,7 +21,7 @@ import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
 
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/user/*")
 // *.me 처럼 /user/~ 시작하는 모든주소를 처리하겠다.
 public class UserController {
 
@@ -39,6 +39,7 @@ public class UserController {
 	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/dash (o)
 	// http://localhost:8088/user/info1 (o)
+	// http://localhost:8088/user/info2 (o)
 
 	// 회원가입 - 정보입력 / GET 방식
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
@@ -57,13 +58,13 @@ public class UserController {
 		logger.info("Role received: " + user.getRole());
 
 		// 전달정보 저장
-		logger.info("vo :" + user);
+//		logger.info("vo :" + user);
 
 		// userDAO객체가 필요 => 주입
 		// DB에 정보를 전달 - 회원가입동작 실행
-		// mdao.userJoin(vo); // => 잘``못됨
+		// mdao.userJoin(vo); // => 잘못됨
 		// 서비스 -> DAO 호출
-		userService.userJoin(user);
+//		userService.userJoin(user);
 
 		// 로그인 페이지로 이동
 		return "redirect:/user/login";
@@ -74,6 +75,8 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String userLoginGET(HttpServletRequest request, Model model) {
 		logger.info("userLoginGET(HttpServletRequest request, Model model) 호출 ");
+		logger.info("!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		
 		
 		// FlashMap에서 에러 메시지 확인
 	    Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
@@ -163,6 +166,9 @@ public class UserController {
 		return "user/info1";
 	}
 
+	
+	
+	
 //	// 회원정보 조회 - /user/info1 (GET)
 //	@RequestMapping(value = "/info1", method = RequestMethod.GET)
 //	public void userInfo1GET(

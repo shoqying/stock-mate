@@ -18,16 +18,15 @@
 		<result property="isDeleted" column="is_deleted" />
 	</resultMap>
 
-
-	<!-- 카테고리 등록 -->
+<!-- 	카테고리 등록 -->
 	<insert id="insertCategory"
-	parameterType="com.stockm8.domain.vo.CategoryVO">
-	insert into categories (parentId, businessId,
-	categoryName, level,
-	createdAt)
-	values (#{parentId}, #{businessId},
-	#{categoryName}, #{level},
-	#{createdAt})
+    parameterType="com.stockm8.domain.vo.CategoryVO">
+    insert into categories (parentId, businessId,
+    categoryName, level,
+    createdAt)
+    values (#{parentId}, #{businessId},
+    #{categoryName}, #{level},
+    #{createdAt})
 	</insert>
 
 	<!-- 카테고리 목록 조회 -->

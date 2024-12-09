@@ -13,7 +13,7 @@ public interface CategoryService {
     public List<CategoryVO> getAllCategories() throws Exception;
     
     // 특정 사업자(businessId) 소속의 카테고리 목록을 조회
-    List<CategoryVO> getCategoriesByBusinessId(int businessId) throws Exception;
+    public List<CategoryVO> getCategoriesByBusinessId(int businessId) throws Exception;
     
     // 카테고리ID로 카테고리명 조회
     public void getCategoryNameById(int categoryId) throws Exception;
