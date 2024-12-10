@@ -115,7 +115,7 @@ public class UserController {
 	            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
 	            return "redirect:" + redirectUrl;
 	        }
-	        return "redirect:/user/main";
+	        return "redirect:/dashboard";
 	    }
 
 	    // 로그인 실패 처리

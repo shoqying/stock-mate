@@ -128,17 +128,17 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
      * @throws Exception 예외 발생 시
      */
     private boolean isValidUser(HttpServletRequest request, HttpServletResponse response, UserVO user) throws Exception {
+    	
+        // 회사 정보 확인
+        if (user.getBusinessId() == null) {
+            logger.warn("사용자의 회사 정보({})가 없습니다. 회사 등록 페이지로 이동합니다.", user.getBusinessId());
+            return sendErrorMessage(request, response, "회사 정보가 없습니다. 회사를 등록해주세요.", "/business/register");
+        }
         // 권한 확인
         List<Role> allowedRoles = Arrays.asList(Role.MANAGER, Role.ADMIN);
         if (user.getRole() == null || !allowedRoles.contains(user.getRole())) {
             logger.warn("권한이 없는 유저({})입니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getRole());
             return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
-        }
-        
-        // 회사 정보 확인
-        if (user.getBusinessId() == null) {
-            logger.warn("사용자의 회사 정보({})가 없습니다. 회사 등록 페이지로 이동합니다.", user.getBusinessId());
-            return sendErrorMessage(request, response, "회사 정보가 없습니다. 회사를 등록해주세요.", "/company/register");
         }
 
         return true; // 모든 검증 통과
