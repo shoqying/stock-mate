@@ -23,7 +23,7 @@ import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.service.OrderService;
 
 @Controller
-@RequestMapping(value = "/Order")
+@RequestMapping(value = "/order")
 public class OrderController {
     
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
@@ -33,9 +33,9 @@ public class OrderController {
     
     /**
      * 주문 등록 페이지 표시
-     * http://localhost:8088/Order/OrderRegister
+     * http://localhost:8088/order/register
      */
-    @RequestMapping(value = "/OrderRegister", method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String OrderRegisterGET(Model model) throws Exception {
         logger.info("OrderRegisterGET() 호출");
         return "Order/OrderRegister"; // WEB-INF/views/Order/OrderRegister.jsp를 찾음
@@ -44,7 +44,7 @@ public class OrderController {
 //    /**
 //     * 주문 등록 처리
 //     */
-//    @RequestMapping(value = "/OrderRegister", method = RequestMethod.POST)
+//    @RequestMapping(value = "/register", method = RequestMethod.POST)
 //    @ResponseBody
 //    public String OrderRegisterPOST(@RequestBody OrderVO vo) throws Exception {
 //        logger.info("OrderRegisterPOST() 호출");
