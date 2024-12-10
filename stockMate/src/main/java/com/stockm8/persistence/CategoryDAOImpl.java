@@ -38,23 +38,14 @@ public class CategoryDAOImpl implements CategoryDAO {
         return sqlSession.selectList(NAMESPACE + "selectCategoriesById", businessId);
     }
     
-    // 카테고리 존재여부 확인
-    @Override
-
-	public List<CategoryVO> selectCategoriesByBusinessId(int businessId) throws Exception {
-        
-    	return sqlSession.selectList(NAMESPACE + "selectCategoriesByBusinessId", businessId); 
-	}
-    
     // 카테고리ID로 카테고리명 조회
 	@Override
 	public String selectCategoryNameById(int categoryId) throws Exception {
 		
         return sqlSession.selectOne(NAMESPACE + "selectCategoryNameById", categoryId);
 	}
-
+	// 카테고리 존재 여부 확인
 	@Override
-
     public boolean existsById(int categoryId, int businessId) {
         Map<String, Object> params = new HashMap<>();
         params.put("categoryId", categoryId);
