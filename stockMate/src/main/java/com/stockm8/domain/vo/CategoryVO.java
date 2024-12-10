@@ -14,4 +14,15 @@ public class CategoryVO {
     private Timestamp createdAt;   // 카테고리 생성 일자
     private Timestamp updatedAt;   // 카테고리 수정 일자
     private Boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
+    
+    // Getter와 Setter 메서드 추가
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    // 다른 Getter/Setter와 필드들
 }

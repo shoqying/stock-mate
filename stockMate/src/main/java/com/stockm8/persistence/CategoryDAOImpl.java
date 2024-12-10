@@ -18,34 +18,33 @@ public class CategoryDAOImpl implements CategoryDAO {
     private SqlSession sqlSession;
 
     private static final String NAMESPACE = "com.stockm8.mapper.CategoryMapper.";
-    
+
     // 카테고리 등록
     @Override
     public void insertCategory(CategoryVO category) throws Exception {
         sqlSession.insert(NAMESPACE + "insertCategory", category);
     }
     
-    // 카테고리 목록 조회
+    // 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회)
     @Override
     public List<CategoryVO> selectAllCategories() throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
     }
     
-    // 특정 사업자(businessId) 소속의 카테고리 목록 조회
+    // 특정 사업자(businessId) 소속의 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회)
     @Override
-
     public List<CategoryVO> selectCategoriesByBusinessId(int businessId) throws Exception {
-        return sqlSession.selectList(NAMESPACE + "selectCategoriesById", businessId);
+        return sqlSession.selectList(NAMESPACE + "selectCategoriesByBusinessId", businessId);
+    }
+
+    // 카테고리ID로 카테고리명 조회
+    @Override
+    public String selectCategoryNameById(int categoryId) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + "selectCategoryNameById", categoryId);
     }
     
-    // 카테고리ID로 카테고리명 조회
-	@Override
-	public String selectCategoryNameById(int categoryId) throws Exception {
-		
-        return sqlSession.selectOne(NAMESPACE + "selectCategoryNameById", categoryId);
-	}
-	// 카테고리 존재 여부 확인
-	@Override
+    // 카테고리 존재 여부 확인
+    @Override
     public boolean existsById(int categoryId, int businessId) {
         Map<String, Object> params = new HashMap<>();
         params.put("categoryId", categoryId);
@@ -55,22 +54,26 @@ public class CategoryDAOImpl implements CategoryDAO {
         return count != null && count > 0;
     }
 
-    
     // 카테고리 수정
     @Override
     public void updateCategory(CategoryVO category) throws Exception {
         sqlSession.update(NAMESPACE + "updateCategory", category);
     }
     
-    // 카테고리 ID로 조회
+    // 카테고리 ID로 조회 (삭제되지 않은 카테고리만 조회)
     @Override
     public CategoryVO selectCategoryById(int categoryId) throws Exception {
         return sqlSession.selectOne(NAMESPACE + "selectCategoryById", categoryId);
     }
     
-    // 카테고리 삭제
+    // 카테고리 논리 삭제 처리 (is_deleted를 true로 설정)
     @Override
     public void deleteCategory(int categoryId) throws Exception {
-        sqlSession.delete(NAMESPACE + "deleteCategory", categoryId);
+        sqlSession.update(NAMESPACE + "deleteCategory", categoryId);
+    }
+    
+    @Override
+    public List<CategoryVO> selectParentCategories() throws Exception {
+        return sqlSession.selectList(NAMESPACE + "selectParentCategories");
     }
 }

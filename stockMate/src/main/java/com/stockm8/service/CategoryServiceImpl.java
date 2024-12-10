@@ -18,10 +18,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void addCategory(CategoryVO category) throws Exception {
-    	
-    	System.out.println(" 카테고리 등록 실행 ");
-    	
-    	// 기본 businessId 설정
+        System.out.println(" 카테고리 등록 실행 ");
+        
+        // 기본 businessId 설정
         category.setBusinessId(1);  
 
         // 상위 카테고리가 없으면 대분류, 있으면 소분류로 설정
@@ -34,41 +33,23 @@ public class CategoryServiceImpl implements CategoryService {
         // 현재 시간을 생성 시간으로 설정
         category.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
-    	System.out.println(" DAO의 카테고리 등록 메서드 호출");
-    	categoryDAO.insertCategory(category);
+        System.out.println(" DAO의 카테고리 등록 메서드 호출");
+        categoryDAO.insertCategory(category);
     }
 
     @Override
     public List<CategoryVO> getAllCategories() throws Exception {
-    	System.out.println(" getAllCategories() 호출 ");
-    	
+        System.out.println(" getAllCategories() 호출 ");
         return categoryDAO.selectAllCategories(); 
     }
-    
-    // 특정 사업자(businessId) 소속의 카테고리 목록을 조회
-    @Override
-	public List<CategoryVO> getCategoriesByBusinessId(int businessId) throws Exception {
-    	System.out.println(" getCategoriesByBusinessId() 호출 ");
 
-    	return categoryDAO.selectCategoriesByBusinessId(businessId);
-	}
-    
-    // 카테고리ID로 카테고리명 조회
-    @Override
-	public void getCategoryNameById(int categoryId) throws Exception {
-    	System.out.println(" getCategoryNameById() 호출 ");
-    	
-    	categoryDAO.selectCategoryNameById(categoryId);
-	}
 
-	// 카테고리 수정
     @Override
     public void updateCategory(CategoryVO category) throws Exception {
         // 카테고리 수정
-    	categoryDAO.updateCategory(category);
+        categoryDAO.updateCategory(category);
     }
 
-	// 카테고리와 상위 카테고리 정보 조회
     @Override
     public CategoryVO getCategoryWithParents(int cId) throws Exception {
         // 카테고리 정보 조회
@@ -77,21 +58,37 @@ public class CategoryServiceImpl implements CategoryService {
         // 상위 카테고리 조회
         CategoryVO parentCategory = null;
         if (category.getParentId() != null) {
-            parentCategory = categoryDAO.selectCategoryById(category.getParentId());  // vo.getParentId() 사용
+            parentCategory = categoryDAO.selectCategoryById(category.getParentId());
         }
 
         // 상위 카테고리 정보를 별도로 처리 (VO에 저장하지 않음)
         return category;  // 단순히 카테고리 정보만 반환
     }
-    
-    // 카테고리 삭제
+
     @Override
-    public void deleteCategory(int cId) throws Exception {
-    	// 카테고리 삭제
-    	categoryDAO.deleteCategory(cId);
+    public void deleteCategory(int categoryId) throws Exception {
+        // 카테고리 논리 삭제
+        categoryDAO.deleteCategory(categoryId);
     }
 
+    // 부모 카테고리 체크 후 카테고리 등록
+    @Override
+    public void registerCategoryWithParentCheck(CategoryVO category) throws Exception {
+        if (category.getParentId() == null || category.getParentId() == 0) {
+            // 부모 카테고리 없는 경우 새 부모 카테고리로 등록
+            category.setParentId(null);  // 부모 카테고리 설정되지 않음
+            category.setLevel(1);  // 대분류
+        } else {
+            // 부모 카테고리 설정된 경우 소분류로 등록
+            category.setLevel(2);  // 소분류
+        }
 
+        // 등록을 위해 addCategory 호출
+        addCategory(category);
+    }
     
-    
+    @Override
+    public List<CategoryVO> getParentCategories() throws Exception {
+        return categoryDAO.selectParentCategories();  // 부모 카테고리만 조회
+    }
 }
