@@ -6,7 +6,7 @@
 <mapper namespace="com.stockm8.mapper.OrderMapper">
     <!-- 주문등록 -->
     <insert id="insertOrder" parameterType="com.stockm8.domain.vo.OrderVO">
-        INSERT INTO orders (
+        INSERT INTO test_orders (
             order_number,
             warehouse_id,
             total_price,
@@ -72,7 +72,7 @@
     <!-- 해당 날짜의 마지막 주문번호 조회 -->
     <select id="getLastOrderNumberForDate" resultType="String">
         SELECT order_number 
-        FROM orders 
+        FROM test_orders 
         WHERE order_number LIKE CONCAT('ORD-', #{date}, '-%')
         ORDER BY order_number DESC 
         LIMIT 1
