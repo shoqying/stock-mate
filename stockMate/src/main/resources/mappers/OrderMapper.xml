@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.stockm8.mapper.OrderMapper">
+    <!-- 주문등록 -->
+    <insert id="insertOrder" parameterType="com.stockm8.domain.vo.OrderVO">
+        INSERT INTO orders (
+            order_number,
+            warehouse_id,
+            total_price,
+            created_by,
+            created_at,
+            status
+        ) VALUES (
+            #{orderNumber},
+            #{warehouseId},
+            #{totalPrice},
+            #{createdBy},
+            NOW(),
+            'pending'
+        )
+        <selectKey keyProperty="orderId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 주문 상세 항목 등록 -->
+    <insert id="insertOrderItem" parameterType="com.stockm8.domain.vo.OrderItemVO">
+        INSERT INTO order_items (
+            order_id,
+            product_id,
+            quantity,
+            unit_price,
+            subtotal_price,
+            created_at,
+            remarks
+        ) VALUES (
+            #{orderId},
+            #{productId},
+            #{quantity},
+            #{unitPrice},
+            #{subtotalPrice},
+            NOW(),
+            #{remarks}
+        )
+    </insert>
+
+    <!-- 모든 제품 목록 조회 -->
+    <select id="findAllProducts" resultType="com.stockm8.domain.vo.ProductVO">
+        SELECT 
+            product_id as productId,
+            name,
+            barcode,
+            business_id as businessId,
+            category_id as categoryId,
+            base_unit as baseUnit,
+            set_size as setSize,
+            price,
+            created_at as createdAt,
+            updated_at as updatedAt,
+            description
+        FROM 
+            test_products
+        WHERE
+            is_deleted = false
+        ORDER BY 
+            name ASC
+    </select>
+    
+    <!-- 해당 날짜의 마지막 주문번호 조회 -->
+    <select id="getLastOrderNumberForDate" resultType="String">
+        SELECT order_number 
+        FROM orders 
+        WHERE order_number LIKE CONCAT('ORD-', #{date}, '-%')
+        ORDER BY order_number DESC 
+        LIMIT 1
+    </select>
+</mapper>

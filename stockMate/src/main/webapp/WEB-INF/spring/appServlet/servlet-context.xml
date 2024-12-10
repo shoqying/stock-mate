@@ -21,12 +21,37 @@
     </beans:bean>
     
     <!-- Enable component scanning -->
+    <context:component-scan base-package="com.stockm8.controller, com.stockm8.interceptor, com.stockm8.service, com.stockm8.exception" />
+    
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <beans:property name="supportedMediaTypes">
+                    <beans:list>
+                        <beans:value>text/html;charset=UTF-8</beans:value>
+                        <beans:value>application/json;charset=UTF-8</beans:value>
+                    </beans:list>
+                </beans:property>
+            </beans:bean>
+            <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <beans:property name="supportedMediaTypes">
+                    <beans:list>
+                        <beans:value>application/json;charset=UTF-8</beans:value>
+                    </beans:list>
+                </beans:property>
+            </beans:bean>
+        </mvc:message-converters>
+        <mvc:argument-resolvers>
+            <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.FlashMapMethodArgumentResolver" />
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
+   
+</beans:beans>
 	<context:component-scan base-package="com.stockm8.controller, com.stockm8.interceptor, com.stockm8.service, com.stockm8.exception" />
-	
 	<mvc:annotation-driven>
     <mvc:argument-resolvers>
 	    <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.FlashMapMethodArgumentResolver" />
     </mvc:argument-resolvers>
 	</mvc:annotation-driven>
-	
 </beans:beans>
+
