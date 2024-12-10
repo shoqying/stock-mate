@@ -1,8 +1,13 @@
 package com.stockm8.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -24,7 +29,7 @@ import com.stockm8.service.ProductService;
 import com.stockm8.service.UserService;
 
 @Controller
-@RequestMapping(value = "/product") // 공통 URI 주소
+@RequestMapping(value = "/product/*") // 공통 URI 주소
 public class ProductController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -91,19 +96,100 @@ public class ProductController {
 		// DB insert 후 생성된 productId PK
 		int productId = product.getProductId();
 		
-		logger.info("연결된 뷰페이지(/product/list.jsp) 이동");
-		return "redirect/product/detail?productId=" + productId;
+
+//	    // QR 코드 생성
+//	    try {
+//	        productService.generateQRCode(productId);
+//	        rttr.addFlashAttribute("successMessage", "QR 코드가 성공적으로 생성되었습니다! 상품 ID: " + productId);
+//	    } catch (Exception e) {
+//	        logger.error("QR 코드 생성 중 오류 발생: productId={}", productId, e);
+//	        rttr.addFlashAttribute("errorMessage", "QR 코드 생성 중 문제가 발생했습니다.");
+//	    }
+		
+		logger.info("연결된 뷰페이지(/product/detail.jsp) 이동");
+		return "redirect:/product/detail?productId=" + productId;
 	}
 	
+	// QR코드 등록 처리
+	@GetMapping("/generateQR")
+	public String generateQR(@RequestParam("productId") int productId, RedirectAttributes rttr) throws Exception {
+	    logger.info("generateQR() 호출");
+	    logger.info("전송된 productId: {}", productId);
+
+	    if (productId == 0) {
+	        rttr.addFlashAttribute("errorMessage", "유효한 상품 ID가 필요합니다.");
+	        return "redirect:/product/detail?productId=" + productId;
+	    }
+	    
+	    // 상품 정보 가져오기
+	    ProductVO product = productService.getProductByID(productId);
+	    if (product == null) {
+	        rttr.addFlashAttribute("errorMessage", "상품 정보를 찾을 수 없습니다.");
+	        return "redirect:/product/detail?productId=" + productId;
+	    }
+
+	    // 기존 QR코드 존재 여부 확인
+	    if (product.getQrCodePath() != null && !product.getQrCodePath().isEmpty()) {
+	        logger.warn("이미 QR 코드가 등록된 상품입니다. productId={}", productId);
+	        rttr.addFlashAttribute("errorMessage", "이미 QR 코드가 등록된 상품입니다.");
+	        return "redirect:/product/detail?productId=" + productId;
+	    }
+
+	    // QR 코드 생성 (예외 발생 시 @ControllerAdvice에서 처리)
+	    productService.generateQRCode(productId);
+	    rttr.addFlashAttribute("successMessage", "QR 코드가 성공적으로 생성되었습니다. (상품 ID: " + productId + ")");
+	    return "redirect:/product/detail?productId=" + productId;
+	}
+
+	// http://localhost:8088/product/downloadQr
+	// QR코드 다운로드 처리
+	@GetMapping("/downloadQr")
+	public void downloadQrCode(
+	        @RequestParam("productId") int productId,
+	        HttpServletResponse response) throws Exception {
+
+	    // 상품 정보 가져오기
+	    ProductVO product = productService.getProductByID(productId);
+	    if (product == null || product.getQrCodePath() == null) {
+	        throw new IllegalArgumentException("QR 코드가 존재하지 않습니다.");
+	    }
+
+	    // QR 코드 파일 경로
+	    File qrCodeFile = new File(product.getQrCodePath());
+	    if (!qrCodeFile.exists()) {
+	        throw new IllegalArgumentException("QR 코드 파일이 존재하지 않습니다.");
+	    }
+	    
+	    // 파일명 인코딩 (한글 처리 포함)
+	    String encodedFileName = URLEncoder.encode(qrCodeFile.getName(), "UTF-8").replaceAll("\\+", "%20");
+
+	    // 파일 다운로드 설정
+	    response.setContentType("application/octet-stream");
+	    response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+	    response.setContentLengthLong(qrCodeFile.length());
+
+	    // 파일 데이터 출력
+	    try (FileInputStream fileInputStream = new FileInputStream(qrCodeFile);
+	         OutputStream outputStream = response.getOutputStream()) {
+	        byte[] buffer = new byte[1024];
+	        int bytesRead;
+	        while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+	            outputStream.write(buffer, 0, bytesRead);
+	        }
+	        outputStream.flush();
+	    } 
+	}
+	
+	// http://localhost:8088/product/detail
 	// 상품 상세 정보 페이지
 	@GetMapping("/detail")
 	public String detail(@RequestParam("productId") int productId, Model model) throws Exception {
+		
 		// 상품 상세 정보 조회 
 		ProductVO product = productService.getProductByID(productId);
 		
         // 뷰(JSP)에서 EL로 접근할 수 있도록 Model에 상품 정보 등록
         model.addAttribute("product", product);
-		
 		
 		logger.info("연결된 뷰페이지(/product/detail.jsp) 이동");
 		return "product/detail";

@@ -33,12 +33,28 @@ public class CategoryDAOImpl implements CategoryDAO {
     
     // 특정 사업자(businessId) 소속의 카테고리 목록 조회
     @Override
+
     public List<CategoryVO> selectCategoriesByBusinessId(int businessId) throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectCategoriesById", businessId);
     }
     
     // 카테고리 존재여부 확인
     @Override
+
+	public List<CategoryVO> selectCategoriesByBusinessId(int businessId) throws Exception {
+        
+    	return sqlSession.selectList(NAMESPACE + "selectCategoriesByBusinessId", businessId); 
+	}
+    
+    // 카테고리ID로 카테고리명 조회
+	@Override
+	public String selectCategoryNameById(int categoryId) throws Exception {
+		
+        return sqlSession.selectOne(NAMESPACE + "selectCategoryNameById", categoryId);
+	}
+
+	@Override
+
     public boolean existsById(int categoryId, int businessId) {
         Map<String, Object> params = new HashMap<>();
         params.put("categoryId", categoryId);

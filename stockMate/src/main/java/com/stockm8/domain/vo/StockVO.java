@@ -49,5 +49,10 @@ public class StockVO {
 	
 	private Timestamp createdAt; // 재고 등록 시간 
 	private Timestamp updatedAt; // 최근 수정 시간
+
 	private String description; // 재고 설명
+
+	private String dscription; // 재고 설명
+    	private Boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
+
 }

@@ -7,7 +7,27 @@
 <meta charset="UTF-8">
 <title>상품 등록</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<style>
+    /* 스타일 추가: 카테고리 선택 및 버튼을 한 줄로 배치 */
+    .category-container {
+        display: flex;
+        align-items: center;
+    }
+    .category-container select {
+        margin-right: 10px;
+    }
+    .category-container button {
+        padding: 5px 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .category-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
 </head>
 <body>
 	<h1>상품 등록</h1>
@@ -15,14 +35,20 @@
 	<!-- 상품 등록 폼 -->
 	<form method="post" action="/product/register">
 		
-        <!-- 카테고리 선택 필드 -->
-        <label for="categoryId">카테고리 선택:</label> 
-        <select id="categoryId" name="categoryId" required>
-            <option value="">-- 카테고리 선택 --</option> <!-- 기본값 옵션 추가 -->
-            <c:forEach var="cat" items="${categoryList}">
-                <option value="${cat.categoryId}">${cat.categoryName}</option>
-            </c:forEach>
-        </select><br><br>
+        <!-- 카테고리 선택 필드와 카테고리 등록 버튼 -->
+        <div class="category-container">
+            <label for="categoryId">카테고리 선택:</label>
+            <select id="categoryId" name="categoryId" required>
+                <option value="">-- 카테고리 선택 --</option> <!-- 기본값 옵션 추가 -->
+                <c:forEach var="cat" items="${categoryList}">
+                    <option value="${cat.categoryId}">${cat.categoryName}</option>
+                </c:forEach>
+            </select>
+            <!-- 카테고리 등록 버튼 -->
+            <button type="button" onclick="window.location.href='/category/register';">새로운 카테고리 등록</button>
+        </div>
+        
+        <br><br>
 
 		<!-- 상품명 필드 -->
 		<label for="name">상품명:</label> 

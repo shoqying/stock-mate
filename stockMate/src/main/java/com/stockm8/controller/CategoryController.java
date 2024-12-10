@@ -21,6 +21,8 @@ public class CategoryController {
     @Inject
     private CategoryService cService;
 
+    // 카테고리 등록 페이지 이동시 사용자 세션을 확인하여 사용자에게 저장된
+    // 비즈니스Id와 함께 저장할 수 있게 해주세요 
     // 카테고리 등록 페이지 호출 (GET)
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerCategoryGET() {
