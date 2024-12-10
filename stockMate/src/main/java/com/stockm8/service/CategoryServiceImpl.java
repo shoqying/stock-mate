@@ -43,7 +43,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDAO.selectAllCategories(); 
     }
 
-
     @Override
     public void updateCategory(CategoryVO category) throws Exception {
         // 카테고리 수정
@@ -64,6 +63,22 @@ public class CategoryServiceImpl implements CategoryService {
         // 상위 카테고리 정보를 별도로 처리 (VO에 저장하지 않음)
         return category;  // 단순히 카테고리 정보만 반환
     }
+
+    // 특정 사업자(businessId) 소속의 카테고리 목록을 조회(삭제하지 마세요)
+    @Override
+	public List<CategoryVO> getCategoriesByBusinessId(int businessId) throws Exception {
+    	System.out.println(" getCategoriesByBusinessId() 호출 ");
+
+    	return categoryDAO.selectCategoriesByBusinessId(businessId);
+	}
+
+    // 카테고리ID로 카테고리명 조회(삭제하지 마세요)
+    @Override
+	public void getCategoryNameById(int categoryId) throws Exception {
+    	System.out.println(" getCategoryNameById() 호출 ");
+
+    	categoryDAO.selectCategoryNameById(categoryId);
+	}
 
     @Override
     public void deleteCategory(int categoryId) throws Exception {
