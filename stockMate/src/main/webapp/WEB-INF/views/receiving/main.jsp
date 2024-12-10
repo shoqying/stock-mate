@@ -115,11 +115,6 @@
 
 <a href="/receiving/history">입고 내역</a>
 
-<%-- ${ReceivingList } --%>
-<%-- ${YesterdayReceivingList } --%>
-<%-- ${TDBYReceivingList } --%>
-
-
 <!-- 오늘 입고 리스트 -->
 <table border="1">
 	<tr>
@@ -133,7 +128,6 @@
 		<th>입고 수량</th>
 		<th>수량 단위</th>
 		<th>작업 메모</th>
-		<th>공급사 회사 이름</th>
 	</tr>
 	<c:forEach var="vo" items="${ReceivingList }">
 	<tr>
@@ -147,7 +141,6 @@
 		<td>${vo.changeQuantity }</td>
 		<td>${vo.transactionUnit }</td>
 		<td>${vo.memo }</td>
-		<td>${vo.companyName }</td>
 	</tr>
 	</c:forEach>
 </table>
@@ -166,7 +159,6 @@
 		<th>입고 수량</th>
 		<th>수량 단위</th>
 		<th>작업 메모</th>
-		<th>공급사 회사 이름</th>
 	</tr>
 	<c:forEach var="vo" items="${YesterdayReceivingList }">
 	<tr>
@@ -180,7 +172,6 @@
 		<td>${vo.changeQuantity }</td>
 		<td>${vo.transactionUnit }</td>
 		<td>${vo.memo }</td>
-		<td>${vo.companyName }</td>
 	</tr>
 	</c:forEach>
 </table>
@@ -200,7 +191,6 @@
 		<th>입고 수량</th>
 		<th>수량 단위</th>
 		<th>작업 메모</th>
-		<th>공급사 회사 이름</th>
 	</tr>
 	<c:forEach var="vo" items="${TDBYReceivingList }">
 	<tr>
@@ -214,7 +204,6 @@
 		<td>${vo.changeQuantity }</td>
 		<td>${vo.transactionUnit }</td>
 		<td>${vo.memo }</td>
-		<td>${vo.companyName }</td>
 	</tr>
 	</c:forEach>
 </table>

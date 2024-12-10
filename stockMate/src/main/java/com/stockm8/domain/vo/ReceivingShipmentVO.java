@@ -23,7 +23,5 @@ public class ReceivingShipmentVO {
 //  조인된 VO
     private String name;
     private String description;
-    private String companyName;
-    private String businessNumber;
     private int price;
 }

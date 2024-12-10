@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
 import com.stockm8.persistence.ReceivingDAO;
 
@@ -39,15 +40,28 @@ public class ReceivingServiceImpl implements ReceivingService {
 	}
 
 	@Override
-	public List<ReceivingShipmentVO> getReceivingHistoryList() throws Exception {
+	public List<ReceivingShipmentVO> getReceivingHistoryList(Criteria cri) throws Exception {
 		logger.info("getReceivingHistoryList() 호출");
-		return rdao.selectReceivingHistoryList();
+		return rdao.selectReceivingHistoryList(cri);
 	}
 	
 	@Override
-	public List<ReceivingShipmentVO> getHistoryByDateRange(String startDate, String endDate, String keyword) throws Exception{
+	public List<ReceivingShipmentVO> getHistoryByDateRange(String startDate, String endDate, String keyword, Criteria cri) throws Exception{
 		logger.info("getHistoryByDateRange() 호출");
-	    return rdao.selectHistoryByDateRange(startDate, endDate, keyword);
+	    return rdao.selectHistoryByDateRange(startDate, endDate, keyword, cri);
+	}
+	
+	@Override
+	public int getTotalCountBySearch(String startDate, String endDate, String keyword,
+			Criteria cri) throws Exception {
+		logger.info("getTotalCountBySearch() 호출");
+		return rdao.selectTotalCountBySearch(startDate, endDate, keyword, cri);
+	}
+
+	@Override
+	public int getTotalCount() throws Exception {
+		logger.info("getTotalCount() 호출");
+		return rdao.selectTotalCount();
 	}
 	
 	
