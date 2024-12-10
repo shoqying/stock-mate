@@ -22,8 +22,6 @@
   	<!-- 조인된 데이터 매핑 -->
     <result property="name" column="name"/>
     <result property="description" column="description"/>
-    <result property="companyName" column="company_name"/>
-    <result property="businessNumber" column="business_number"/>
     <result property="price" column="price"/>
   </resultMap>
   
@@ -41,13 +39,11 @@
 	p.description, 
 	r.change_quantity, 
 	r.transaction_unit,
-	r.memo,
-	b.company_name
+	r.memo
 	from test_receiving_shipment r
 	join test_products p on r.product_id = p.product_id
 	join test_warehouses w on w.warehouse_id = r.warehouse_id
-	join test_businesses b on w.business_id = b.business_id
-	where Date(r.created_at) = CURRENT_DATE and r.status = 'pending'
+	where Date(r.created_at) = CURRENT_DATE and r.status = 'pending' and r.transaction_type = 'in'
 	order by r.receiving_shipment_no desc
 	limit 0, 20
 </select>
@@ -64,12 +60,10 @@
 	p.description, 
 	r.change_quantity, 
 	r.transaction_unit,
-	r.memo,
-	b.company_name
+	r.memo
 	from test_receiving_shipment r
 	join test_products p on r.product_id = p.product_id
 	join test_warehouses w on w.warehouse_id = r.warehouse_id
-	join test_businesses b on w.business_id = b.business_id
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -1 DAY) 
 	order by r.receiving_shipment_no desc
 	limit 0, 20
@@ -87,12 +81,10 @@
 	p.description, 
 	r.change_quantity, 
 	r.transaction_unit,
-	r.memo,
-	b.company_name
+	r.memo
 	from test_receiving_shipment r
 	join test_products p on r.product_id = p.product_id
 	join test_warehouses w on w.warehouse_id = r.warehouse_id
-	join test_businesses b on w.business_id = b.business_id
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -2 DAY) 
 	order by r.receiving_shipment_no desc
 	limit 0, 20
@@ -111,15 +103,13 @@
 	r.change_quantity, 
 	r.transaction_unit,
 	p.price,
-	r.memo,
-	b.company_name,
-	b.business_number
+	r.memo
 	from test_receiving_shipment r
 	join test_products p on r.product_id = p.product_id
 	join test_warehouses w on w.warehouse_id = r.warehouse_id
-	join test_businesses b on w.business_id = b.business_id
+	where transaction_type = 'in'
 	order by r.receiving_shipment_no desc
-	limit 0, 20
+	limit #{startPage},#{pageSize};
 </select>
 
 <!-- 입고 내역 검색 -->
@@ -135,18 +125,51 @@
     r.change_quantity, 
     r.transaction_unit,
     p.price,
-    r.memo,
-    b.company_name,
-    b.business_number
+    r.memo
     FROM test_receiving_shipment r
     JOIN test_products p ON r.product_id = p.product_id
     JOIN test_warehouses w ON w.warehouse_id = r.warehouse_id
-    JOIN test_businesses b ON w.business_id = b.business_id
-    where DATE(r.created_at) &gt;= #{startDate}
-          AND DATE(r.created_at) &lt;= #{endDate}
-          AND (p.name LIKE CONCAT('%', #{keyword}, '%') 
-	      OR b.company_name LIKE CONCAT('%', #{keyword}, '%') )
+    <where>
+        <if test="startDate != ''">
+            r.created_at &gt;= #{startDate}
+        </if>
+        <if test="endDate != ''">
+            AND r.created_at &lt;= #{endDate}
+        </if>
+        <if test="keyword != ''">
+            AND (p.name LIKE CONCAT('%', #{keyword}, '%') )
+        </if>
+        	AND transaction_type = 'in'
+    </where>
     ORDER BY r.receiving_shipment_no desc
+    limit #{cri.startPage},#{cri.pageSize};
+</select>
+
+<!-- 키워드 검색시 모든 개수 카운트 -->
+<select id="getTotalCountBySearch" parameterType="map" resultType="int">
+    SELECT COUNT(*) 
+    FROM test_receiving_shipment r
+    JOIN test_products p ON r.product_id = p.product_id
+    <where>
+        <if test="startDate != ''">
+            r.created_at &gt;= #{startDate}
+        </if>
+        <if test="endDate != ''">
+            AND r.created_at &lt;= #{endDate}
+        </if>
+        <if test="keyword != ''">
+            AND p.name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        AND r.transaction_type = 'in'
+    </where>
+    ORDER BY r.receiving_shipment_no desc
+</select>
+
+<!-- 입출고 모든 개수 카운트 -->
+<select id="getTotalCount" resultType="int">
+	select count(*)
+	from test_receiving_shipment
+	where transaction_type = 'in'
 </select>
   	
   </mapper>
