@@ -1,11 +1,22 @@
 package com.stockm8.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.stockm8.domain.vo.ProductVO;
+import com.stockm8.persistence.CategoryDAO;
 import com.stockm8.persistence.ProductDAO;
 
 /**
@@ -19,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductDAO productDAO;
+	
+	@Autowired
+	private CategoryDAO categoryDAO;
 
 	@Override
 	public void registerProduct(ProductVO product) throws Exception {
@@ -31,10 +45,72 @@ public class ProductServiceImpl implements ProductService {
 	    productDAO.insertProduct(product);
 	    logger.info("상품 등록 완료: {}", product);
 	}
+	
+    @Override
+    public void generateQRCode(int productId) throws Exception {
+    	// 상품 정보 조회
+        ProductVO product = productDAO.getProductById(productId);
+        
+        if (product != null) {
+            String qrContent = "http://localhost:8088/product/detail?productId=" + productId;
+            
+            // 카테고리명을 ID를 참조하여 가져오기
+            String categoryName = categoryDAO.selectCategoryNameById(product.getCategoryId());
+            
+            // 상품명, 카테고리명에서 파일 이름에 사용할 수 없는 문자를 제거
+            String safeProductName = product.getName().replaceAll("[\\\\/:*?\"<>|]", "_");
+            String safeCategoryName = categoryName.replaceAll("[\\\\/:*?\"<>|]", "_");
+
+            // QR 코드 저장 경로 생성
+            int businessId = product.getBusinessId(); // 상품의 비즈니스 ID
+            int categoryId = product.getCategoryId(); // 상품의 카테고리 ID
+            String basePath = "/Users/Insung/Documents/qrcodes"; // QR 코드 기본 저장 경로
+           
+            // 디렉토리 경로 생성
+            String directoryPath = basePath + File.separator 
+                    + businessId + File.separator 
+                    + categoryId + "_" + safeCategoryName;   
+            
+            // QR 코드 파일 이름: productId_상품명.png
+            String qrCodeFileName = productId + "_" + safeProductName + ".png";
+            String qrCodePath = directoryPath + File.separator + qrCodeFileName;
+            String relativeQrCodePath = "/qrcodes/" 
+                                        + businessId + "/"
+                                        + categoryId + "_" + safeCategoryName + "/"
+                                        + qrCodeFileName;
+            
+            // 디렉토리 생성
+            File directory = new File(directoryPath);
+            if (!directory.exists() && !directory.mkdirs()) {
+                throw new IOException("QR 코드 디렉토리를 생성할 수 없습니다: " + directoryPath);
+            }
+
+            try {
+                // QR 코드 생성
+                QRCodeWriter qrCodeWriter = new QRCodeWriter();
+                BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, 200, 200);
+                Path path = Paths.get(qrCodePath);
+                MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+                logger.info("QR 코드가 생성된 경로: {}", path.toString());
+
+                // DB에 경로 저장
+                product.setQrCodePath(qrCodePath);
+                productDAO.updateQRCodePath(product);
+
+                logger.info("QR 코드 생성 성공. 경로: {}", qrCodePath);
+            } catch (WriterException | IOException e) {
+                logger.error("QR 코드 생성 실패: {}", e.getMessage());
+                throw new RuntimeException("QR 코드 생성 중 오류 발생.", e);
+            }
+        } else {
+            throw new IllegalArgumentException("상품 정보가 없습니다. 상품 ID: " + productId);
+        }
+    }
 
 	@Override
 	public ProductVO getProductByID(int productId) throws Exception {
 	    logger.info("getProductByID(int productId) 호출");
 		return productDAO.getProductById(productId);
 	}
+	
 }

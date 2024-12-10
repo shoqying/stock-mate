@@ -45,5 +45,13 @@
             <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.FlashMapMethodArgumentResolver" />
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
-    
+   
 </beans:beans>
+	<context:component-scan base-package="com.stockm8.controller, com.stockm8.interceptor, com.stockm8.service, com.stockm8.exception" />
+	<mvc:annotation-driven>
+    <mvc:argument-resolvers>
+	    <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.FlashMapMethodArgumentResolver" />
+    </mvc:argument-resolvers>
+	</mvc:annotation-driven>
+</beans:beans>
+
