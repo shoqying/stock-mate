@@ -32,7 +32,7 @@
         SELECT 
             stock_id, product_id, warehouse_id, business_id, total_quantity, 
             reserved_quantity, created_at, updated_at, description
-        FROM stocks
+        FROM test_stocks
         WHERE business_id = #{businessId}
     </select>
     
@@ -40,7 +40,7 @@
     <select id="selectProductById" resultType="com.stockm8.domain.vo.ProductVO">
         SELECT 
             product_id, product_name, price, description
-        FROM products
+        FROM test_products
         WHERE product_id = #{productId}
     </select>
     
@@ -49,7 +49,7 @@
         SELECT 
             stock_id, product_id, warehouse_id, business_id, total_quantity, 
             reserved_quantity, created_at, updated_at, description
-        FROM stocks
+        FROM test_stocks
         <where>
             <if test="warehouseName != null and warehouseName != ''">
                 AND warehouse_name = #{warehouseName}
@@ -73,14 +73,14 @@
     <select id="selectAllWarehouses" resultMap="warehouseResultMap">
         SELECT 
             warehouse_name, address
-        FROM warehouses
+        FROM test_warehouses
     </select>
     
     <!-- 카테고리 목록 조회 -->
     <select id="selectAllCategories" resultMap="categoryResultMap">
         SELECT 
             category_name, description
-        FROM categories
+        FROM test_categories
     </select>
 
 </mapper> 
