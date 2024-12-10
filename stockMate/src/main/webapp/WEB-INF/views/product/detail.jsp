@@ -7,22 +7,81 @@
 <head>
 <meta charset="UTF-8">
 <title>상품 상세정보</title>
-<script type="text/javascript">
-		// 상품 등록 완료시 상세 페이지로 이동
-		var result = "${result}"
-		
-		if(result == "complete") {
-			alert("상품 등록 완료")
-		}
-		
-	</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+.error-banner {
+	width: 100%;
+	background-color: #FCE4E4;
+	color: #D32F2F;
+	text-align: center;
+	padding: 10px 0;
+	font-size: 14px;
+	font-weight: 500;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	border-bottom: 1px solid #F5C6C6;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.success-banner {
+	width: 100%;
+	background-color: #E6F4EA;
+	color: #2E7D32;
+	text-align: center;
+	padding: 10px 0;
+	font-size: 14px;
+	font-weight: 500;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	border-bottom: 1px solid #C8E6C9;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 공통 버튼 스타일 */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* 버튼 배경색: 녹색 */
+    color: #FFFFFF; /* 텍스트 색상: 흰색 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    font-size: 14px; /* 폰트 크기 */
+    font-weight: bold; /* 굵은 텍스트 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    border: none; /* 버튼 테두리 제거 */
+    cursor: pointer; /* 마우스 커서 포인터로 변경 */
+    transition: background-color 0.3s ease; /* 호버 애니메이션 */
+}
+
+.btn:hover {
+    background-color: #388E3C; /* 호버 시 버튼 배경색 */
+    color: #FFFFFF; /* 호버 시 텍스트 색상 */
+}
+
+	
+</style>
 </head>
 <body>
 	<h1>상품 상세정보</h1>
-
-
-	<!-- product 객체가 null인지 검사 후 처리 가능 -->
+	
+	<!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
+	<c:if test="${not empty errorMessage}">
+		<div class="error-banner">${errorMessage}</div>
+	</c:if>
+	
+	<!-- 성공 메시지가 있을 경우 상단 배너로 표시 -->
+	<c:if test="${not empty successMessage}">
+		<div class="success-banner">${successMessage}</div>
+	</c:if>
+	
+	<!-- 상품 상세 페이지 -->
 	<c:if test="${product != null}">
+	    <p>상품명: ${product.name}</p>
+	    <p>바코드: ${product.barcode}</p>
 		<p>상품명: ${product.name}</p>
 		<p>바코드: ${product.barcode}</p>
 		<p>카테고리 ID: ${product.categoryId}</p>
@@ -31,20 +90,35 @@
 		<p>세트 크기: ${product.setSize}</p>
 		<p>설명: ${product.description}</p>
 		<p>QR코드 경로: ${product.qrCodePath}</p>
-		<p>바코드 이미지 경로: ${product.barcodePath}</p>
+		
+		<!-- QR 코드 생성 버튼 -->
+		<c:if test="${product.qrCodePath == null}">
+		    <form action="/product/generateQR" method="get" style="display:inline;">
+		        <input type="hidden" name="productId" value="${product.productId}">
+		        <button type="submit" class="btn">QR 코드 생성</button>
+		    </form>
+		</c:if>
+		
+		<!-- QR 코드 다운로드 버튼 -->
+		<c:if test="${product.qrCodePath != null}">
+		    <form action="/product/downloadQr" method="get" style="display:inline;">
+		        <input type="hidden" name="productId" value="${product.productId}">
+		        <button type="submit" class="btn">QR 코드 다운로드</button>
+		    </form>
+		</c:if>
+		
 		<p>등록일: ${product.createdAt}</p>
-		<p>수정일: ${product.updatedAt}</p>
+		<!-- 수정일이 등록일과 다를 경우에만 표시 -->
+	    <c:if test="${product.updatedAt != product.createdAt}">
+	        <p>수정일: ${product.updatedAt}</p>
+	    </c:if>
 
-		<!-- QR코드 다운로드 버튼(기능 구현 시 링크 또는 버튼 추가 가능) -->
-		<a href="/product/downloadQr?id=${product.productId}">QR코드 다운로드</a>
+		
 	</c:if>
 
 	<c:if test="${product == null}">
 		<p>해당 상품 정보가 없습니다.</p>
 	</c:if>
-
-</body>
-</html>
-
+	
 </body>
 </html>

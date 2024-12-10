@@ -71,4 +71,9 @@
 		<session-timeout>30</session-timeout> 
 	</session-config>
 	<!-- 세션 시간 설정 30분 -->
+	
+	<servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/css/*</url-pattern>
+	</servlet-mapping>
 </web-app>

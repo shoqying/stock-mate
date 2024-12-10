@@ -10,7 +10,11 @@ public interface ProductService {
 	// 상품 등록 
 	public void registerProduct(ProductVO product) throws Exception;
 	
+	// QR 등록 
+    public void generateQRCode(int productId) throws Exception;
+
 	// 상품 조회 
 	public ProductVO getProductByID(int productId) throws Exception;
+	
 }
 

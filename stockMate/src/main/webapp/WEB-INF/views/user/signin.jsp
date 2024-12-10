@@ -128,7 +128,7 @@ body {
 		</c:if>
 
 		<div class="login-box">
-			<form action="login" method="post" autocomplete="on">
+			<form action="signin" method="post" autocomplete="on">
 				<!-- 이메일 필드 -->
 				<input type="email" name="email" placeholder="이메일"
 					required="required" autofocus="autofocus" aria-label="이메일 입력 필드"
@@ -142,7 +142,7 @@ body {
 				<button type="submit" aria-label="로그인 버튼">로그인</button>
 			</form>
 			<div class="links">
-				<a href="/user/join">회원가입</a> <a href="/user/findPassword">비밀번호
+				<a href="/user/signup">회원가입</a> <a href="/user/findPassword">비밀번호
 					찾기</a>
 			</div>
 			<div class="footer">회사 정보 - 사업자 번호, 연락처 등 추가 정보</div>
