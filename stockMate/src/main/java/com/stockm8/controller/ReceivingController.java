@@ -56,36 +56,31 @@ public class ReceivingController {
 
 	    List<ReceivingShipmentVO> ReceivingList;
 	    
+	    int totalCount = 0;
+	    
 	    // 날짜와 키워드가 모두 있는 경우
 	    if (startDate != null && endDate != null && keyword != null) {
 	        ReceivingList = rService.getHistoryByDateRange(startDate, endDate, keyword, cri);
-	        int totalCount = rService.getTotalCountBySearch(startDate, endDate, keyword, cri);
-	        PageVO pageVO = new PageVO();
-	        pageVO.setCri(cri);
-	        pageVO.setTotalCount(totalCount); // 총 개수를 검색 조건에 맞게 계산
-	        model.addAttribute("pageVO", pageVO);
+	        totalCount = rService.getTotalCountBySearch(startDate, endDate, keyword);
+	        
 	    } else if (keyword != null) {
 	        ReceivingList = rService.getHistoryByDateRange(null, null, keyword, cri);
-	        int totalCount = rService.getTotalCountBySearch(null, null, keyword, cri);
-	        PageVO pageVO = new PageVO();
-	        pageVO.setCri(cri);
-	        pageVO.setTotalCount(totalCount);
-	        model.addAttribute("pageVO", pageVO);
+	        totalCount = rService.getTotalCountBySearch(null, null, keyword);
+	       
 	    } else if (startDate != null && endDate != null) {
 	        ReceivingList = rService.getHistoryByDateRange(startDate, endDate, null, cri);
-	        int totalCount = rService.getTotalCountBySearch(startDate, endDate, null, cri);
-	        PageVO pageVO = new PageVO();
-	        pageVO.setCri(cri);
-	        pageVO.setTotalCount(totalCount);
-	        model.addAttribute("pageVO", pageVO);
+	        totalCount = rService.getTotalCountBySearch(startDate, endDate, null);
+	        
 	    } else {
 	        ReceivingList = rService.getReceivingHistoryList(cri);
-	        int totalCount = rService.getTotalCount(); // 전체 개수
-	        PageVO pageVO = new PageVO();
-	        pageVO.setCri(cri);
-	        pageVO.setTotalCount(totalCount);
-	        model.addAttribute("pageVO", pageVO);
+	        totalCount = rService.getTotalCount(); // 전체 개수
+	        
 	    }
+	    
+	    PageVO pageVO = new PageVO();
+        pageVO.setCri(cri);
+        pageVO.setTotalCount(totalCount);
+        model.addAttribute("pageVO", pageVO);
 		
 	    logger.info(ReceivingList.size() + "개");
 	    model.addAttribute("ReceivingList", ReceivingList);

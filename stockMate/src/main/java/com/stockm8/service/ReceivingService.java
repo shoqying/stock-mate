@@ -24,7 +24,7 @@ public interface ReceivingService {
 	public List<ReceivingShipmentVO> getHistoryByDateRange(String startDate, String endDate, String keyword, Criteria cri) throws Exception;
 	
 	// 입고 내역 검색
-	public int getTotalCountBySearch(String startDate, String endDate, String keyword, Criteria cri) throws Exception;
+	public int getTotalCountBySearch(String startDate, String endDate, String keyword) throws Exception;
 		
 	// 글 모든 개수
 	public int getTotalCount() throws Exception;
