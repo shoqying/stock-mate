@@ -246,7 +246,7 @@ tr:hover {
 		<label for="startDate">시작 날짜:</label> <input type="date"
 			id="startDate" name="startDate" value="${param.startDate}"> <label
 			for="endDate">종료 날짜:</label> <input type="date" id="endDate"
-			name="endDate" value="${param.endDate}"> <label for="keyword">키워드:</label>
+			name="endDate" value="${param.endDate}"> <label for="keyword">상품명:</label>
 		<input type="text" id="keyword" name="keyword"
 			value="${param.keyword}">
 

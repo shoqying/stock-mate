@@ -114,6 +114,7 @@
 <h1>입고 메인</h1>
 
 <a href="/receiving/history">입고 내역</a>
+<a href="/receiving/scanner">입고 스캔</a>
 
 <!-- 오늘 입고 리스트 -->
 <table border="1">

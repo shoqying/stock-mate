@@ -43,15 +43,14 @@ public class ReceivingController {
 		model.addAttribute("ReceivingList", ReceivingList);
 		model.addAttribute("YesterdayReceivingList", YesterdayReceivingList);
 		model.addAttribute("TDBYReceivingList", TDBYReceivingList);
-		
 	}
 	
 	@RequestMapping(value = "/history", method = RequestMethod.GET)
 	public void historyGET(@RequestParam(value = "startDate", required = false) String startDate,
-	                         @RequestParam(value = "endDate", required = false) String endDate,
-	                         @RequestParam(value = "keyword", required = false) String keyword,
-	                         Criteria cri,
-	                         Model model) throws Exception {
+	                       @RequestParam(value = "endDate", required = false) String endDate,
+	                       @RequestParam(value = "keyword", required = false) String keyword,
+	                       Criteria cri,
+	                       Model model) throws Exception {
 	    logger.info("historyGET() 호출");
 
 	    List<ReceivingShipmentVO> ReceivingList;
@@ -72,10 +71,10 @@ public class ReceivingController {
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public void searchGET(@RequestParam(value = "startDate", required = false) String startDate,
-	                         @RequestParam(value = "endDate", required = false) String endDate,
-	                         @RequestParam(value = "keyword", required = false) String keyword,
-	                         Criteria cri,
-	                         Model model) throws Exception {
+	                      @RequestParam(value = "endDate", required = false) String endDate,
+	                      @RequestParam(value = "keyword", required = false) String keyword,
+	                      Criteria cri,
+	                      Model model) throws Exception {
 	    logger.info("searchGET() 호출");
 
 	    List<ReceivingShipmentVO> ReceivingList;
@@ -108,6 +107,31 @@ public class ReceivingController {
 		
 	    logger.info(ReceivingList.size() + "개");
 	    model.addAttribute("ReceivingList", ReceivingList);
+	}
+	
+	// http://localhost:8088/receiving/scanner
+	@RequestMapping(value = "/scanner", method = RequestMethod.GET)
+	public String scannerGET(@RequestParam(value = "qrData", required = false) String qrData, Model model) throws Exception {
+		logger.info("scannerGET() 호출");
+        // QR 코드 데이터 처리 로직 (예: 데이터 저장, 검증 등)
+        logger.info("받은 QR 코드 데이터: " + qrData);
+
+        // 처리 결과를 JSP로 전달
+        model.addAttribute("qrData", qrData);	
+        
+        return "/receiving/scanner";
+	}
+	
+	@RequestMapping(value = "/scanner", method = RequestMethod.POST)
+	public String scannePOST(@RequestParam(value = "qrData", required = false) String qrData, Model model) throws Exception {
+		logger.info("scannerGET() 호출");
+        // QR 코드 데이터 처리 로직 (예: 데이터 저장, 검증 등)
+        logger.info("받은 QR 코드 데이터: " + qrData);
+
+        // 처리 결과를 JSP로 전달
+        model.addAttribute("qrData", qrData);	
+        
+        return "/receiving/scanner";
 	}
 	
 	
