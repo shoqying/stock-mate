@@ -70,7 +70,6 @@ public class CategoryDAOImpl implements CategoryDAO {
         return count != null && count > 0;
     }
 
-    
     // 카테고리 수정
     @Override
     public void updateCategory(CategoryVO category) throws Exception {
@@ -89,7 +88,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         sqlSession.update(NAMESPACE + "deleteCategory", categoryId);
     }
     
- // 부모 카테고리만 조회
+    // 부모 카테고리만 조회
     @Override
     public List<CategoryVO> selectParentCategories() throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectParentCategories");
