@@ -52,7 +52,7 @@
             is_deleted
         FROM test_categories
         WHERE is_deleted = 0
-        ORDER BY level ASC, category_name ASC
+        ORDER BY level ASC, category_id ASC
     </select>
     
     <!-- 카테고리 이름 중복 체크 -->
