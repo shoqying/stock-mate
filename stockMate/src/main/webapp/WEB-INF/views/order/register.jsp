@@ -11,7 +11,7 @@
 <body>
         <div class="container">
         <h1 style="margin-bottom: 20px;">주문 발주</h1>
-        <form id="orderForm" action="/Order/OrderRegister" method="post">
+        <form id="orderForm" action="/order/register" method="post">
             <div class="card">
                 <div class="card-header">주문 정보</div>
                 <div class="card-body">
@@ -165,7 +165,7 @@
 
         function generateNewOrderNumber() {
             $.ajax({
-                url: '/Order/generateOrderNumber',
+                url: '/order/generateOrderNumber',
                 type: 'GET',
                 success: function(newOrderNumber) {
                     $('#orderNumber').val(newOrderNumber);
@@ -175,7 +175,7 @@
 
         function loadAllProducts() {
         	   $.ajax({
-        	       url: '/Order/findAllProducts',
+        	       url: '/order/findAllProducts',
         	       type: 'GET',
         	       dataType: 'json',
         	       success: function(data) {
@@ -275,13 +275,13 @@
                 };
 
                 $.ajax({
-                    url: '/Order/OrderRegister',
+                    url: '/order/register',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
                     success: function(response) {
                         alert('주문이 등록되었습니다.');
-                        window.location.href = '/Order/OrderList';
+                        window.location.href = '/order/list';
                     },
                     error: function(xhr, status, error) {
                         alert('주문 등록에 실패했습니다.');
