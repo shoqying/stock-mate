@@ -3,7 +3,11 @@ package com.stockm8.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,21 +16,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stockm8.domain.vo.CategoryVO;
+import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.CategoryService;
+import com.stockm8.service.UserService;
 
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Inject
     private CategoryService cService;
     
+    @Inject
+    private UserService uService;
+    
+    // http://localhost:8088/category/register
     // 카테고리 등록 페이지 호출 (GET)
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String registerCategoryGET(Model model) throws Exception {
+    public String registerCategoryGET(Model model, HttpServletRequest request) throws Exception {
+    	
+    	// 세션에서 userId 가져오기
+	    HttpSession session = request.getSession(false);
+	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
+		logger.info("session: {}", userId);
+	    
+	    // userId로 사용자 정보 조회
+	    UserVO user = uService.getUserById(userId);
+	    int businessId = user.getBusinessId();
+	    logger.info("businessId: {}", businessId);
+	    
         // 필요한 데이터 (예: 상위 카테고리 목록 등) 전달
-        List<CategoryVO> parentCategories = cService.getAllCategories(); 
-        model.addAttribute("parentCategories", parentCategories);
+        List<CategoryVO> categoryList = cService.getCategoriesByBusinessId(businessId);
+        model.addAttribute("categoryList", categoryList);
+        logger.info("Category List: {}", categoryList);
 
         // 카테고리 등록 폼을 보여주는 페이지로 이동
         return "category/register"; 
@@ -34,7 +58,15 @@ public class CategoryController {
 
     // 카테고리 등록 처리 (POST)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerCategoryPOST(CategoryVO vo) throws Exception {
+    public String registerCategoryPOST(CategoryVO vo, HttpServletRequest request) throws Exception {
+    	logger.info("CategoryVO: {}", vo);
+    	// 세션에서 userId 가져오기 
+    	HttpSession session = request.getSession(false);
+    	Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
+    			
+    	// userId로 사용자 정보 조회
+    	UserVO user = uService.getUserById(userId);
+    	
         // 서비스 호출: 부모 카테고리 체크와 카테고리 등록을 서비스에서 처리
         cService.registerCategoryWithParentCheck(vo);
 

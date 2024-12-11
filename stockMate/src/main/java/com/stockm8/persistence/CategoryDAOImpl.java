@@ -21,8 +21,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     // 카테고리 등록
     @Override
-    public void insertCategory(CategoryVO category) throws Exception {
-        sqlSession.insert(NAMESPACE + "insertCategory", category);
+    public void insertCategory(CategoryVO vo) throws Exception {
+        sqlSession.insert(NAMESPACE + "insertCategory", vo);
     }
     
     // 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회)

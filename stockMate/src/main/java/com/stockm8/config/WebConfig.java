@@ -47,7 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
     	// Intercepter 적용
         registry.addInterceptor(authorizationInterceptor)
-                .addPathPatterns("/product/**") // 인터셉터를 적용할 경로
+                .addPathPatterns("/product/**", "/category/**") // 인터셉터를 적용할 경로
                 .excludePathPatterns( // 인터셉터를 제외할 경로
                         "/",               // HomeController 경로
                         "/favicon.ico",    // 브라우저 기본 요청

@@ -34,7 +34,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	// http://localhost:8088/user/login (o)
+	// http://localhost:8088/user/signin (o)
 	// http://localhost:8088/user/main (o)
 	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/dash (o)

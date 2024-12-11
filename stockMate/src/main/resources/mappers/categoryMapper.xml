@@ -32,7 +32,7 @@
             #{parentId},
             #{businessId},
             #{categoryName},
-            #{level},
+            #{level}, <!-- 이 부분은 service에서 설정된 level을 그대로 사용 -->
             NOW(),
             NOW(),
             0
@@ -122,20 +122,20 @@
     </select>
     
     <!-- 부모 카테고리 조회 -->
-<select id="selectParentCategories" resultMap="categoryResultMap">
-    SELECT
-        category_id,
-        parent_id,
-        business_id,
-        category_name,
-        level,
-        created_at,
-        updated_at,
-        is_deleted
-    FROM test_categories
-    WHERE level = 1  <!-- 부모 카테고리는 level이 1 -->
-      AND is_deleted = 0
-    ORDER BY category_name ASC
-</select>
+    <select id="selectParentCategories" resultMap="categoryResultMap">
+        SELECT
+            category_id,
+            parent_id,
+            business_id,
+            category_name,
+            level,
+            created_at,
+            updated_at,
+            is_deleted
+        FROM test_categories
+        WHERE level = 1  <!-- 부모 카테고리는 level이 1 -->
+          AND is_deleted = 0
+        ORDER BY category_name ASC
+    </select>
 
 </mapper>
