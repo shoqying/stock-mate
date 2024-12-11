@@ -83,10 +83,10 @@
     <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="dashboard">&larr; 뒤로 가기</a>
+            <a href="/user/dashboard">&larr; 뒤로 가기</a>
         </div>
         <h1>홍길동님의 회원정보</h1>
-        <form action="editinfo2" method="post">
+        <form id="editInfoForm" action="editinfo2" method="post" onsubmit="return handleFormSubmit(event);">
             <div class="info">
                 <label for="email">이메일</label>
                 <input type="email" id="email" name="email" value="itwill@naver.com" required>
@@ -103,5 +103,30 @@
     <div class="footer">
         회사 정보 - 사업자 번호, 연락처 등 유의 내용
     </div>
+
+    <script>
+    function handleFormSubmit(event) {
+        event.preventDefault(); // 기본 제출 방지
+        const form = event.target;
+
+        // 폼 데이터 서버로 전송
+        fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+        })
+        .then(response => {
+            if (response.ok) {
+                // 성공 시 대시보드로 이동
+                window.location.href = "/user/dashboard";
+            } else {
+                alert("저장 실패: 다시 시도해주세요.");
+            }
+        })
+        .catch(error => {
+            console.error("저장 중 오류 발생:", error);
+            alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
+        });
+    }
+    </script>
 </body>
 </html>

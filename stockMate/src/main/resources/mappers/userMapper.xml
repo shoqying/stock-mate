@@ -8,11 +8,20 @@
     <!-- UserResultMap 정의 -->
     <resultMap id="UserResultMap" type="com.stockm8.domain.vo.UserVO">
         <result property="userId" column="user_id" />
+        <result property="password" column="password" />
+        <result property="name" column="name" />
+        <result property="telNumber" column="tel_number" />
+        <result property="createdBy" column="created_by" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="status" column="status" />
         <result property="businessId" column="business_id" />
         <result property="email" column="email" />
-        <result property="name" column="name" />
         <result property="role" column="role" />
         <result property="isDeleted" column="is_deleted" />
+    
+
+
     </resultMap>
 
     <!-- 회원가입 -->

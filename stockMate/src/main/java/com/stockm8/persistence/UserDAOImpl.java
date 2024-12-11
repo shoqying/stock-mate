@@ -62,16 +62,16 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public int getIsDeleted(Long user) throws Exception{
+	public int getIsDeleted(Long userId) throws Exception{
 
 		logger.info("getIsDeleted(Long userId) 실행");
 
-		return sqlSession.selectOne(NAMESPACE + "getIsDeleted", user);
+		return sqlSession.selectOne(NAMESPACE + "getIsDeleted", userId);
 	}
 	
     @Override
-    public UserVO getUserById(Long user) throws Exception {
-        return sqlSession.selectOne(NAMESPACE + "getUserById", user);
+    public UserVO getUserById(Long userId) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + "getUserById", userId);
     }
 
 }
