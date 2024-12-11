@@ -58,6 +58,32 @@ public class ReceivingController {
 	    
 	    int totalCount = 0;
 	    
+        ReceivingList = rService.getReceivingHistoryList(cri);
+        totalCount = rService.getTotalCount(); // 전체 개수
+	        
+	    PageVO pageVO = new PageVO();
+        pageVO.setCri(cri);
+        pageVO.setTotalCount(totalCount);
+        model.addAttribute("pageVO", pageVO);
+		
+	    logger.info(ReceivingList.size() + "개");
+	    model.addAttribute("ReceivingList", ReceivingList);
+	    
+	    return "/receiving/history";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String searchGET(@RequestParam(value = "startDate", required = false) String startDate,
+	                         @RequestParam(value = "endDate", required = false) String endDate,
+	                         @RequestParam(value = "keyword", required = false) String keyword,
+	                         Criteria cri,
+	                         Model model) throws Exception {
+	    logger.info("searchGET() 호출");
+
+	    List<ReceivingShipmentVO> ReceivingList;
+	    
+	    int totalCount = 0;
+	    
 	    // 날짜와 키워드가 모두 있는 경우
 	    if (startDate != null && endDate != null && keyword != null) {
 	        ReceivingList = rService.getHistoryByDateRange(startDate, endDate, keyword, cri);
@@ -85,7 +111,7 @@ public class ReceivingController {
 	    logger.info(ReceivingList.size() + "개");
 	    model.addAttribute("ReceivingList", ReceivingList);
 	    
-	    return "/receiving/history";
+	    return "/receiving/search";
 	}
 	
 	
