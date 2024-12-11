@@ -27,5 +27,8 @@ public interface ReceivingDAO {
 	
 	// 리스트 모든 개수
 	public int selectTotalCount() throws Exception;
+	
+	// rs 테이블 insert
+	public void insertReceiving() throws Exception;
 		
 } // ReceivingDAO end

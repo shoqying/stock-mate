@@ -62,6 +62,13 @@ public class ReceivingServiceImpl implements ReceivingService {
 		logger.info("getTotalCount() 호출");
 		return rdao.selectTotalCount();
 	}
+
+	@Override
+	public void insertReceiving() throws Exception {
+		logger.info("insertReceiving() 호출");
+		rdao.insertReceiving();
+	}
+	
 	
 	
 

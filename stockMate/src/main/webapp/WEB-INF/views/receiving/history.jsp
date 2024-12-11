@@ -259,6 +259,7 @@ tr:hover {
 				// 날짜 input 초기화 (브라우저에서 기본값으로 설정됨)
 				document.getElementById('startDate').value = '';
 				document.getElementById('endDate').value = '';
+				document.getElementById('keyword').value = '';
 			}
 		</script>
 

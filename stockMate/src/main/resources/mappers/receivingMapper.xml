@@ -25,8 +25,35 @@
     <result property="price" column="price"/>
   </resultMap>
   
-  
 
+<!-- 테이블에 입고 데이터 입력 -->
+<insert id="insertReceiving">
+	INSERT INTO receiving_shipment (
+	transaction_type, 
+	status, 
+	product_id, 
+	change_quantity, 
+	transaction_unit,
+	order_item_id,
+	stock_id,
+	warehouse_id
+	)
+	SELECT 
+	'in', 
+	'pending',
+	p.product_id, 
+	o.change_quantity, 
+	o.transaction_unit,
+	o.order_item_id,
+	s.stock_id,
+	w.warehouse_id
+	FROM receiving_shipment r
+	JOIN products p ON r.product_id = p.product_id
+	JOIN warehouses w ON w.warehouse_id = r.warehouse_id
+	JOIN order_items o ON r.product_id = o.product_id
+	JOIN stocks s ON s.stock_id = r.stock_id;
+</insert>
+	
 <!-- 오늘 입고 예정 리스트 -->
 <select id="getReceivingList" resultMap="receivingshipmentMap">
 	select

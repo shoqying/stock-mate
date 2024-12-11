@@ -87,6 +87,14 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		
 		return sqlSession.selectOne(NAMESPACE + "getTotalCount");
 	}
+
+	@Override
+	public void insertReceiving() throws Exception {
+		logger.info("insertReceiving() 호출");
+		sqlSession.insert(NAMESPACE + "insertReceiving");
+	}
+	
+	
 	
 	
 	
