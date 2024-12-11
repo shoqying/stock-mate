@@ -47,7 +47,7 @@ public class ReceivingController {
 	}
 	
 	@RequestMapping(value = "/history", method = RequestMethod.GET)
-	public String historyGET(@RequestParam(value = "startDate", required = false) String startDate,
+	public void historyGET(@RequestParam(value = "startDate", required = false) String startDate,
 	                         @RequestParam(value = "endDate", required = false) String endDate,
 	                         @RequestParam(value = "keyword", required = false) String keyword,
 	                         Criteria cri,
@@ -68,12 +68,10 @@ public class ReceivingController {
 		
 	    logger.info(ReceivingList.size() + "개");
 	    model.addAttribute("ReceivingList", ReceivingList);
-	    
-	    return "/receiving/history";
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String searchGET(@RequestParam(value = "startDate", required = false) String startDate,
+	public void searchGET(@RequestParam(value = "startDate", required = false) String startDate,
 	                         @RequestParam(value = "endDate", required = false) String endDate,
 	                         @RequestParam(value = "keyword", required = false) String keyword,
 	                         Criteria cri,
@@ -110,8 +108,6 @@ public class ReceivingController {
 		
 	    logger.info(ReceivingList.size() + "개");
 	    model.addAttribute("ReceivingList", ReceivingList);
-	    
-	    return "/receiving/search";
 	}
 	
 	
