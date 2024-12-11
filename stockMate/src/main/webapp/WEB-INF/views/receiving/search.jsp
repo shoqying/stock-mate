@@ -239,6 +239,9 @@ tr:hover {
 
 	<h1>입고 내역</h1>
 	<a href="/receiving/main">입고 메인</a>
+	<form action="/receiving/insert3" method="POST">
+    	<input type="submit" value="새로고침">
+	</form>
 
 	<!-- 기간별 검색 및 키워드 검색 폼 -->
 	<form action="/receiving/search" method="get"

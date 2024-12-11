@@ -134,8 +134,38 @@ public class ReceivingController {
         return "/receiving/scanner";
 	}
 	
+	// 새로고침
+	@RequestMapping(value = "/insert1", method = RequestMethod.POST)
+	public String insert1POST() throws Exception {
+		logger.info("insertPOST() 호출");
+		
+		rService.insertReceiving();
+		
+		return "redirect:/receiving/main";
+	}
 	
-	   
+	// 새로고침
+	@RequestMapping(value = "/insert2", method = RequestMethod.POST)
+	public String insert2POST() throws Exception {
+		logger.info("insertPOST() 호출");
+		
+		rService.insertReceiving();
+		
+		return "redirect:/receiving/history";
+	}	
+	
+	// 새로고침
+	@RequestMapping(value = "/insert3", method = RequestMethod.POST)
+	public String insert3POST() throws Exception {
+		logger.info("insertPOST() 호출");
+		
+		rService.insertReceiving();
+		
+		return "redirect:/receiving/search";
+	}
+
+
+   
 
 	
 

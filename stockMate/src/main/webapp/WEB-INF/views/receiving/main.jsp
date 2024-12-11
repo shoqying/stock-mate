@@ -115,6 +115,9 @@
 
 <a href="/receiving/history">입고 내역</a>
 <a href="/receiving/scanner">입고 스캔</a>
+<form action="/receiving/insert1" method="POST">
+   <input type="submit" value="새로고침">
+</form>
 
 <!-- 오늘 입고 리스트 -->
 <table border="1">
