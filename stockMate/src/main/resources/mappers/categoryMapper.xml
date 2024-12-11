@@ -18,26 +18,26 @@
     </resultMap>
 
     <!-- 카테고리 등록 -->
-    <insert id="insertCategory" parameterType="com.stockm8.domain.vo.CategoryVO">
-        INSERT INTO test_categories (
-            parent_id,
-            business_id,
-            category_name,
-            level,
-            created_at,
-            updated_at,
-            is_deleted
-        )
-        VALUES (
-            #{parentId},
-            #{businessId},
-            #{categoryName},
-            #{level},
-            NOW(),
-            NOW(),
-            0
-        )
-    </insert>
+    <insert id="insertCategory" parameterType="com.stockm8.domain.vo.CategoryVO" useGeneratedKeys="true" keyProperty="categoryId">
+	    INSERT INTO test_categories (
+	        parent_id,
+	        business_id,
+	        category_name,
+	        level,
+	        created_at,
+	        updated_at,
+	        is_deleted
+	    )
+	    VALUES (
+	        #{parentId},
+	        #{businessId},
+	        #{categoryName},
+	        #{level},
+	        NOW(),
+	        NOW(),
+	        0
+	    )
+	</insert>
 
     <!-- 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회) -->
     <select id="selectAllCategories" resultMap="categoryResultMap">
@@ -54,6 +54,20 @@
         WHERE is_deleted = 0
         ORDER BY level ASC, category_name ASC
     </select>
+    
+    <!-- 카테고리 이름 중복 체크 -->
+    <select id="selectCategoryCountByName" resultType="int">
+        SELECT COUNT(*) 
+        FROM categories
+        WHERE category_name = #{categoryName}
+    </select>
+    
+	<!-- 하위 카테고리들의 부모 ID를 갱신하는 메서드 -->
+	<update id="updateSubCategoryParentId" parameterType="map">
+	    UPDATE test_categories
+	    SET parent_id = #{parentId}
+	    WHERE parent_id = #{categoryId}
+	</update>
 
     <!-- 특정 사업자 소속의 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회) -->
     <select id="selectCategoriesByBusinessId" parameterType="int" resultMap="categoryResultMap">
@@ -122,20 +136,21 @@
     </select>
     
     <!-- 부모 카테고리 조회 -->
-<select id="selectParentCategories" resultMap="categoryResultMap">
-    SELECT
-        category_id,
-        parent_id,
-        business_id,
-        category_name,
-        level,
-        created_at,
-        updated_at,
-        is_deleted
-    FROM test_categories
-    WHERE level = 1  <!-- 부모 카테고리는 level이 1 -->
-      AND is_deleted = 0
-    ORDER BY category_name ASC
-</select>
+    <select id="selectParentCategories" resultMap="categoryResultMap">
+	    SELECT
+	        category_id,
+	        parent_id,
+	        business_id,
+	        category_name,
+	        level,
+	        created_at,
+	        updated_at,
+	        is_deleted
+	    FROM test_categories
+	    WHERE level = 1  <!-- 부모 카테고리는 level이 1 -->
+	      AND parent_id IS NULL  <!-- 부모 카테고리는 parent_id가 NULL -->
+	      AND is_deleted = 0
+	    ORDER BY category_name ASC
+	</select>
 
 </mapper>

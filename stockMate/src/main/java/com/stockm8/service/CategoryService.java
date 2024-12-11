@@ -18,18 +18,23 @@ public interface CategoryService {
     // 카테고리 목록 조회
     public List<CategoryVO> getAllCategories() throws Exception;
     
+    // 부모 카테고리 조회
+    public List<CategoryVO> getParentCategories() throws Exception;
+    
+    // 카테고리 이름 중복 체크
+    public boolean checkCategoryNameExists(String categoryName) throws Exception;
+    
     // 특정 사업자(businessId) 소속의 카테고리 목록을 조회
     public List<CategoryVO> getCategoriesByBusinessId(int businessId) throws Exception;
 
     // 카테고리ID로 카테고리명 조회
     public void getCategoryNameById(int categoryId) throws Exception;
 
-    // 카테고리 수정
+    // 카테고리 수정	
     public void updateCategory(CategoryVO vo) throws Exception;
     
     // 카테고리 삭제
     public void deleteCategory(int categoryId) throws Exception;
     
-    public List<CategoryVO> getParentCategories() throws Exception;
     
 }
