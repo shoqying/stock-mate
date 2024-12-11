@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.stockm8.controller.CategoryController;
 import com.stockm8.domain.vo.CategoryVO;
 import com.stockm8.persistence.CategoryDAO;
 
@@ -21,14 +20,20 @@ public class CategoryServiceImpl implements CategoryService {
     @Inject
     private CategoryDAO categoryDAO;
     
+    
     @Override
     public void addCategory(CategoryVO vo) throws Exception {
+    	logger.info("CategoryVO 내용: {}", vo);
         // vo가 null이면 예외 처리
         if (vo == null) {
             throw new IllegalArgumentException("CategoryVO 객체는 null일 수 없습니다.");
         }
+        logger.info("카테고리 등록 실행");
 
-        logger.info(" 카테고리 등록 실행 ");
+        // 카테고리 이름 중복 체크
+        if (checkCategoryNameExists(vo.getCategoryName())) {
+            throw new IllegalArgumentException("이미 존재하는 카테고리 이름입니다.");
+        }
 
         // businessId가 null이거나 0이면 기본값 1로 설정
         if (vo.getBusinessId() == null || vo.getBusinessId() == 0) {
@@ -36,10 +41,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         // 상위 카테고리가 없으면 대분류, 있으면 소분류로 설정
-        if (vo.getParentId() == null) {
-            vo.setLevel(1);  // 대분류
+        if (vo.getParentId() == null || vo.getParentId() == 0) {
+            vo.setParentId(null);  // 부모 카테고리가 없는 경우 대분류
+            vo.setLevel(1);        // 대분류
         } else {
-            vo.setLevel(2);  // 소분류
+            vo.setLevel(2);        // 부모 카테고리가 있는 경우 소분류
         }
 
         // createdAt이 null이라면 현재 시간을 생성 시간으로 설정
@@ -47,8 +53,18 @@ public class CategoryServiceImpl implements CategoryService {
             vo.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         }
 
-        logger.info(" DAO의 카테고리 등록 메서드 호출");
-        categoryDAO.insertCategory(vo);
+        logger.info("DAO의 카테고리 등록 메서드 호출");
+
+        // 카테고리 등록
+        categoryDAO.insertCategory(vo);  // 카테고리 등록 후 categoryId가 설정됨
+
+        logger.info("카테고리 등록 후 Category ID: " + vo.getCategoryId());  // 추가 로그로 categoryId 확인
+
+        // 부모 카테고리가 있는 경우, 하위 카테고리들의 부모 ID를 동일하게 갱신
+        if (vo.getParentId() != null) {
+            // 부모 카테고리 ID를 기준으로 해당 하위 카테고리들의 parentId를 갱신
+            categoryDAO.updateSubCategoryParentId(vo.getParentId(), vo.getCategoryId());
+        }
     }
     
     // 카테고리 목록 조회
@@ -56,6 +72,14 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryVO> getAllCategories() throws Exception {
     	logger.info(" getAllCategories() 호출 ");
         return categoryDAO.selectAllCategories(); 
+    }
+    
+    // 카테고리 이름 중복체크
+    @Override
+    public boolean checkCategoryNameExists(String categoryName) throws Exception {
+        // 카테고리 이름 중복 체크	
+        int count = categoryDAO.selectCategoryCountByName(categoryName);
+        return count > 0;
     }
     
     // 카테고리 수정
@@ -102,19 +126,18 @@ public class CategoryServiceImpl implements CategoryService {
         categoryDAO.deleteCategory(categoryId);
     }
 
-    // 부모 카테고리 체크 후 카테고리 등록
     @Override
     public void registerCategoryWithParentCheck(CategoryVO vo) throws Exception {
+        // 부모 카테고리 없을 경우 대분류 처리
         if (vo.getParentId() == null || vo.getParentId() == 0) {
-            // 부모 카테고리 없는 경우 새 부모 카테고리로 등록
             vo.setParentId(null);  // 부모 카테고리 설정되지 않음
             vo.setLevel(1);  // 대분류
         } else {
-            // 부모 카테고리 설정된 경우 소분류로 등록
+            // 부모 카테고리 설정된 경우 소분류 처리
             vo.setLevel(2);  // 소분류
         }
 
-        // 등록을 위해 addCategory 호출
+        // 카테고리 등록 처리
         addCategory(vo);
     }
     

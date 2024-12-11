@@ -36,7 +36,7 @@ public class CategoryController {
     // 카테고리 등록 페이지 호출 (GET)
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerCategoryGET(Model model, HttpServletRequest request) throws Exception {
-    	
+    	logger.info("registerCategoryGET(Model model, HttpServletRequest request) 호출");
     	// 세션에서 userId 가져오기
 	    HttpSession session = request.getSession(false);
 	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
@@ -59,7 +59,9 @@ public class CategoryController {
     // 카테고리 등록 처리 (POST)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerCategoryPOST(CategoryVO vo, HttpServletRequest request) throws Exception {
-    	logger.info("CategoryVO: {}", vo);
+    	logger.info("registerCategoryPOST(CategoryVO vo, HttpServletRequest request) 실행");
+    	
+    	logger.info(vo+"");
     	// 세션에서 userId 가져오기 
     	HttpSession session = request.getSession(false);
     	Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
@@ -73,10 +75,12 @@ public class CategoryController {
         // 등록 후 목록 페이지로 리다이렉트
         return "redirect:/category/list";
     }
-
+    
+    // http://localhost:8088/category/list
     // 카테고리 목록 페이지 호출 (GET)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String listCategoryGET(Model model) throws Exception {
+    	logger.info("listCategoryGET(Model model) 호출");
         // 카테고리 목록 조회
         List<CategoryVO> categories = cService.getAllCategories(); 
         
@@ -88,15 +92,15 @@ public class CategoryController {
     // 카테고리 수정 페이지 (GET)
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editCategoryGET(@RequestParam("categoryId") int categoryId, Model model) throws Exception {
-        // 카테고리와 상위 카테고리 정보 가져오기
-        CategoryVO category = cService.getCategoryWithParents(categoryId);
-        model.addAttribute("category", category);
-
-        // 상위 카테고리 정보
-        if (category.getParentId() != null) {
-            CategoryVO parentCategory = cService.getCategoryWithParents(category.getParentId());
-            model.addAttribute("parentCategory", parentCategory);
-        }
+    	logger.info("editCategoryGET(@RequestParam(\"categoryId\") int categoryId, Model model) 호출");
+    	
+    	// 카테고리와 상위 카테고리 정보 가져오기
+        CategoryVO vo = cService.getCategoryWithParents(categoryId);
+        model.addAttribute("category", vo);
+        
+        // 상위 카테고리 정보 (부모 카테고리 리스트 가져오기)
+        List<CategoryVO> parentCategories = cService.getParentCategories();  // 부모 카테고리 리스트를 가져오기
+        model.addAttribute("parentCategories", parentCategories);
 
         return "category/edit";
     }
@@ -104,8 +108,18 @@ public class CategoryController {
     // 카테고리 수정 처리 (POST)
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String editCategoryPOST(@ModelAttribute CategoryVO vo) throws Exception {
+    	logger.info("editCategoryPOST(@ModelAttribute CategoryVO vo) 실행");
+    	
+    	// 부모 카테고리가 비어 있으면 null로 처리
+        if (vo.getParentId() != null && vo.getParentId().equals("")) {
+            vo.setParentId(null);
+            logger.info("부모 카테고리가 비어있어 null로 설정됨, categoryId: {}", vo.getCategoryId());
+        }
+        // 카테고리 수정
         cService.updateCategory(vo);
-        return "redirect:/category/list";
+        logger.info("카테고리 수정 완료, categoryId: {}", vo.getCategoryId());
+
+        return "redirect:/category/list";  // 수정 후 목록 페이지로 리다이렉트
     }
 
     // 카테고리 삭제 페이지 (GET)

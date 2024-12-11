@@ -43,6 +43,22 @@ public class CategoryDAOImpl implements CategoryDAO {
         return sqlSession.selectOne(NAMESPACE + "selectCategoryNameById", categoryId);
     }
     
+    // 카테고리 이름 중복 체크
+    @Override
+    public int selectCategoryCountByName(String categoryName) throws Exception {
+        // SQL 쿼리 실행
+        return sqlSession.selectOne(NAMESPACE + "selectCategoryCountByName", categoryName);
+    }
+    
+    // 하위 카테고리들의 부모 ID를 갱신하는 메서드
+    public void updateSubCategoryParentId(int parentId, int categoryId) throws Exception {
+    	Map<String, Object> params = new HashMap<>();
+    	params.put("parentId", parentId);
+    	params.put("categoryId", categoryId);
+    	
+    	sqlSession.update(NAMESPACE + "updateSubCategoryParentId", params);
+    }
+    
     // 카테고리 존재 여부 확인
     @Override
     public boolean existsById(int categoryId, int businessId) {
@@ -54,6 +70,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         return count != null && count > 0;
     }
 
+    
     // 카테고리 수정
     @Override
     public void updateCategory(CategoryVO category) throws Exception {
@@ -72,6 +89,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         sqlSession.update(NAMESPACE + "deleteCategory", categoryId);
     }
     
+ // 부모 카테고리만 조회
     @Override
     public List<CategoryVO> selectParentCategories() throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectParentCategories");
