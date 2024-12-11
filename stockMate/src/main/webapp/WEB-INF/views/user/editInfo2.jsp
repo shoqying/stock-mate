@@ -83,10 +83,10 @@
     <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="infoResult.jsp">&larr; 뒤로 가기</a>
+            <a href="dashboard">&larr; 뒤로 가기</a>
         </div>
         <h1>홍길동님의 회원정보</h1>
-        <form action="saveInfo.jsp" method="post">
+        <form action="editinfo2" method="post">
             <div class="info">
                 <label for="email">이메일</label>
                 <input type="email" id="email" name="email" value="itwill@naver.com" required>

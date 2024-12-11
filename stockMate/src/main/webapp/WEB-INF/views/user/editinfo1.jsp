@@ -79,11 +79,11 @@
     <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="infoResult.jsp">&larr; 뒤로 가기</a>
+            <a href="/dashboard">&larr; 뒤로 가기</a>
         </div>
         <h1>비밀번호를 입력하세요</h1>
-        <form action="processEditInfo.jsp" method="post">
-            <input type="password" name="password" placeholder="비밀번호" required>
+        <form action="editinfo2" method="post">
+            <input type="password" name="password" placeholder="비밀번호">
             <button type="submit">내 정보 수정하기</button>
         </form>
     </div>

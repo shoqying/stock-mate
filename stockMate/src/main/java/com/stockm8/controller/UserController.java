@@ -34,12 +34,14 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	// http://localhost:8088/user/login (o)
+	// http://localhost:8088/user/signin (o)
 	// http://localhost:8088/user/main (o)
 	// http://localhost:8088/user/signup (o)
-	// http://localhost:8088/user/dash (o)
+	// http://localhost:8088/dashboard (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
+	// http://localhost:8088/user/editinfo1 (o)
+	// http://localhost:8088/user/editinfo2 (o)
 
 	// 회원가입 - 정보입력 / GET 방식
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
@@ -115,7 +117,7 @@ public class UserController {
 	            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
 	            return "redirect:" + redirectUrl;
 	        }
-	        return "redirect:/user/main";
+	        return "redirect:/user/dash";
 	    }
 
 	    // 로그인 실패 처리
@@ -133,7 +135,7 @@ public class UserController {
 	}
 
 	// 대시보드 페이지 - GET
-	@RequestMapping(value = "/dash", method = RequestMethod.GET)
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public void dashGET() {
 		logger.info(" dashGET() 호출 ");
 
@@ -165,7 +167,18 @@ public class UserController {
 		model.addAttribute("resultVO", resultVO);
 		return "user/info1";
 	}
-
+	// 회원정보 조회 - /user/info1 (GET)
+		@RequestMapping(value = "/info2", method = RequestMethod.GET)
+		public String userInfo2GET(Model model, HttpSession session) throws Exception {
+			Long userId = (Long) session.getAttribute("id");
+//		    if (id == null) {
+//		        // 세션에 id가 없으면 에러 처리
+//		        return "redirect:/user/main";
+//		    }
+			UserVO resultVO = userService.getUser(userId);
+			model.addAttribute("resultVO", resultVO);
+			return "user/info2";
+		}
 	
 	
 	
@@ -189,12 +202,12 @@ public class UserController {
 
 	// 회원정보 수정 - GET
 	// (기존정보를 가져와서 보여주고, 수정할 정보를 입력)
-	@RequestMapping(value = "/editInfo1", method = RequestMethod.GET)
-	public void userUpdateGET(@SessionAttribute("id") Long userId, Model model) throws Exception {
+	@RequestMapping(value = "/editinfo1", method = RequestMethod.GET)
+	public void userUpdateGET(@SessionAttribute("userId") Long userId, Model model) throws Exception {
 		logger.info(" userUpdateGET() 호출 ");
 
 		// 사용자의 ID정보를 가져오기(세션)
-		logger.info("id : " + userId);
+		logger.info("userId : " + userId);
 
 		// 서비스 -> DAO 회원정보 가져오는 동작 호출
 		UserVO resultVO = userService.getUser(userId);
@@ -207,7 +220,7 @@ public class UserController {
 
 	// 회원정보 수정 - POST
 	// (수정된 정보를 전달받아서 정보 수정)
-	@RequestMapping(value = "/editInfo2", method = RequestMethod.POST)
+	@RequestMapping(value = "/editinfo2", method = RequestMethod.POST)
 	public String userUpdatePOST(UserVO user) throws Exception {
 		logger.info(" userUpdatePOST() ");
 
@@ -218,7 +231,7 @@ public class UserController {
 		userService.updateUser(user);
 
 		// 수정완료시 메인페이지로 이동
-		return "redirect:/user/dash";
+		return "redirect:/dashboard";
 	}
 
 	// 회원정보 삭제 - 비밀번호 입력 (GET)
