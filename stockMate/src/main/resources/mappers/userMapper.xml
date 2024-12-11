@@ -19,16 +19,31 @@
         <result property="email" column="email" />
         <result property="role" column="role" />
         <result property="isDeleted" column="is_deleted" />
-    
-
-
     </resultMap>
 
     <!-- 회원가입 -->
-    <insert id="insertUser">
-        INSERT INTO test_users (email, password, name, role, tel_number)
-        VALUES (#{email}, #{password}, #{name}, #{role}, #{telNumber})
-    </insert>
+    <insert id="insertUser" parameterType="com.stockm8.domain.vo.UserVO" useGeneratedKeys="true" keyProperty="userId">
+    INSERT INTO test_users (
+        email,
+        password,
+        name,
+        role,
+        tel_number,
+        created_at,
+        status,
+        is_deleted
+    )
+    VALUES (
+        #{email},
+        #{password},
+        #{name},
+        #{role},
+        #{telNumber},
+        NOW(),
+        'PENDING',
+        0
+    )
+</insert>
 
     <!-- 로그인 체크 -->
     <select id="loginCheck" parameterType="com.stockm8.domain.vo.UserVO" resultMap="UserResultMap">
