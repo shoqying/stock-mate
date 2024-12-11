@@ -34,13 +34,13 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	// http://localhost:8088/user/login (o)
 	// http://localhost:8088/user/main (o)
+	// http://localhost:8088/user/signin (o)
 	// http://localhost:8088/user/signup (o)
-	// http://localhost:8088/user/dash (o)
+	// http://localhost:8088/dashboard (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
-
+	
 	// 회원가입 - 정보입력 / GET 방식
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public void userSignUpGET() throws Exception {
@@ -58,13 +58,13 @@ public class UserController {
 		logger.info("Role received: " + user.getRole());
 
 		// 전달정보 저장
-//		logger.info("vo :" + user);
+		logger.info("vo :" + user);
 
 		// userDAO객체가 필요 => 주입
 		// DB에 정보를 전달 - 회원가입동작 실행
 		// mdao.userJoin(vo); // => 잘못됨
 		// 서비스 -> DAO 호출
-//		userService.userJoin(user);
+		userService.userJoin(user);
 
 		// 로그인 페이지로 이동
 		return "redirect:/user/signin";
@@ -73,8 +73,8 @@ public class UserController {
 	// http://localhost:8088/user/login (GET)
 	// 로그인 - 정보입력 / GET
 	@RequestMapping(value = "/signin", method = RequestMethod.GET)
-	public String userLoginGET(HttpServletRequest request, Model model) {
-		logger.info("userLoginGET(HttpServletRequest request, Model model) 호출 ");
+	public String userSgininGET(HttpServletRequest request, Model model) {
+		logger.info("userSgininGET(HttpServletRequest request, Model model) 호출 ");
 		logger.info("!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		
 		
@@ -115,6 +115,7 @@ public class UserController {
 	            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
 	            return "redirect:" + redirectUrl;
 	        }
+	        
 	        return "redirect:/dashboard";
 	    }
 
@@ -126,8 +127,17 @@ public class UserController {
 
 	// 메인페이지 - GET
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void mainGET() throws Exception {
+	public void mainGET(HttpServletRequest request, Model model) throws Exception {
 		logger.info(" mainGET() 호출 ");
+		
+		// FlashMap에서 에러 메시지 확인
+	    Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+	    if (flashMap != null) {
+	        String errorMessage = (String) flashMap.get("errorMessage");
+	        if (errorMessage != null) {
+	            model.addAttribute("errorMessage", errorMessage);
+	        }
+	    }
 
 		logger.info(" /user/main -> /user/main.jsp 연결 ");
 	}

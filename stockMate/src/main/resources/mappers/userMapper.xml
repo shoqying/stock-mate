@@ -8,10 +8,16 @@
     <!-- UserResultMap 정의 -->
     <resultMap id="UserResultMap" type="com.stockm8.domain.vo.UserVO">
         <result property="userId" column="user_id" />
-        <result property="businessId" column="business_id" />
         <result property="email" column="email" />
+        <result property="password" column="password" />
         <result property="name" column="name" />
         <result property="role" column="role" />
+        <result property="businessId" column="business_id" />
+        <result property="telNumber" column="tel_number" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="createdBy" column="created_by" />
+        <result property="status" column="status" />
         <result property="isDeleted" column="is_deleted" />
     </resultMap>
 
@@ -29,7 +35,8 @@
             password,
             name, 
             role, 
-            business_id, 
+            business_id,
+            status, 
             is_deleted 
         FROM test_users
         WHERE email = #{email} AND password = #{password}
@@ -49,6 +56,13 @@
             updated_at = NOW()
         WHERE user_id = #{userId} AND password = #{password}
     </update>
+    
+    <!-- 사용자의 businessId 수정 -->
+    <update id="updateUserBusinessId" parameterType="map">
+	    UPDATE test_users 
+	    SET business_id = #{businessId} 
+	    WHERE user_id = #{userId} AND business_id IS NULL
+	</update>
 
     <!-- 회원정보 삭제 -->
     <delete id="deleteUser">
@@ -63,10 +77,22 @@
 
     <!-- 유저 정보를 user_id로 조회 -->
     <select id="getUserById" parameterType="long" resultMap="UserResultMap">
-        SELECT user_id, business_id, email, name, role, is_deleted
-        FROM test_users
-        WHERE user_id = #{userId}
-    </select>
+	    SELECT 
+	        user_id,
+	        email,
+	        password,
+	        name,
+	        role,
+	        business_id,
+	        tel_number,
+	        created_at,
+	        updated_at,
+	        created_by,
+	        status,
+	        is_deleted
+	    FROM test_users
+	    WHERE user_id = #{userId}
+	</select>
 
     <!-- 유저의 삭제 여부 확인 -->
     <select id="getIsDeleted" parameterType="long" resultType="int">
@@ -74,5 +100,6 @@
         FROM test_users
         WHERE user_id = #{userId}
     </select>
+ 
 
 </mapper>

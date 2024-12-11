@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.stockm8.exceptions.BusinessRegistrationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -33,4 +35,22 @@ public class GlobalExceptionHandler {
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동
         return "redirect:" + (referer != null ? referer : "/");
     }
+    
+    /**
+     * 비즈니스 등록 예외 처리
+     */
+    @ExceptionHandler(BusinessRegistrationException.class)
+    public String handleBusinessRegistrationException(
+            BusinessRegistrationException e,
+            HttpServletRequest request,
+            RedirectAttributes rttr) {
+
+        logger.error("비즈니스 등록 예외 발생 - URL: {}", request.getRequestURL(), e);
+
+        // 에러 메시지 설정
+        rttr.addFlashAttribute("errorMessage", "비즈니스 등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+
+        return "redirect:/business/register";
+    }
+
 }

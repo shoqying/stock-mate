@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회사 등록</title>
 <style>
 
 .error-banner {
@@ -34,11 +34,6 @@
 	    <div class="error-banner">${errorMessage}</div>
 	</c:if>
 
-    <!-- 에러 메시지 표시 -->
-    <c:if test="${not empty errorMessage}">
-        <div class="error-banner">${errorMessage}</div>
-    </c:if>
-
     <!-- 비즈니스 등록 폼 -->
     <form method="post" action="/business/register">
         
@@ -59,8 +54,8 @@
 
         <!-- 회사 이름 -->
         <div>
-            <label for="companyName">회사 이름:</label>
-            <input type="text" id="companyName" name="companyName" placeholder="회사 이름" required>
+            <label for="CompanyName">회사 이름:</label>
+            <input type="text" id="CompanyName" name="CompanyName" placeholder="회사 이름" required>
         </div>
         <br>
 

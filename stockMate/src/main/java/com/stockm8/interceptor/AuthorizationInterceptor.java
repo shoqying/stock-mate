@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.stockm8.domain.enums.Role;
+import com.stockm8.domain.enums.Status;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
 
@@ -128,20 +129,43 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
      * @throws Exception 예외 발생 시
      */
     private boolean isValidUser(HttpServletRequest request, HttpServletResponse response, UserVO user) throws Exception {
-    	
-        // 회사 정보 확인
-        if (user.getBusinessId() == null) {
-            logger.warn("사용자의 회사 정보({})가 없습니다. 회사 등록 페이지로 이동합니다.", user.getBusinessId());
-            return sendErrorMessage(request, response, "회사 정보가 없습니다. 회사를 등록해주세요.", "/business/register");
-        }
-        // 권한 확인
-        List<Role> allowedRoles = Arrays.asList(Role.MANAGER, Role.ADMIN);
-        if (user.getRole() == null || !allowedRoles.contains(user.getRole())) {
-            logger.warn("권한이 없는 유저({})입니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getRole());
-            return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
+        
+    	// 허용된 역할 정의
+        List<Role> allowedRoles = Arrays.asList(Role.MANAGER, Role.ADMIN /*Role.STAFF*/);
+
+        // 1. PENDING 상태 처리
+        if (user.getStatus() == Status.PENDING) {
+            if (user.getRole() == Role.MANAGER && user.getBusinessId() == null) {
+                logger.warn("PENDING 상태의 매니저 사용자({})입니다. 비즈니스 등록 페이지로 이동합니다.", user.getUserId());
+                return sendErrorMessage(request, response, "비즈니스 정보를 등록해주세요.", "/business/register");
+            }
+
+            if (user.getRole() == Role.STAFF && user.getBusinessId() == null) {
+                logger.warn("PENDING 상태의 직원 사용자({})입니다. 비즈니스 인증 페이지로 이동합니다.", user.getUserId());
+                return sendErrorMessage(request, response, "비즈니스 정보를 인증해주세요.", "/business/verify");
+            }
+
+            if (user.getBusinessId() != null) {
+                logger.info("PENDING 상태의 사용자({})가 businessId({})를 가지고 있습니다. 메인 페이지로 이동합니다.", user.getUserId(), user.getBusinessId());
+                sendErrorMessage(request, response, "승인 절차가 완료될 때까지 기다려주세요.", "/user/main");
+                return false;
+            }
         }
 
-        return true; // 모든 검증 통과
+        // 2. APPROVED 상태 처리
+        if (user.getStatus() == Status.APPROVED) {
+            if (!allowedRoles.contains(user.getRole())) {
+                logger.warn("권한 없는 사용자({})가 접근을 시도했습니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getRole());
+                return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
+            }
+
+            logger.info("APPROVED 상태의 사용자({})가 대시보드로 접근합니다.", user.getUserId());
+            return true;
+        }
+
+        // 3. 그 외 상태 처리
+        logger.warn("유효하지 않은 상태의 사용자({}). 접근이 차단됩니다. (상태: {})", user.getUserId(), user.getStatus());
+        return sendErrorMessage(request, response, "유효하지 않은 사용자 상태입니다.", "/user/signin");
     }
 
 	/**
