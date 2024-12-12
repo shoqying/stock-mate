@@ -42,6 +42,9 @@
                 <option value="">-- 카테고리 선택 --</option> <!-- 기본값 옵션 추가 -->
                 <c:forEach var="cat" items="${categoryList}">
                     <option value="${cat.categoryId}">${cat.categoryName}</option>
+                   <script>
+                 	  console.log("category " + ${cat.level} + ": " + "${cat.categoryName}");
+           		  </script>
                 </c:forEach>
             </select>
             <!-- 카테고리 등록 버튼 -->
