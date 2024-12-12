@@ -11,6 +11,7 @@ import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;  // OrderItemVO import 제거
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.persistence.OrderDAO;
+import com.stockm8.persistence.ReceivingDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -19,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
     
     @Inject
     private OrderDAO odao;
+    
+    @Inject
+    private ReceivingDAO rdao;
     
     @Override
     @Transactional
@@ -31,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
         
         // 주문항목 등록
         odao.insertOrderItem(orderItem);
+        rdao.insertReceiving();
     }
     
     @Override
