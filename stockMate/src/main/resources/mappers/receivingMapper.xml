@@ -28,7 +28,7 @@
 
 <!-- 테이블에 입고 데이터 입력 -->
 <insert id="insertReceiving">
-	INSERT INTO receiving_shipment (
+	INSERT INTO test_receiving_shipment (
 	transaction_type, 
 	status, 
 	product_id, 
@@ -49,10 +49,10 @@
 	s.stock_id,
 	o.warehouse_id,
     u.created_by
-	FROM products p
-	JOIN order_items o ON o.product_id = p.product_id
-	JOIN stocks s ON s.product_id = p.product_id
-    JOIN users u ON u.business_id = p.business_id;
+	FROM test_products p
+	JOIN test_order_items o ON o.product_id = p.product_id
+	JOIN test_stocks s ON s.product_id = p.product_id
+    JOIN test_users u ON u.business_id = p.business_id;
 </insert>
 	
 <!-- 오늘 입고 예정 리스트 -->
@@ -128,10 +128,10 @@
 	r.change_quantity, 
 	p.price,
 	r.memo
-	from receiving_shipment r
-	join products p on r.product_id = p.product_id
-	join warehouses w on w.warehouse_id = r.warehouse_id
-	where transaction_type = 'INBOUND'
+	from test_receiving_shipment r
+	join test_products p on r.product_id = p.product_id
+	join test_warehouses w on w.warehouse_id = r.warehouse_id
+	where transaction_type = 'in'
 	order by r.receiving_shipment_no desc
 	limit #{startPage},#{pageSize};
 </select>
@@ -191,8 +191,8 @@
 <!-- 입출고 모든 개수 카운트 -->
 <select id="getTotalCount" resultType="int">
 	select count(*)
-	from receiving_shipment
-	where transaction_type = 'INBOUND'
+	from test_receiving_shipment
+	where transaction_type = 'in'
 </select>
   	
   </mapper>
