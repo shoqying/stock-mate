@@ -46,7 +46,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "user/dash";
+		return "dashboard";
 	}
 	
 }

@@ -34,10 +34,13 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+  // http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/signin (o)
 	// http://localhost:8088/user/main (o)
-	// http://localhost:8088/user/signup (o)
-	// http://localhost:8088/user/dashboard (o)
+	// http://localhost:8088/user/info1 (o)
+	// http://localhost:8088/user/info2 (o)
+	
+	// http://localhost:8088/dashboard (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
 	// http://localhost:8088/user/editinfo1 (o)
@@ -77,8 +80,8 @@ public class UserController {
 	// http://localhost:8088/user/login (GET)
 	// 로그인 - 정보입력 / GET
 	@RequestMapping(value = "/signin", method = RequestMethod.GET)
-	public String userLoginGET(HttpServletRequest request, Model model) {
-		logger.info("userLoginGET(HttpServletRequest request, Model model) 호출 ");
+	public String userSgininGET(HttpServletRequest request, Model model) {
+		logger.info("userSgininGET(HttpServletRequest request, Model model) 호출 ");
 		logger.info("!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		
 		
@@ -119,7 +122,7 @@ public class UserController {
 	            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
 	            return "redirect:" + redirectUrl;
 	        }
-	        return "redirect:/user/dash";
+	        return "redirect:/dashboard";
 	    }
 
 	    // 로그인 실패 처리
@@ -130,8 +133,17 @@ public class UserController {
 
 	// 메인페이지 - GET
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void mainGET() throws Exception {
+	public void mainGET(HttpServletRequest request, Model model) throws Exception {
 		logger.info(" mainGET() 호출 ");
+		
+		// FlashMap에서 에러 메시지 확인
+	    Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+	    if (flashMap != null) {
+	        String errorMessage = (String) flashMap.get("errorMessage");
+	        if (errorMessage != null) {
+	            model.addAttribute("errorMessage", errorMessage);
+	        }
+	    }
 
 		logger.info(" /user/main -> /user/main.jsp 연결 ");
 	}
