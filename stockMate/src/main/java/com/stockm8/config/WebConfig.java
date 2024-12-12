@@ -73,7 +73,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/resources/**",   // 정적 리소스
                         "/user/**",	       // 로그인 및 회원가입 관련 요청
                         "/static/**"
-                );     
+                );   
+        // Flash 메시지 처리 인터셉터
+        registry.addInterceptor(new FlashMessageInterceptor());
         
         // LocaleChangeInterceptor를 추가하면, 요청 파라미터 (예: ?lang=ko)로 Locale을 변경할 수 있음
         LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
@@ -133,6 +135,14 @@ public class WebConfig implements WebMvcConfigurer {
         config.setJdbcUrl("jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2408t1p1");
         config.setUsername("c7d2408t1p1");
         config.setPassword("1234");
+        
+        // HikariCP 추가 설정
+        config.setMaximumPoolSize(10); // 최대 커넥션 풀 크기
+        config.setMinimumIdle(5); // 최소 유휴 커넥션 수
+        config.setIdleTimeout(30000); // 유휴 커넥션 종료 시간 (밀리초)
+        config.setConnectionTimeout(30000); // 연결 타임아웃 (밀리초)
+        config.setLeakDetectionThreshold(2000); // 누수 감지 시간 (밀리초)
+        
         return new HikariDataSource(config);
     }
     

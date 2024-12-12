@@ -88,12 +88,7 @@
             text-decoration: underline;
         }
     </style>
-    <script>
-        function redirectToDashboard(event) {
-            event.preventDefault(); // Form submission 막기
-            window.location.href = 'dashboard';
-        }
-    </script>
+
 </head>
 <body>
     <div class="container">
@@ -103,7 +98,7 @@
         </c:if>
 
         <div class="login-box">
-            <form id="loginForm" onsubmit="redirectToDashboard(event)">
+            <form action="/user/signin" id="loginForm" method="post">
                 <!-- 이메일 필드 -->
                 <input type="email" name="email" placeholder="이메일" required="required" autofocus="autofocus" aria-label="이메일 입력 필드" autocomplete="email">
 

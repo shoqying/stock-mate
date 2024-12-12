@@ -52,10 +52,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		// 세션 확인 및 사용자 ID 가져오기
 		HttpSession session = request.getSession(false); // 세션이 없으면 null 반환
 		Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
-                
+        logger.info("session: " + session);        
+		
         // 1. 세션에서 사용자 ID 확인
         if (userId == null) {
-            logger.warn("세션에 유저 ID가 없습니다. 로그인 페이지로 이동합니다.");
+            logger.warn("세션({})에 유저 ID가 없습니다. 로그인 페이지로 이동합니다.", userId);
             saveRequestedUrlToSession(request);
             return sendErrorMessage(request, response, "세션이 만료되었습니다. 다시 로그인해주세요.", "/user/signin");
         }

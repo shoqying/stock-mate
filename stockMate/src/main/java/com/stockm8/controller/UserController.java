@@ -34,7 +34,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-  // http://localhost:8088/user/signup (o)
+	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/signin (o)
 	// http://localhost:8088/user/main (o)
 	// http://localhost:8088/user/info1 (o)
@@ -128,7 +128,7 @@ public class UserController {
 	    // 로그인 실패 처리
 	    logger.warn("로그인 실패, 사용자 정보를 찾을 수 없습니다.");
 	    rttr.addFlashAttribute("errorMessage", "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
-	    return "redirect:/user/login"; // 로그인 페이지 이동
+	    return "redirect:/user/signin"; // 로그인 페이지 이동
 	}
 
 	// 메인페이지 - GET
@@ -149,12 +149,12 @@ public class UserController {
 	}
 
 	// 대시보드 페이지 - GET
-	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public void dashGET() {
-		logger.info(" dashGET() 호출 ");
-
-		logger.info(" /user/main -> /user/dash.jsp 연결 ");
-	}
+//	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+//	public void dashGET() {
+//		logger.info(" dashGET() 호출 ");
+//
+//		logger.info(" /user/main -> /user/dash.jsp 연결 ");
+//	}
 
 	// 로그아웃 - GET
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)

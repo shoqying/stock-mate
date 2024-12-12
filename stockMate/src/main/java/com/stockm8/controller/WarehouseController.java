@@ -20,16 +20,16 @@ public class WarehouseController {
 	@Inject
 	private WarehouseService warehouseService;
 	
-	// http://localhost:8088/warehouse/create
+	// http://localhost:8088/warehouse/register
 	// 창고 등록하기
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void registGET() throws Exception {
 		logger.info("/warehouse/create 호출");
 		logger.info("연결된 뷰페이지(/board/create.jsp) 이동");
 	}
 	
 	// 창고 등록처리 
-	@PostMapping("/create")
+	@PostMapping("/register")
 	public String registPOST() throws Exception {
 		logger.info("createPOST() 호출");
 		return null;

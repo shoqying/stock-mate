@@ -88,8 +88,6 @@ public class BusinessController {
 	    
 	    logger.info("사용자가 입력한 사업자 등록 번호: {}", business.getBusinessNumber());
 	    logger.info("사용자가 입력한 회사 이름: {}", business.getCompanyName());
-	    logger.info("조회된 비즈니스 정보: {}", foundBusiness); // 디버깅용 로그
-		
 	    
 	    if (foundBusiness == null || foundBusiness.getBusinessId() == null) {
 			logger.warn("입력된 비즈니스 정보가 존재하지 않습니다.");
