@@ -155,11 +155,11 @@
             대시보드
         </div>
         <div class="menu-bar">
-            <a href="order">주문</a>
+            <a href="/order/register">주문</a>
             <a href="/receiving/main">입고</a>
-            <a href="shipment">출고</a>
-            <a href="stock">재고</a>
-            <a href="admin">관리자 페이지</a>
+            <a href="/shipment/main">출고</a>
+            <a href="/stock/list">재고</a>
+            <a href="/admin">관리자 페이지</a>
         </div>
 
         <!-- Content Section -->
