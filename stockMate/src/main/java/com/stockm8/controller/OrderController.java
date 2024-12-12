@@ -25,7 +25,7 @@ import com.stockm8.service.OrderService;
 import com.stockm8.service.UserService;
 
 @Controller
-@RequestMapping(value = "/order")
+@RequestMapping(value = "/order/*")
 public class OrderController {
     
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);

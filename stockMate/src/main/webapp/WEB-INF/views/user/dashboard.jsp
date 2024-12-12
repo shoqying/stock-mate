@@ -155,11 +155,11 @@
             대시보드
         </div>
         <div class="menu-bar">
-            <a href="order">주문</a>
-            <a href="stock">입고</a>
-            <a href="shipment">출고</a>
-            <a href="stock">재고</a>
-            <a href="admin">관리자 페이지</a>
+            <a href="/order/register">주문</a>
+            <a href="/receiving/main">입고</a>
+            <a href="/shipment/main">출고</a>
+            <a href="/stock/list">재고</a>
+            <a href="/admin">관리자 페이지</a>
         </div>
 
         <!-- Content Section -->
@@ -167,11 +167,17 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="disabled">Dashboard</div>
-                <a href="product/register">상품 등록</a>
-                <a href="profile">내정보 조회/수정</a>
-                <a href="password">비밀번호 변경</a>
-                <a href="help">대시보드 사용법</a>
-                <a href="user/signout" style="color: red;">Sign out</a>
+                <a href="/product/register">상품 등록</a>
+                <a href="editinfo1">내정보 조회/수정</a>
+                <a href="changepassword1">비밀번호 변경</a>
+                <a href="consultation">대시보드 사용법</a>
+                <a href="signout" onclick="return confirmLogout();" style="color: red;">Sign out</a>
+			<script>
+			function confirmLogout() {
+			    alert("로그아웃 되었습니다");
+			    return true; // 링크 이동을 계속 진행
+			}
+			</script>
             </div>
 
             <!-- Main Content -->

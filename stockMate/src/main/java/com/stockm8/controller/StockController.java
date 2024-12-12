@@ -14,7 +14,7 @@ import com.stockm8.domain.vo.StockVO;
 import com.stockm8.service.StockService;
 
 @Controller
-@RequestMapping("/stock")  // 모든 요청이 /stock으로 시작합니다.
+@RequestMapping(value = "/stock/*")  // 모든 요청이 /stock으로 시작합니다.
 public class StockController {
 
     @Inject

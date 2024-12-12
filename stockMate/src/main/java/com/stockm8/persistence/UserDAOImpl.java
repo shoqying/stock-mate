@@ -1,6 +1,8 @@
 package com.stockm8.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,6 +50,16 @@ public class UserDAOImpl implements UserDAO {
 		sqlSession.update(NAMESPACE + "updateUser", user);
 		logger.info("회원정보 수정 완료!");
 	}
+	
+	@Override
+	public int updateUserBusinessId(Long userId, int businessId) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("businessId", businessId);
+	    
+	    // 반환 값으로 영향을 받은 행(row) 수를 반환합니다.
+	    return sqlSession.update(NAMESPACE + "updateUserBusinessId", params);
+	}
 
 	@Override
 	public int deleteUser(UserVO user) {
@@ -62,16 +74,16 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public int getIsDeleted(Long user) throws Exception{
+	public int getIsDeleted(Long userId) throws Exception{
 
 		logger.info("getIsDeleted(Long userId) 실행");
 
-		return sqlSession.selectOne(NAMESPACE + "getIsDeleted", user);
+		return sqlSession.selectOne(NAMESPACE + "getIsDeleted", userId);
 	}
 	
     @Override
-    public UserVO getUserById(Long user) throws Exception {
-        return sqlSession.selectOne(NAMESPACE + "getUserById", user);
+    public UserVO getUserById(Long userId) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + "getUserById", userId);
     }
 
 }

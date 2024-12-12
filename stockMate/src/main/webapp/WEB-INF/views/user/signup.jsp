@@ -103,7 +103,7 @@
             <input type="password" placeholder="비밀번호" name="password">
             <input type="text" placeholder="이름" name="name">
             <input type="tel" placeholder="전화번호" name="phone">
-            <input type="text" placeholder="역할 (admin, manager, staff)" name="role">
+            <input type="text" placeholder="역할 (ADMIN, MANAGER, STAFF)" name="role">
 
             <div class="buttons">
                 <!-- 가입하기 버튼 -->
