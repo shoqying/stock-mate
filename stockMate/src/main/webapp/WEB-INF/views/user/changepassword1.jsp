@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 정보 수정</title>
+    <title>비밀번호 변경</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,10 +43,10 @@
             font-size: 24px;
             color: #333;
         }
-        input[type="password"] {
+        input {
             width: 80%;
             padding: 10px;
-            margin: 20px 0;
+            margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
@@ -74,21 +74,27 @@
             width: 100%;
         }
     </style>
+    <script>
+        function redirectToDashboard(event) {
+            event.preventDefault(); // Form submission 막기
+            window.location.href = 'dashboard';
+        }
+    </script>
 </head>
 <body>
-    <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="infoResult.jsp">&larr; 뒤로 가기</a>
+            <a href="dashboard">&larr; 뒤로 가기</a>
         </div>
-        <h1>비밀번호를 입력하세요</h1>
-        <form action="processEditInfo.jsp" method="post">
-            <input type="password" name="password" placeholder="비밀번호" required>
-            <button type="submit">내 정보 수정하기</button>
+        <h1>비밀번호 변경</h1>
+        <form id="passwordForm" onsubmit="redirectToDashboard(event)">
+            <input type="email" id="email" name="email" placeholder="현재 이메일" >
+            <input type="password" id="newPassword" name="newPassword" placeholder="변경할 비밀번호" >
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="한 번 더 입력" >
+            <button type="submit">정보 변경 하기</button>
         </form>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         회사 정보 - 사업자 번호, 연락처 등 유의 내용
     </div>

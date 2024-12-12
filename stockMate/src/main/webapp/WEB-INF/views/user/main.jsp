@@ -105,50 +105,53 @@ body {
 </style>
 </head>
 <body>
-	<!-- Header -->
-	<div class="header">
-		<img src="https://via.placeholder.com/80" alt="About Us Logo">
-		<h1>최초 메인 페이지 - 데모</h1>
-	</div>
+    <!-- Header -->
+    <div class="header">
+        <img src="https://via.placeholder.com/80" alt="About Us Logo">
+        <h1>최초 메인 페이지 - 데모</h1>
+    </div>
+  
+  	<!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
+	  <c:if test="${not empty errorMessage}">
+		  <div class="error-banner">${errorMessage}</div>
+	  </c:if>
 
-	<!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
-	<c:if test="${not empty errorMessage}">
-		<div class="error-banner">${errorMessage}</div>
-	</c:if>
+    <!-- Navigation -->
+    <div class="nav">
+        <a href="signup">회원가입</a>
+        <a href="signin">로그인</a>
+        <a href="howtouse">대시보드 사용법</a>
+        <a href="consultation">상담문의</a>
+        <a href="intro">회사소개</a>
+    </div>
 
-	<!-- Navigation -->
-	<div class="nav">
-		<a href="signup">회원가입</a> <a href="signin">로그인</a> <a href="dashboard">대시보드
-			사용법</a> <a href="contact">상담문의</a> <a href="about">회사소개</a>
-	</div>
+    <!-- Content -->
+    <div class="content">
+        <h2>고퀄리티 교회 현수막을 제작합니다.</h2>
+        <p>현수막은 다양한 곳에 홍보물로 많이 사용되고 있습니다.<br>
+        홀리라이프 현수막을 통해 고퀄리티 디자인을 경험해보세요.</p>
 
-	<!-- Content -->
-	<div class="content">
-		<h2>고퀄리티 교회 현수막을 제작합니다.</h2>
-		<p>
-			현수막은 다양한 곳에 홍보물로 많이 사용되고 있습니다.<br> 홀리라이프 현수막을 통해 고퀄리티 디자인을
-			경험해보세요.
-		</p>
+        <div class="row">
+            <div class="column">
+                <img src="https://via.placeholder.com/300x200" alt="Example Banner">
+            </div>
+            <div class="column">
+                <img src="https://via.placeholder.com/300x200" alt="World Map">
+            </div>
+        </div>
 
-		<div class="row">
-			<div class="column">
-				<img src="https://via.placeholder.com/300x200" alt="Example Banner">
-			</div>
-			<div class="column">
-				<img src="https://via.placeholder.com/300x200" alt="World Map">
-			</div>
-		</div>
+        <div>
+            <h3>대시보드 사용법</h3>
+            <ul>
+                <li>gif 영상</li>
+                <li>jpg 이미지</li>
+            </ul>
+        </div>
+    </div>
 
-		<div>
-			<h3>대시보드 사용법</h3>
-			<ul>
-				<li>gif 영상</li>
-				<li>jpg 이미지</li>
-			</ul>
-		</div>
-	</div>
-
-	<!-- Footer -->
-	<div class="footer">회사 정보 - 사업자 번호, 연락처 등 유의 내용</div>
+    <!-- Footer -->
+    <div class="footer">
+        회사 정보 - 사업자 번호, 연락처 등 유의 내용
+    </div>
 </body>
 </html>
