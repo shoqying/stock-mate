@@ -16,7 +16,7 @@
         sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
         
         // URL에 sortOrder 파라미터를 추가하여 페이지를 갱신
-        let currentUrl = "<c:url value='/stock/filter' />";
+        let currentUrl = "<c:url value='/stock/list' />";
         let params = new URLSearchParams(window.location.search);
         
         // 기존 파라미터들을 포함시키고 sortOrder 파라미터 추가
@@ -32,14 +32,14 @@
     <h1>재고 리스트</h1>
     
     <!-- 필터링 폼 -->
-    <form action="<c:url value='/stock/filter' />" method="get">
-        <label for="warehouseName">창고명:</label>
-        <select name="warehouseName" id="warehouseName">
+    <form action="<c:url value='/stock/list' />" method="get">
+        <label for="warehouseId">창고명:</label>
+        <select name="warehouseId" id="warehouseId">
             <option value="">-- 선택 --</option>
             <c:forEach var="warehouse" items="${warehouseList}">
-                <option value="${warehouse.warehouseName}" 
-                    <c:if test="${warehouse.warehouseName == param.warehouseName}">selected</c:if>
-                >${warehouse.warehouseName}</option>
+                <option value="${warehouse.warehouseId}" 
+                    <c:if test="${warehouse.warehouseId == param.warehouseId}">selected</c:if>
+                >${warehouse.warehouseName}</option> <!-- warehouseName으로 표시 -->
             </c:forEach>
         </select>
 
@@ -67,7 +67,6 @@
         <thead>
             <tr>
                 <th>상품명</th>
-                <th>바코드</th>
                 <th>창고명</th>
                 <th>카테고리명</th>
                 <th><a href="javascript:void(0);" onclick="sortByStock()">재고 수량</a></th>
@@ -81,18 +80,16 @@
         <c:forEach var="stock" items="${stockList}">
             <tr>
                 <td>
-                    <a href="<c:url value='/stock/detail/${stock.stockId}'/>">${stock.productName}</a>
+                    <!-- 상품명은 ProductVO의 name 속성을 사용 -->
+                    <a href="<c:url value='/product/detail/${stock.product.productId}'/>">${stock.product.name}</a> <!-- 상품명 링크 추가 -->
                 </td>
-                <td>${stock.barcode}</td>
-                <td>${stock.warehouseName}</td>
+                <td>${stock.warehouseName}</td> <!-- warehouseName으로 표시 -->
                 <td>${stock.categoryName}</td>
                 <td>
                     <c:if test="${stock.availableStock < 10}">
                         <span style="color: red;">${stock.availableStock}</span> <!-- 수량이 부족하면 빨간색으로 표시 -->
                     </c:if>
-                    <c:if test="${stock.availableStock >= 10}">
-                        ${stock.availableStock}
-                    </c:if>
+                    <c:if test="${stock.availableStock >= 10}">${stock.availableStock}</c:if>
                 </td>
                 <td>${stock.statusInfo}</td>
                 <td>${stock.updatedAt}</td>
@@ -103,16 +100,14 @@
     </table>
     
     <!-- 주문하기 버튼 (재고가 부족한 경우만) -->
-    <c:if test="${not empty stockList}">
-        <c:forEach var="stock" items="${stockList}">
-            <c:if test="${stock.availableStock < 10}">
-                <form action="<c:url value='/order/register' />" method="post">
-                    <input type="hidden" name="stockId" value="${stock.stockId}" />
-                    <button type="submit">주문하기</button>
-                </form>
-            </c:if>
-        </c:forEach>
-    </c:if>
+    <c:forEach var="stock" items="${stockList}">
+        <c:if test="${stock.availableStock < 10}">
+            <form action="<c:url value='/order/register' />" method="post">
+                <input type="hidden" name="stockId" value="${stock.stockId}" />
+                <button type="submit">주문하기</button>
+            </form>
+        </c:if>
+    </c:forEach>
 
 </body>
 </html>

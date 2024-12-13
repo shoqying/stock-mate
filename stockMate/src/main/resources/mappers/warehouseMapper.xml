@@ -74,5 +74,12 @@
 		DELETE FROM
 		test_warehouses WHERE warehouse_id = #{warehouseId}
 	</delete>
+	
+	<!-- 회사 정보에 따른 창고 목록 조회 stock가 씀-->
+	<select id="selectWarehousesByBusinessId" resultType="com.stockm8.domain.vo.WarehouseVO">
+    SELECT warehouse_id AS warehouseId, warehouse_name AS warehouseName, location
+    FROM test_warehouses
+    WHERE business_id = #{businessId}
+	</select>
 
 </mapper>

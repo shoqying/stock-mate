@@ -1,10 +1,12 @@
 package com.stockm8.service;
 
-import com.stockm8.domain.vo.CategoryVO;
-import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.WarehouseVO;
+import com.stockm8.persistence.FilterCriteria;
+import com.stockm8.domain.vo.CategoryVO;
 import com.stockm8.persistence.StockDAO;
+import com.stockm8.persistence.WarehouseDAO;
+import com.stockm8.persistence.CategoryDAO;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -17,39 +19,28 @@ public class StockServiceImpl implements StockService {
     @Inject
     private StockDAO stockDAO;
 
-    // 사업자 ID에 해당하는 재고 목록 조회
+    @Inject
+    private WarehouseDAO warehouseDAO;
+
+    @Inject
+    private CategoryDAO categoryDAO;
+
+    // 사업자 ID에 해당하는 창고 목록 조회
     @Override
-    public List<StockVO> getAllStock(int businessId) throws Exception {
-        return stockDAO.selectAllStockByBusinessId(businessId);
+    public List<WarehouseVO> getWarehousesByBusinessId(int businessId) throws Exception {
+        return warehouseDAO.selectWarehousesByBusinessId(businessId);
     }
 
-    // 상품 ID로 상품 상세 조회
+    // 필터링된 재고 목록 조회
     @Override
-    public ProductVO getProductById(int productId) throws Exception {
-        return stockDAO.selectProductById(productId);
-    }
-
-    // 사용 가능한 재고 자동 계산 (서비스 계층에서 직접 계산)
-    @Override
-    public int calculateAvailableStock(StockVO stock) throws Exception {
-        // totalQuantity - reservedQuantity 계산
-        return stock.getTotalQuantity() - stock.getReservedQuantity();
-    }
-
-    @Override
-    public List<StockVO> filterStocks(String warehouseName, String categoryName, String sortOrder) throws Exception {
-        return stockDAO.selectFilteredStocks(warehouseName, categoryName, sortOrder);
-    }
-
-    // 창고 목록 조회
-    @Override
-    public List<WarehouseVO> getAllWarehouses() throws Exception {
-        return stockDAO.selectAllWarehouses();
+    public List<StockVO> getStockList(FilterCriteria criteria, String sortOrder) throws Exception {
+        // sortOrder를 전달하여 정렬 기준을 처리
+        return stockDAO.selectFilteredStocks(criteria, sortOrder);  // StockDAO에서 필터링된 재고 목록 조회
     }
 
     // 카테고리 목록 조회
     @Override
-    public List<CategoryVO> getAllCategories() throws Exception {
-        return stockDAO.selectAllCategories();
+    public List<CategoryVO> getCategoryList() throws Exception {
+        return categoryDAO.selectAllCategories();  // CategoryDAO에서 카테고리 목록 조회
     }
 }
