@@ -23,6 +23,5 @@ public class QRCodeDAOImpl implements QRCodeDAO {
 	@Override
 	public QRCodeVO selectQRCodeByProductId(int productId) {
 		return sqlSession.selectOne(NAMESPACE + "selectQRCodeByProductId", productId);
-	}
-    
+	}    
 }

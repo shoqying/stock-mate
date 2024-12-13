@@ -77,7 +77,7 @@
         WHERE product_id = #{productId}
     </select>
     
-    <select id="selectProductsByBusinessId" resultMap="ProductResultMap">
+    <select id="selectProductsByBusinessId" resultMap="productResultMap">
 	    SELECT 
 	        product_id,
 	        name,

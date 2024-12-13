@@ -123,8 +123,9 @@
 			                    <button onclick="generateQRCode(${product.productId}, false)">Generate Detail QR</button>
 			                </c:when>
                             <c:otherwise>
-                                <!-- 다운로드 버튼만 표시 -->
-                                <a href="/api/qrcode/download?qrCodePath=${product.qrCode.qrCodePath}" target="_blank">Download QR</a>
+                                <!-- 다운로드 URI 수정 -->
+                                <a href="/api/qrcode/download?productId=${product.productId}&isJson=true" target="_blank">Download JSON QR</a>
+                                <a href="/api/qrcode/download?productId=${product.productId}&isJson=false" target="_blank">Download Detail QR</a>
                             </c:otherwise>
                         </c:choose>
                     </td>

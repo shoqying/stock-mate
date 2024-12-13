@@ -7,5 +7,5 @@ public interface QRCodeDAO {
     public void insertQRCode(QRCodeVO qrCode);
     
     public QRCodeVO selectQRCodeByProductId(int productId);
-
+    
 }
