@@ -83,7 +83,7 @@
     <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="/user/dashboard">&larr; 뒤로 가기</a>
+            <a href="/dashboard">&larr; 뒤로 가기</a>
         </div>
         <h1>홍길동님의 회원정보</h1>
         <form id="editInfoForm" action="editinfo2" method="post" onsubmit="return handleFormSubmit(event);">
@@ -93,7 +93,7 @@
                 <label for="name">이름</label>
                 <input type="text" id="name" name="name" value="홍길동" required>
                 <label for="phone">전화번호</label>
-                <input type="text" id="phone" name="phone" value="010-1234-1234" required>
+                <input type="tel" id="phone" name="phone" value="010-1234-1234" required>
             </div>
             <button type="submit">저장하기</button>
         </form>

@@ -77,14 +77,14 @@
     <script>
         function redirectToDashboard(event) {
             event.preventDefault(); // Form submission 막기
-            window.location.href = 'dashboard';
+            window.location.href = '/dashboard';
         }
     </script>
 </head>
 <body>
     <div class="container">
         <div class="back-button">
-            <a href="dashboard">&larr; 뒤로 가기</a>
+            <a href="/dashboard">&larr; 뒤로 가기</a>
         </div>
         <h1>비밀번호 변경</h1>
         <form id="passwordForm" onsubmit="redirectToDashboard(event)">

@@ -61,9 +61,9 @@
     </select>
 
     <!-- 회원정보 조회 -->
-    <select id="getUser" parameterType="long" resultMap="UserResultMap">
+    <select id="getUser" resultMap="UserResultMap">
         SELECT * FROM test_users
-        WHERE user_id = #{userId}
+        WHERE email = #{email} and password = #{password}
     </select>
 
     <!-- 회원정보 수정 -->
@@ -77,10 +77,10 @@
     
     <!-- 사용자의 businessId 수정 -->
     <update id="updateUserBusinessId" parameterType="map">
-	    UPDATE test_users 
-	    SET business_id = #{businessId} 
-	    WHERE user_id = #{userId} AND business_id IS NULL
-	</update>
+       UPDATE test_users 
+       SET business_id = #{businessId} 
+       WHERE user_id = #{userId} AND business_id IS NULL
+   </update>
 
     <!-- 회원정보 삭제 -->
     <delete id="deleteUser">
@@ -95,22 +95,22 @@
 
     <!-- 유저 정보를 user_id로 조회 -->
     <select id="getUserById" parameterType="long" resultMap="UserResultMap">
-	    SELECT 
-	        user_id,
-	        email,
-	        password,
-	        name,
-	        role,
-	        business_id,
-	        tel_number,
-	        created_at,
-	        updated_at,
-	        created_by,
-	        status,
-	        is_deleted
-	    FROM test_users
-	    WHERE user_id = #{userId}
-	</select>
+       SELECT 
+           user_id,
+           email,
+           password,
+           name,
+           role,
+           business_id,
+           tel_number,
+           created_at,
+           updated_at,
+           created_by,
+           status,
+           is_deleted
+       FROM test_users
+       WHERE user_id = #{userId}
+   </select>
 
     <!-- 유저의 삭제 여부 확인 -->
     <select id="getIsDeleted" parameterType="long" resultType="int">
