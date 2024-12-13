@@ -114,9 +114,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     // 카테고리ID로 카테고리명 조회(삭제하지 마세요)
     @Override
-	public void getCategoryNameById(int categoryId) throws Exception {
+	public String getCategoryNameById(int categoryId) throws Exception {
     	logger.info(" getCategoryNameById() 호출 ");
-    	categoryDAO.selectCategoryNameById(categoryId);
+    	return categoryDAO.selectCategoryNameById(categoryId);
 	}
     
     // 카테고리 삭제

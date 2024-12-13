@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,4 +114,8 @@ public class ProductServiceImpl implements ProductService {
 		return productDAO.getProductById(productId);
 	}
 	
+    @Override
+    public List<ProductVO> getProductsWithQRCode(int businessId) throws Exception{
+        return productDAO.selectProductsWithQRCode(businessId);
+    }
 }

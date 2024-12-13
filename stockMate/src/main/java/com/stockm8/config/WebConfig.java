@@ -72,7 +72,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/favicon.ico",    // 브라우저 기본 요청
                         "/resources/**",   // 정적 리소스
                         "/user/**",	       // 로그인 및 회원가입 관련 요청
-                        "/static/**"
+                        "/static/**",
+                		"/api/qrcode/**"   // QR 코드 생성 요청에 대해서는 세션 체크를 제외
                 );   
         // Flash 메시지 처리 인터셉터
         registry.addInterceptor(new FlashMessageInterceptor());

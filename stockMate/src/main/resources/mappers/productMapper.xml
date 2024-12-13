@@ -6,23 +6,29 @@
 <mapper namespace="com.stockm8.mapper.ProductMapper">
 
 	<!-- ResultMap 정의 -->
-	<resultMap id="ProductResultMap"
-		type="com.stockm8.domain.vo.ProductVO">
-		<id property="productId" column="product_id" />
-		<result property="name" column="name" />
-		<result property="barcode" column="barcode" />
-		<result property="categoryId" column="category_id" />
-		<result property="baseUnit" column="base_unit" />
-		<result property="setSize" column="set_size" />
-		<result property="price" column="price" />
-		<result property="createdAt" column="created_at" />
-		<result property="updatedAt" column="updated_at" />
-		<result property="businessId" column="business_id" />
-		<result property="qrCodePath" column="qr_code_path" />
-		<result property="barcodePath" column="barcode_path" />
-		<result property="description" column="description" />
+	<resultMap id="productResultMap" type="com.stockm8.domain.vo.ProductVO">
+	    <id property="productId" column="product_id" />
+	    <result property="name" column="name" />
+	    <result property="barcode" column="barcode" />
+	    <result property="categoryId" column="category_id" />
+	    <result property="baseUnit" column="base_unit" />
+	    <result property="setSize" column="set_size" />
+	    <result property="price" column="price" />
+	    <result property="createdAt" column="created_at" />
+	    <result property="updatedAt" column="updated_at" />
+	    <result property="businessId" column="business_id" />
+	    <result property="qrCodePath" column="qr_code_path" />
+	    <result property="barcodePath" column="barcode_path" />
+	    <result property="description" column="description" />
+	    <!-- QRCodeVO 매핑 -->
+	    <association property="qrCode" javaType="com.stockm8.domain.vo.QRCodeVO">
+	        <id property="qrCodeId" column="qr_code_id"/>
+	        <result property="qrCodePath" column="qr_code_path"/>
+	        <result property="qrCodeData" column="qr_code_data"/>
+	        <result property="createdAt" column="created_at"/>
+	        <result property="updatedAt" column="updated_at"/>
+	    </association>
 	</resultMap>
-
     <!-- 상품 등록 -->
 	<insert id="insertProduct" parameterType="com.stockm8.domain.vo.ProductVO" useGeneratedKeys="true" keyProperty="productId">
     INSERT INTO test_products
@@ -70,5 +76,33 @@
         FROM test_products
         WHERE product_id = #{productId}
     </select>
+    
+    <select id="selectProductsByBusinessId" resultMap="ProductResultMap">
+	    SELECT 
+	        product_id,
+	        name,
+	        barcode,
+	        category_id,
+	        base_unit,
+	        set_size,
+	        price,
+	        created_at,
+	        updated_at,
+	        business_id,
+	        qr_code_path,
+	        barcode_path,
+	        description
+	    FROM test_products
+	    WHERE business_id = #{businessId}
+	</select>
+	
+	<!-- 상품과 QR 코드 정보를 조인해서 가져오는 쿼리 -->
+	<select id="selectProductsWithQRCode" resultMap="productResultMap">
+	    SELECT p.product_id, p.name, p.barcode, p.qr_code_path AS product_qr_code_path,
+	           q.qr_code_path AS qr_code_path, q.qr_code_id
+	    FROM test_products p
+	    LEFT JOIN test_qr_codes q ON p.product_id = q.product_id
+	    WHERE p.business_id = #{businessId}
+	</select>
 
 </mapper>

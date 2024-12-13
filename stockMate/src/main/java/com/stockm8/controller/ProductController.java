@@ -128,13 +128,6 @@ public class ProductController {
 	        return "redirect:/product/detail?productId=" + productId;
 	    }
 
-	    // 기존 QR코드 존재 여부 확인
-	    if (product.getQrCodePath() != null && !product.getQrCodePath().isEmpty()) {
-	        logger.warn("이미 QR 코드가 등록된 상품입니다. productId={}", productId);
-	        rttr.addFlashAttribute("errorMessage", "이미 QR 코드가 등록된 상품입니다.");
-	        return "redirect:/product/detail?productId=" + productId;
-	    }
-
 	    // QR 코드 생성 (예외 발생 시 @ControllerAdvice에서 처리)
 	    productService.generateQRCode(productId);
 	    rttr.addFlashAttribute("successMessage", "QR 코드가 성공적으로 생성되었습니다. (상품 ID: " + productId + ")");
@@ -184,15 +177,44 @@ public class ProductController {
 	// 상품 상세 정보 페이지
 	@GetMapping("/detail")
 	public String detail(@RequestParam("productId") int productId, Model model) throws Exception {
-		
-		// 상품 상세 정보 조회 
-		ProductVO product = productService.getProductByID(productId);
-		
-        // 뷰(JSP)에서 EL로 접근할 수 있도록 Model에 상품 정보 등록
-        model.addAttribute("product", product);
-		
-		logger.info("연결된 뷰페이지(/product/detail.jsp) 이동");
-		return "product/detail";
-	}
+	    // 상품 상세 정보 조회
+	    ProductVO product = productService.getProductByID(productId);
+	    if (product == null) {
+	        throw new IllegalArgumentException("상품 정보를 찾을 수 없습니다. productId: " + productId);
+	    }
 
+	    // 카테고리명 조회
+	    String categoryName = categoryService.getCategoryNameById(product.getCategoryId());
+	    if (categoryName == null) {
+	        categoryName = "알 수 없음"; // 카테고리가 없을 경우 기본값 설정
+	    }
+
+	    // 뷰(JSP)에서 EL로 접근할 수 있도록 Model에 상품 및 카테고리 정보 등록
+	    model.addAttribute("product", product);
+	    model.addAttribute("categoryName", categoryName);
+
+	    logger.info("연결된 뷰페이지(/product/detail.jsp) 이동");
+	    return "product/detail"; // JSP 파일 경로
+	}
+	
+	// http://localhost:8088/product/list
+    @GetMapping("/product/list")
+    public String listProducts(HttpServletRequest request, Model model) throws Exception{
+	    // 세션에서 userId 가져오기
+	    HttpSession session = request.getSession(false);
+	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
+        
+	    // userId로 사용자 정보 조회
+	    UserVO user = userService.getUserById(userId);
+	    int businessId = user.getBusinessId();
+
+        // 비즈니스 ID로 상품 리스트 조회
+        List<ProductVO> products = productService.getProductsWithQRCode(businessId);
+
+        // 모델에 데이터 추가
+        model.addAttribute("products", products);
+
+        return "product/list"; // /WEB-INF/views/product/list.jsp로 매핑
+    }
+	
 }

@@ -1,5 +1,7 @@
 package com.stockm8.service;
 
+import java.util.List;
+
 import com.stockm8.domain.vo.ProductVO;
 /**
  * 상품 관련 비즈니스 로직을 처리하는 서비스 인터페이스.
@@ -15,6 +17,9 @@ public interface ProductService {
 
 	// 상품 조회 
 	public ProductVO getProductByID(int productId) throws Exception;
+	
+	// 상품 리스트
+    public List<ProductVO> getProductsWithQRCode(int businessId) throws Exception;
 	
 }
 

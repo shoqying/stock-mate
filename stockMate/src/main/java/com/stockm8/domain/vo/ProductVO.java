@@ -17,8 +17,11 @@ public class ProductVO {
     private BigDecimal price;      // 상품 기본 단가
     private Timestamp createdAt;   // 상품 등록 일자
     private Timestamp updatedAt;   // 상품 정보 수정 일자
-    private String qrCodePath;     // QR 코드 저장 경로
+    private String qrCodePath;     // 상품 상세 QR 코드 저장 경로
     private String barcodePath;    // 바코드 이미지 저장 경로
     private String description;    // 상품 설명
     private boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
+    
+    // 입출고 관련 QR 코드 정보
+    private QRCodeVO qrCode; // QRCodeVO를 별도로 관리하여 입출고 관련 정보를 관리
 }

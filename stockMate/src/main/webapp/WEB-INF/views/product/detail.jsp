@@ -80,17 +80,20 @@
 	
 	<!-- 상품 상세 페이지 -->
 	<c:if test="${product != null}">
+	    <p>카테고리명: ${categoryName}</p>
 	    <p>상품명: ${product.name}</p>
 	    <p>바코드: ${product.barcode}</p>
-		<p>상품명: ${product.name}</p>
-		<p>바코드: ${product.barcode}</p>
-		<p>카테고리 ID: ${product.categoryId}</p>
-		<p>가격: ${product.price}</p>
 		<p>기본 단위: ${product.baseUnit}</p>
 		<p>세트 크기: ${product.setSize}</p>
+		<p>가격: ${product.price}</p>
 		<p>설명: ${product.description}</p>
-		<p>QR코드 경로: ${product.qrCodePath}</p>
 		
+		<h3>입출고를 위한 QR 코드 생성</h3>
+	    <form action="/api/qrcode/generate" method="post">
+	        <input type="hidden" name="productId" value="${product.productId}">
+	        <button type="submit">QR 코드 생성</button>
+	    </form>
+	    
 		<!-- QR 코드 생성 버튼 -->
 		<c:if test="${product.qrCodePath == null}">
 		    <form action="/product/generateQR" method="get" style="display:inline;">
