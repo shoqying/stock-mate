@@ -3,7 +3,7 @@ package com.stockm8.domain.vo;
 import java.sql.Timestamp;
 
 import com.stockm8.domain.enums.Role;
-import com.stockm8.domain.enums.Status;
+import com.stockm8.domain.enums.UserStatus;
 
 import lombok.Data;
 
@@ -22,7 +22,7 @@ public class UserVO {
     private Integer createdBy;     // 계정을 승인한 사용자 ID
     private Timestamp createdAt;   // 계정 생성 날짜
     private Timestamp updatedAt;   // 계정 수정 날짜
-    private Status status;         // 계정 상태 (approved, pending, rejected)
+    private UserStatus status;         // 계정 상태 (approved, pending, rejected)
     private Boolean isDeleted;     // 삭제 여부 (true/false)
 
 }

@@ -31,7 +31,7 @@
 	</resultMap>
     <!-- 상품 등록 -->
 	<insert id="insertProduct" parameterType="com.stockm8.domain.vo.ProductVO" useGeneratedKeys="true" keyProperty="productId">
-    INSERT INTO test_products
+    INSERT INTO products
     (
         name,
         barcode,
@@ -65,7 +65,7 @@
 	
 	<!-- QR 코드 경로 업데이트 -->
 	<update id="updateQRCodePath" parameterType="com.stockm8.domain.vo.ProductVO">
-    UPDATE test_products
+    UPDATE products
     SET qr_code_path = #{qrCodePath}
     WHERE product_id = #{productId}
 	</update>
@@ -73,7 +73,7 @@
     <!-- 상품 상세 조회 -->
     <select id="getProductById" parameterType="int" resultType="com.stockm8.domain.vo.ProductVO">
         SELECT *
-        FROM test_products
+        FROM products
         WHERE product_id = #{productId}
     </select>
     
@@ -92,7 +92,7 @@
 	        qr_code_path,
 	        barcode_path,
 	        description
-	    FROM test_products
+	    FROM products
 	    WHERE business_id = #{businessId}
 	</select>
 	
@@ -100,8 +100,8 @@
 	<select id="selectProductsWithQRCode" resultMap="productResultMap">
 	    SELECT p.product_id, p.name, p.barcode, p.qr_code_path AS product_qr_code_path,
 	           q.qr_code_path AS qr_code_path, q.qr_code_id
-	    FROM test_products p
-	    LEFT JOIN test_qr_codes q ON p.product_id = q.product_id
+	    FROM products p
+	    LEFT JOIN qr_codes q ON p.product_id = q.product_id
 	    WHERE p.business_id = #{businessId}
 	</select>
 

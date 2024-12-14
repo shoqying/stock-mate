@@ -168,6 +168,7 @@
             <div class="sidebar">
                 <div class="disabled">Dashboard</div>
                 <a href="product/register">상품 등록</a>
+                <a href="warehouse/register">창고 등록</a>
                 <a href="profile">내정보 조회/수정</a>
                 <a href="password">비밀번호 변경</a>
                 <a href="help">대시보드 사용법</a>

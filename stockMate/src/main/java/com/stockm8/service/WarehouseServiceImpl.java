@@ -21,7 +21,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 	private WarehouseDAO warehouseDAO;
 	
 	@Override
-	public void createWarehouse(WarehouseVO warehouse) throws Exception {
+	public void registerWarehouse(WarehouseVO warehouse) throws Exception {
 		
 		logger.info("createWarehouse(WarehouseVO warehouse) 호출");
 		

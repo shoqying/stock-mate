@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+/* 공통 토스트 메시지 스타일 */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #323232; /* 기본 배경색 (어두운 회색) */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+    animation: slideIn 0.5s, fadeOut 4s 3s; /* 나타나는 애니메이션 */
+    font-size: 14px; /* 기본 폰트 크기 */
+    z-index: 1000; /* 다른 요소보다 위에 표시 */
+}
+
+/* 성공 메시지 스타일 */
+.toast.success {
+    background-color: #28a745; /* 초록색 (성공 메시지) */
+}
+
+/* 오류 메시지 스타일 */
+.toast.error {
+    background-color: #dc3545; /* 빨간색 (오류 메시지) */
+}
+
+/* 애니메이션 정의 */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%); /* 오른쪽에서 들어옴 */
+    }
+    to {
+        transform: translateX(0); /* 원래 위치 */
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0; /* 투명해짐 */
+    }
+}
+
+/* 토스트 사용법  */
+/* function showToast(message, type) { */
+/*     const toast = document.createElement("div"); */
+/*     toast.className = `toast ${type}`; // success 또는 error */
+/*     toast.textContent = message; */
+
+/*     document.body.appendChild(toast); */
+
+/*     // 일정 시간 후 자동 삭제 */
+/*     setTimeout(() => { */
+/*         toast.style.opacity = 0; */
+/*         setTimeout(() => document.body.removeChild(toast), 500); */
+/*     }, 4000); // 4초 후 사라짐 */
+/* } */
+
+/* // 예제 사용 */
+/* showToast("상품 등록이 완료되었습니다.", "success"); */
+/* showToast("상품 등록 중 오류가 발생했습니다.", "error"); */
+

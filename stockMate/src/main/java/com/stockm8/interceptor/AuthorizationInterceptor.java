@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.stockm8.domain.enums.Role;
-import com.stockm8.domain.enums.Status;
+import com.stockm8.domain.enums.UserStatus;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
 
@@ -135,7 +135,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         List<Role> allowedRoles = Arrays.asList(Role.MANAGER, Role.ADMIN /*Role.STAFF*/);
 
         // 1. PENDING 상태 처리
-        if (user.getStatus() == Status.PENDING) {
+        if (user.getStatus() == UserStatus.PENDING) {
             if (user.getRole() == Role.MANAGER && user.getBusinessId() == null) {
                 logger.warn("PENDING 상태의 매니저 사용자({})입니다. 비즈니스 등록 페이지로 이동합니다.", user.getUserId());
                 return sendErrorMessage(request, response, "비즈니스 정보를 등록해주세요.", "/business/register");
@@ -154,7 +154,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         // 2. APPROVED 상태 처리
-        if (user.getStatus() == Status.APPROVED) {
+        if (user.getStatus() == UserStatus.APPROVED) {
             if (!allowedRoles.contains(user.getRole())) {
                 logger.warn("권한 없는 사용자({})가 접근을 시도했습니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getRole());
                 return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");

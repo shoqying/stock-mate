@@ -46,8 +46,8 @@ public class ProductController {
 	// http://localhost:8088/product/register
 	// 상품 등록 페이지
 	@GetMapping("/register")
-	public String registGET(Model model, HttpServletRequest request) throws Exception {
-		logger.info("registGET() 호출");
+	public String productRegistGET(Model model, HttpServletRequest request) throws Exception {
+		logger.info("productRegistGET() 호출");
 		
 	    // 세션에서 userId 가져오기
 	    HttpSession session = request.getSession(false);
@@ -72,10 +72,10 @@ public class ProductController {
 
 	// 상품 등록 처리
 	@PostMapping("/register")
-	public String registPOST(ProductVO product, 
+	public String productRegistPOST(ProductVO product, 
 							 HttpServletRequest request, 
 							 RedirectAttributes rttr) throws Exception {
-		logger.info("registPOST() 호출");
+		logger.info("productRegistPOST() 호출");
 
 		// 전달정보(파라미터) 확인
 		logger.info("product: {}", product);

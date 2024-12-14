@@ -5,30 +5,44 @@
 
 <mapper namespace="com.stockm8.mapper.WarehouseMapper">
 
-	<!-- ResultMap 정의 -->
-	<resultMap id="WarehouseResultMap"
-		type="com.stockm8.domain.vo.WarehouseVO">
-		<id property="warehouseId" column="warehouse_id" />
-		<result property="warehouseName" column="warehouse_name" />
-		<result property="location" column="location" />
-		<result property="businessId" column="business_id" />
-		<result property="managerId" column="manager_id" />
-		<result property="createdAt" column="created_at" />
-	</resultMap>
+    <!-- ResultMap 정의 -->
+    <resultMap id="WarehouseResultMap" type="com.stockm8.domain.vo.WarehouseVO">
+        <id property="warehouseId" column="warehouse_id" />
+        <result property="warehouseName" column="warehouse_name" />
+        <result property="location" column="location" />
+        <result property="businessId" column="business_id" />
+        <result property="managerId" column="manager_id" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="isDeleted" column="is_deleted" />
+    </resultMap>
 
-	<!-- 창고 등록 -->
-	<insert id="insertWarehouse"
-		parameterType="com.stockm8.domain.vo.WarehouseVO">
-		INSERT INTO test_warehouses (warehouse_name, location,
-		business_id, manager_id)
-		VALUES (#{warehouseName}, #{location},
-		#{businessId}, #{managerId})
-	</insert>
+    <!-- 창고 등록 -->
+    <insert id="insertWarehouse" parameterType="com.stockm8.domain.vo.WarehouseVO">
+        INSERT INTO warehouses (
+            warehouse_name, 
+            location, 
+            business_id, 
+            manager_id, 
+            created_at, 
+            updated_at, 
+            is_deleted
+        )
+        VALUES (
+            #{warehouseName}, 
+            #{location}, 
+            #{businessId}, 
+            #{managerId}, 
+            CURRENT_TIMESTAMP, 
+            CURRENT_TIMESTAMP, 
+            0
+        )
+    </insert>
 
 	<!-- 창고 조회 -->
 	<select id="selectWarehouseById" parameterType="int"
 		resultMap="WarehouseResultMap">
-		SELECT * FROM test_warehouses WHERE warehouse_id =
+		SELECT * FROM warehouses WHERE warehouse_id =
 		#{warehouseId}
 	</select>
 
@@ -36,7 +50,7 @@
 	<select id="selectWarehouseIDByBusinessId" parameterType="int"
 		resultMap="WarehouseResultMap">
 		SELECT warehouseId
-		FROM test_warehouses
+		FROM warehouses
 		WHERE business_id =
 		#{businessId}
 	</select>
@@ -51,7 +65,7 @@
 	<select id="existsById" parameterType="map" resultType="int">
 		SELECT
 		COUNT(*)
-		FROM test_warehouses
+		FROM warehouses
 		WHERE warehouse_id = #{warehouseId} AND
 		business_id = #{businessId}
 	</select>
@@ -59,7 +73,7 @@
 	<!-- 창고 정보 수정 -->
 	<update id="updateWarehouse"
 		parameterType="com.stockm8.domain.vo.WarehouseVO">
-		UPDATE test_warehouses
+		UPDATE warehouses
 		SET warehouse_name =
 		#{warehouseName},
 		location = #{location},
@@ -72,7 +86,7 @@
 	<!-- 창고 삭제 -->
 	<delete id="deleteWarehouseById" parameterType="int">
 		DELETE FROM
-		test_warehouses WHERE warehouse_id = #{warehouseId}
+		warehouses WHERE warehouse_id = #{warehouseId}
 	</delete>
 
 </mapper>
