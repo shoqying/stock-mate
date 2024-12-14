@@ -1,137 +1,161 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product List</title>
-<style>
-.error-banner {
-    width: 100%;
-    background-color: #FCE4E4;
-    color: #D32F2F;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 14px;
-    font-weight: 500;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    border-bottom: 1px solid #F5C6C6;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.success-banner {
-    width: 100%;
-    background-color: #E6F4EA;
-    color: #2E7D32;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 14px;
-    font-weight: 500;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    border-bottom: 1px solid #C8E6C9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-    body {
-        font-family: Arial, sans-serif;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-    th, td {
-        padding: 10px;
-        text-align: left;
-        border: 1px solid #ddd;
-    }
-    th {
-        background-color: #f4f4f4;
-    }
-    tr:hover {
-        background-color: #f9f9f9;
-    }
-    a, button {
-        color: #007BFF;
-        text-decoration: none;
-    }
-    a:hover, button:hover {
-        text-decoration: underline;
-    }
-</style>
-<script>
-	function generateQRCode(productId, isJsonQRCode) {
-	    fetch(`/api/qrcode/generate`, {
-	        method: 'POST',
-	        headers: {
-	            'Content-Type': 'application/json',
-	        },
-	        body: JSON.stringify({ productId: productId, isJsonQRCode: isJsonQRCode })
-	    })
-	    .then(response => response.text()) // 서버의 응답을 텍스트로 처리
-	    .then(message => {
-	        alert(message); // 성공 또는 실패 메시지 표시
-	        location.reload(); // 페이지 새로고침
-	    })
-	    .catch(error => {
-	        alert('QR 코드 생성 실패: ' + error.message);
-	    });
-	}
-</script>
+<title>상품 리스트</title>
+<link rel="stylesheet" href="<c:url value='/resources/css/productListStyle.css' />">
 </head>
 <body>
-    <h1>Product List</h1>
-    <!-- 성공 메시지 출력 -->
-    <c:if test="${not empty successMessage}">
-        <div class="success-banner">
-            ${successMessage}
-        </div>
-    </c:if>
+	<div id="toast-container"></div>
+	<!-- 토스트 메시지 컨테이너 -->
+	<div class="container">
+		<h1 class="page-title">상품 리스트</h1>
+		<table class="product-table">
+			<thead>
+				<tr>
+					<th>상품 ID</th>
+					<th>상품명</th>
+					<th>바코드</th>
+					<th>스캔용 QR 코드</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="product" items="${products}">
+					<tr>
+						<td>${product.productId}</td>
+						<td>${product.name}</td>
+						<td>${product.barcode}</td>
+						<td><c:choose>
+								<c:when test="${product.qrCode.qrCodePath == null}">
+									<button class="btn-generate"
+										data-product-id="${product.productId}">QR 코드 생성</button>
+								</c:when>
+								<c:otherwise>
+									<button class="btn-download"
+										data-product-id="${product.productId}">QR 코드 다운로드</button>
+								</c:otherwise>
+							</c:choose></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	<script>
+		/* QR 코드 생성 요청 */
+		function generateQRCode(productId, button) {
+		    setButtonLoading(button, true);
+	
+		    fetch(`/api/qrcode/generate`, {
+		        method: "POST",
+		        headers: { "Content-Type": "application/json" },
+		        body: JSON.stringify({ productId: productId })
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+		        if (data.status === "success") {
+		            showToast("success", data.message); // 성공 메시지 표시
+		            changeToDownloadButton(button, productId); // 다운로드 버튼으로 전환
+		        } else {
+		            throw new Error(data.message);
+		        }
+		    })
+		    .catch(error => {
+		        console.error("QR 코드 생성 오류:", error.message);
+		        showToast("error", "QR 코드 생성 중 오류가 발생했습니다."); // 에러 메시지 표시
+		    })
+		    .finally(() => setButtonLoading(button, false));
+		}
+	
+		/* QR 코드 다운로드 요청 */
+		function downloadQRCode(productId) {
+		
+		    fetch(`/api/qrcode/download`, {
+		        method: "POST",
+		        headers: { "Content-Type": "application/json" },
+		        body: JSON.stringify({ productId: productId })
+		    })
+		    .then(response => {
+		        if (!response.ok) {
+		            throw new Error("다운로드 서버 오류: " + response.status);
+		        }
+		        const contentDisposition = response.headers.get("Content-Disposition");
+		        const fileNameMatch = contentDisposition && contentDisposition.match(/filename\*=UTF-8''(.+)/);
+		        const fileName = fileNameMatch ? decodeURIComponent(fileNameMatch[1]) : `qr_code_${productId}.png`;
+		
+		        return response.blob().then(blob => ({ blob, fileName }));
+		    })
+		    .then(({ blob, fileName }) => {
+		        console.log("QR 코드 파일 다운로드 성공: ", fileName);
+		        const url = window.URL.createObjectURL(blob);
+		        const link = document.createElement("a");
+		        link.href = url;
+		        link.download = fileName;
+		        link.click();
+		        window.URL.revokeObjectURL(url);
+		    })
+		    .catch(error => {
+		        console.error("QR 코드 다운로드 오류: ", error.message);
+		        alert("QR 코드 다운로드 실패: " + error.message);
+		    });
+		}
+	
+		/* 버튼 상태 관리 함수 */
+		function changeToDownloadButton(button, productId) {
+		    button.textContent = "QR 코드 다운로드";
+		
+		    // 버튼 스타일 업데이트
+		    button.classList.remove("btn-generate");
+		    button.classList.add("btn-download");
+		
+		    // 기존 버튼 이벤트 제거 후 새 이벤트 추가
+		    const newButton = button.cloneNode(true); // 기존 버튼 복제
+		    newButton.disabled = false; // 새 버튼 활성화
+		    newButton.addEventListener("click", () => {
+		        console.log(`Download button clicked for productId: ${productId}`);
+		        downloadQRCode(productId);
+		    });
+		    button.replaceWith(newButton); // 버튼을 새 버튼으로 교체
+		}
+		
+		/* 로딩 상태 관리 함수 */
+		function setButtonLoading(button, isLoading) {
+		    if (isLoading) {
+		        button.disabled = true;
+		        button.textContent = "처리 중...";
+		    } else {
+		        button.disabled = false;
+		        button.textContent = button.getAttribute("data-original-text") || "QR 코드 생성";
+		    }
+		}
+	
+		/* Toast 메시지 표시 */
+		function showToast(type, message) {
+		    const toastContainer = document.getElementById("toast-container");
+		    const toast = document.createElement("div");
+		    toast.className = `toast ${type}`;
+		    toast.textContent = message;
+		    toastContainer.appendChild(toast);
+		    setTimeout(() => toast.remove(), 4000);
+		}
+		
+	    // 페이지가 로드된 후 버튼에 이벤트 추가
+	    document.addEventListener("DOMContentLoaded", () => {
+	        // QR 코드 생성 버튼에 이벤트 추가
+	        document.querySelectorAll(".btn-generate").forEach(button => {
+	            const productId = button.getAttribute("data-product-id");
+	            button.addEventListener("click", () => generateQRCode(productId, button));
+	        });
 
-    <!-- 에러 메시지 출력 -->
-    <c:if test="${not empty errorMessage}">
-        <div class="error-banner">
-            ${errorMessage}
-        </div>
-    </c:if>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Product ID</th>
-                <th>Name</th>
-                <th>Barcode</th>
-                <th>QR Code</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="product" items="${products}">
-                <tr>
-                    <td>${product.productId}</td>
-                    <td>${product.name}</td>
-                    <td>${product.barcode}</td>
-                    <td>
-                        <c:choose>
-			                <c:when test="${product.qrCode == null || product.qrCode.qrCodePath == null}">
-			                    <button onclick="generateQRCode(${product.productId}, true)">Generate JSON QR</button>
-			                    <button onclick="generateQRCode(${product.productId}, false)">Generate Detail QR</button>
-			                </c:when>
-                            <c:otherwise>
-                                <!-- 다운로드 URI 수정 -->
-                                <a href="/api/qrcode/download?productId=${product.productId}&isJson=true" target="_blank">Download JSON QR</a>
-                                <a href="/api/qrcode/download?productId=${product.productId}&isJson=false" target="_blank">Download Detail QR</a>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+	        // QR 코드 다운로드 버튼에 이벤트 추가
+	        document.querySelectorAll(".btn-download").forEach(button => {
+	            const productId = button.getAttribute("data-product-id");
+	            button.addEventListener("click", () => downloadQRCode(productId));
+	        });
+	    });
+	</script>
 </body>
 </html>

@@ -5,7 +5,7 @@ import com.stockm8.domain.vo.QRCodeVO;
 public interface QRCodeService {
 	
     // QR 코드 생성의 전체 흐름
-	public void generateQRCode(int productId, boolean isJsonQRCode) throws Exception;
+	public void generateQRCode(int productId) throws Exception;
     
 	// JSON QR 코드 경로를 가져
     public QRCodeVO getQRCodeByProductId(int productId) throws Exception; // 추가된 메서드

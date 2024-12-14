@@ -33,7 +33,7 @@
         );
     </insert>
 
-        <!-- QRCode 데이터 조회 -->
+    <!-- QRCode 데이터 조회 -->
     <select id="selectQRCodeByProductId" parameterType="int" resultMap="qrCodeResultMap">
         SELECT 
             qr_code_id, 

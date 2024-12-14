@@ -4,8 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.stockm8.exceptions.BusinessRegistrationException;
@@ -74,5 +77,16 @@ public class GlobalExceptionHandler {
         // 리다이렉트 경로 결정
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동
         return "redirect:" + (referer != null ? referer : "/");
+    }
+    
+    @RestControllerAdvice
+    public class RestApiExceptionHandler{
+
+        @ExceptionHandler(QRCodeGenerationException.class)
+        public ResponseEntity<String> handleQRCodeGenerationException(QRCodeGenerationException ex) {
+            logger.error("QR 코드 생성 실패:", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("QR 코드 생성 실패: " + ex.getMessage());
+        }
     }
 }

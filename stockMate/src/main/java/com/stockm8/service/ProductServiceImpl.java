@@ -65,19 +65,22 @@ public class ProductServiceImpl implements ProductService {
             // QR 코드 저장 경로 생성
             int businessId = product.getBusinessId(); // 상품의 비즈니스 ID
             int categoryId = product.getCategoryId(); // 상품의 카테고리 ID
-            String basePath = "/Users/Insung/Documents/qrcodes"; // QR 코드 기본 저장 경로
-           
+            String basePath = "/Users/Insung/Documents/products"; // QR 코드 기본 저장 경로
+//          String basePath = "/usr/local/tomcat/webapps/upload";
+
             // 디렉토리 경로 생성
             String directoryPath = basePath + File.separator 
+                    + "qrcodes" + File.separator 
+                    + "details" + File.separator 
                     + businessId + File.separator 
-                    + categoryId + "_" + safeCategoryName;   
+                    + safeCategoryName;   
             
-            // QR 코드 파일 이름: productId_상품명.png
-            String qrCodeFileName = productId + "_" + safeProductName + ".png";
+            // QR 코드 파일 이름: productId_detail_상품명.png
+            String qrCodeFileName = productId + "_detail_" + safeProductName + ".png";
             String qrCodePath = directoryPath + File.separator + qrCodeFileName;
-            String relativeQrCodePath = "/qrcodes/" 
+            String relativeQrCodePath = "/qrcodes/details" 
                                         + businessId + "/"
-                                        + categoryId + "_" + safeCategoryName + "/"
+                                        + categoryId + "/" + safeCategoryName + "/"
                                         + qrCodeFileName;
             
             // 디렉토리 생성

@@ -58,6 +58,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private AuthorizationInterceptor authorizationInterceptor;
     
+    @Autowired
+    private FlashMessageInterceptor flashMessageInterceptor;
+    
     /**
      * 인터셉터 설정
      * 특정 URL 패턴에 대해 AuthorizationInterceptor를 적용하며, 일부 URL은 제외합니다.
@@ -90,8 +93,8 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/resources/");
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
     }
     
     /**

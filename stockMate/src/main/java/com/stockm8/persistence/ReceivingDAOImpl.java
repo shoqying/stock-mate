@@ -94,10 +94,4 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		sqlSession.insert(NAMESPACE + "insertReceiving");
 	}
 	
-	
-	
-	
-	
-	
-
 } // ReceivingDAOImpl end

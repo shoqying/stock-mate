@@ -77,7 +77,7 @@
 	<c:if test="${not empty successMessage}">
 		<div class="success-banner">${successMessage}</div>
 	</c:if>
-	
+	    <a href="/product/list">상품 리스트</a>
 	<!-- 상품 상세 페이지 -->
 	<c:if test="${product != null}">
 	    <p>카테고리명: ${categoryName}</p>

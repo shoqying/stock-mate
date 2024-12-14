@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.google.zxing.BarcodeFormat;
@@ -30,45 +31,53 @@ public class QRCodeServiceImpl implements QRCodeService {
     private ProductDAO productDAO;
 
     @Autowired
-    private CategoryDAO categoryDAO;
-
-    @Autowired
     private QRCodeDAO qrCodeDAO;
+    
+	@Autowired
+	private CategoryDAO categoryDAO;
 
+    /**
+     * 상품 ID에 해당하는 JSON 형식의 QR 코드를 생성하고, 저장된 경로를 데이터베이스에 기록
+     *
+     * @param productId 생성할 상품 ID
+     * @throws Exception 예외 발생 시 처리
+     */
+    @Async
     @Override
-    public void generateQRCode(int productId, boolean isJsonQRCode) throws Exception {
-        logger.info("서비스 호출: Product ID = {}, Is JSON QR = {}", productId, isJsonQRCode);
-        ProductVO product = productDAO.getProductById(productId);
+    public void generateQRCode(int productId) throws Exception {
+        logger.info("QR 코드 생성 요청 (비동기): Product ID = {}", productId);
 
+        // 상품 정보 조회
+        ProductVO product = productDAO.getProductById(productId);
         if (product == null) {
             throw new IllegalArgumentException("존재하지 않는 상품 ID: " + productId);
         }
 
-        // QR 코드 데이터 결정
-        String qrCodeData = isJsonQRCode ? createJSONContent(product) : createQRContent(productId);
+        // JSON 형식의 QR 코드 데이터 생성
+        String qrCodeData = createJSONContent(product);
 
-        // QR 코드 이미지 파일 경로 생성
-        String filePath = createQRCodePath(product, isJsonQRCode);
+        // QR 코드 저장 경로 생성
+        String filePath = createQRCodePath(product);
 
-        // QR 코드 생성 및 저장
+        // QR 코드 이미지 생성 및 저장
         generateQRCodeImage(qrCodeData, filePath);
 
-        // QRCodeVO 객체 생성
+        // QRCodeVO 객체 생성 및 데이터베이스 저장
         QRCodeVO qrCode = new QRCodeVO();
         qrCode.setProductId(productId);
         qrCode.setQrCodeData(qrCodeData);
         qrCode.setQrCodePath(filePath);
-
-        // 데이터베이스에 저장
         qrCodeDAO.insertQRCode(qrCode);
 
         logger.info("QR 코드 생성 및 저장 완료. 파일 경로: {}", filePath);
     }
 
-    private String createQRContent(int productId) throws Exception{
-        return "http://localhost:8088/product/detail?productId=" + productId;
-    }
-
+    /**
+     * 상품 정보를 기반으로 JSON 형식의 QR 코드 데이터를 생성
+     *
+     * @param product 상품 정보
+     * @return JSON 형식의 QR 코드 데이터
+     */
     private String createJSONContent(ProductVO product) {
         return String.format(
             "{\"productId\":%d,\"barcode\":\"%s\",\"businessId\":%d,\"baseUnit\":\"%s\",\"setSize\":%d}",
@@ -79,25 +88,45 @@ public class QRCodeServiceImpl implements QRCodeService {
             product.getSetSize()
         );
     }
-    
-    // QR 코드 경로 생성
-    private String createQRCodePath(ProductVO product, boolean isJsonQRCode) throws Exception {
+
+    /**
+     * QR 코드 저장 경로 생성 (상품의 카테고리 및 이름 기반)
+     *
+     * @param product 상품 정보
+     * @return QR 코드 파일의 절대 경로
+     * @throws Exception 
+     */
+    private String createQRCodePath(ProductVO product) throws Exception {
+        
+        // 카테고리명을 ID를 참조하여 가져오기
+        String categoryName = categoryDAO.selectCategoryNameById(product.getCategoryId());
+
+        // 상품명, 카테고리명에서 파일 이름에 사용할 수 없는 문자를 제거
         String safeProductName = product.getName().replaceAll("[\\\\/:*?\"<>|]", "_");
-        String categoryName = categoryDAO.selectCategoryNameById(product.getCategoryId())
-                .replaceAll("[\\\\/:*?\"<>|]", "_");
+        String safeCategoryName = categoryName.replaceAll("[\\\\/:*?\"<>|]", "_");
 
-        String basePath = "/Users/Insung/Documents/products/qrcodes";
-        String directoryPath = isJsonQRCode
-                ? basePath + File.separator + "json" + File.separator
-                        + product.getBusinessId() + File.separator
-                        + product.getCategoryId() + "_" + categoryName
-                : basePath + File.separator + "details" + File.separator
-                        + product.getBusinessId() + File.separator
-                        + product.getCategoryId() + "_" + categoryName;
+        // QR 코드 저장 경로 생성
+        int businessId = product.getBusinessId(); // 상품의 비즈니스 ID
+        int categoryId = product.getCategoryId(); // 상품의 카테고리 ID
+        String basePath = "/Users/Insung/Documents/products"; // QR 코드 기본 저장 경로
+//      String basePath = "/usr/local/tomcat/webapps/upload";
 
-        String qrCodeFileName = product.getProductId() + "_" + safeProductName + (isJsonQRCode ? "_json" : "_detail") + ".png";
+        // 디렉토리 경로 생성
+        String directoryPath = basePath + File.separator 
+                + "qrcodes" + File.separator 
+                + "scans" + File.separator 
+                + businessId + File.separator 
+                + safeCategoryName;  
+
+        // QR 코드 파일 이름: productId_scan_상품명.png
+        String qrCodeFileName = product.getProductId() + "_scan_" + safeProductName + ".png";
         String qrCodePath = directoryPath + File.separator + qrCodeFileName;
+        String relativeQrCodePath = "/qrcodes/scans" 
+                                    + businessId + "/"
+                                    + categoryId + "/" + safeCategoryName + "/"
+                                    + qrCodeFileName;
 
+        // 디렉토리 생성
         File directory = new File(directoryPath);
         if (!directory.exists() && !directory.mkdirs()) {
             throw new IOException("QR 코드 디렉토리를 생성할 수 없습니다: " + directoryPath);
@@ -105,28 +134,40 @@ public class QRCodeServiceImpl implements QRCodeService {
 
         return qrCodePath;
     }
-    
-    // QR 코드 이미지 생성
-    private void generateQRCodeImage(String qrContent, String qrCodePath) throws Exception {
+
+    /**
+     * QR 코드 이미지를 생성하여 지정된 경로에 저장
+     *
+     * @param qrContent QR 코드 내용
+     * @param qrCodePath 저장할 파일 경로
+     * @throws WriterException QR 코드 생성 시 오류
+     * @throws IOException 파일 저장 시 오류
+     */
+    private void generateQRCodeImage(String qrContent, String qrCodePath) throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(
-            new String(qrContent.getBytes("UTF-8"), "ISO-8859-1"),
-            BarcodeFormat.QR_CODE,
-            200,
-            200
-        );
+        	    qrContent, // UTF-8 인코딩된 데이터 그대로 사용
+        	    BarcodeFormat.QR_CODE,
+        	    200, // QR 코드 크기
+        	    200
+        		);
         Path path = Paths.get(qrCodePath);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path); // PNG 형식으로 저장
     }
 
+    /**
+     * 상품 ID에 해당하는 QR 코드 정보 조회
+     *
+     * @param productId 상품 ID
+     * @return QR 코드 정보
+     * @throws Exception QR 코드 조회 실패 시 예외
+     */
     @Override
     public QRCodeVO getQRCodeByProductId(int productId) throws Exception {
-        // QR 코드 테이블에서 데이터 조회
         QRCodeVO qrCode = qrCodeDAO.selectQRCodeByProductId(productId);
         if (qrCode == null) {
             throw new IllegalArgumentException("QR 코드 정보를 찾을 수 없습니다. Product ID: " + productId);
         }
         return qrCode;
     }
-
 }
