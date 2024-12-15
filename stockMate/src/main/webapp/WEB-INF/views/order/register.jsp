@@ -321,14 +321,14 @@
 		    
 		    [
 		        stock.stockId,
-		        stock.product.name,
-		        stock.product.barcode || '-',
+		        stock.product.productName,
+		        stock.product.productBarcode || '-',
 		        stock.warehouseName,
 		        stock.warehouseId,
 		        stock.totalQuantity,
 		        stock.reservedQuantity,
 		        stock.availableStock,
-		        stock.product.price,
+		        stock.product.productPrice,
 		        stock.product.baseUnit
 		    ].forEach(text => {
 		        row.append($('<td>').text(text));
@@ -432,14 +432,14 @@
 		    card.find('.warehouse-id').val(stock.warehouseId);
 		    
 		    // 표시 필드 업데이트
-		    card.find('.product-name').val(stock.product.name);
+		    card.find('.product-name').val(stock.product.productName);
 		    card.find('.warehouse-name').val(stock.warehouseName);
-		    card.find('.barcode').val(stock.product.barcode);
+		    card.find('.barcode').val(stock.product.productBarcode);
 		    card.find('.total-quantity').val(stock.totalQuantity);
 		    card.find('.reserved-quantity').val(stock.reservedQuantity);
 		    card.find('.available-stock').val(stock.availableStock);
 		    card.find('.base-unit').val(stock.product.baseUnit);
-		    card.find('.unit-price').val(stock.product.price);
+		    card.find('.unit-price').val(stock.product.productPrice);
 		    
 		    // 주문 수량 최대값 설정
 		    const quantityInput = card.find('.order-quantity');

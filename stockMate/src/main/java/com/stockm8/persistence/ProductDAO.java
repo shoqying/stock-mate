@@ -20,4 +20,6 @@ public interface ProductDAO {
     // 상품 리스트
     public List<ProductVO> selectProductsWithQRCode(@Param("businessId") int businessId) throws Exception;
 
+    // 회사 정보를 통해 상품 조회
+    public List<ProductVO> selectProductsByBusinessId(@Param("businessId") int businessId) throws Exception;
 }

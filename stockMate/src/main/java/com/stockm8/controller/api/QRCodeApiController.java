@@ -1,4 +1,4 @@
-package com.stockm8.controller;
+package com.stockm8.controller.api;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -25,14 +25,15 @@ import com.stockm8.domain.dto.QRCodeDTO;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.QRCodeVO;
 import com.stockm8.exceptions.QRCodeGenerationException;
+import com.stockm8.exceptions.QRCodeNotFoundException;
 import com.stockm8.service.ProductService;
 import com.stockm8.service.QRCodeService;
 
 @RestController
 @RequestMapping("/api/qrcode")
-public class QRCodeController {
+public class QRCodeApiController {
 
-    private static final Logger logger = LoggerFactory.getLogger(QRCodeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(QRCodeApiController.class);
 
     @Autowired
     private QRCodeService qrCodeService;
@@ -50,19 +51,24 @@ public class QRCodeController {
      */
     @PostMapping("/generate")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> generateQRCode(@RequestBody QRCodeDTO qrCodeDTO) throws Exception {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> generateQRCode(@RequestBody QRCodeDTO qrCodeDTO) throws Exception {
+        Map<String, Object> response = new HashMap<>();
         try {
             qrCodeService.generateQRCode(qrCodeDTO.getProductId());
-            response.put("status", "success");
+            response.put("success", true);
             response.put("message", "QR 코드가 성공적으로 생성되었습니다!");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response); // 200 OK
+        } catch (QRCodeNotFoundException e) {
+            response.put("success", false);
+            response.put("message", "QR 코드 생성 실패: 제품 ID를 찾을 수 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); // 400 Bad Request
         } catch (QRCodeGenerationException e) {
-            response.put("status", "error");
+            response.put("success", false);
             response.put("message", "QR 코드 생성 중 오류가 발생했습니다: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response); // 500 Internal Server Error
         }
     }
+
 
     /**
      * JSON QR 코드 다운로드 처리
@@ -73,18 +79,12 @@ public class QRCodeController {
      */
     @PostMapping("/download")
     public ResponseEntity<Resource> downloadQRCode(@RequestBody QRCodeDTO qrCodeDTO) throws Exception {
-        if (qrCodeDTO.getProductId() <= 0) {
-            throw new IllegalArgumentException("유효하지 않은 상품 ID입니다.");
-        }
         
 	    // 상품 정보 가져오기
 	    ProductVO product = productService.getProductByID(qrCodeDTO.getProductId());
 
         // QR 코드 정보 가져오기
         QRCodeVO qrCode = qrCodeService.getQRCodeByProductId(qrCodeDTO.getProductId());
-        if (qrCode == null || qrCode.getQrCodePath() == null) {
-            throw new IllegalArgumentException("QR 코드가 존재하지 않습니다.");
-        }
 
         // QR 코드 파일 확인
         File qrCodeFile = new File(qrCode.getQrCodePath());
@@ -93,7 +93,7 @@ public class QRCodeController {
         }
 
         // QR 코드 파일 이름 생성 (서버에서 사용하는 동일한 형식 적용)
-        String safeProductName = product.getName().replaceAll("[\\\\/:*?\"<>|]", "_");
+        String safeProductName = product.getProductName().replaceAll("[\\\\/:*?\"<>|]", "_");
         String qrCodeFileName = qrCode.getProductId() + "_scan_" + safeProductName + ".png";
 
         // 파일명 인코딩 (다운로드 파일 이름에 반영)
@@ -107,6 +107,5 @@ public class QRCodeController {
                 .contentLength(qrCodeFile.length())
                 .body(resource);
     }
-    
 
 }

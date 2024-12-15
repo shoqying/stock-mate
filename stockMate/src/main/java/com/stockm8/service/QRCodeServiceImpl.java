@@ -82,7 +82,7 @@ public class QRCodeServiceImpl implements QRCodeService {
         return String.format(
             "{\"productId\":%d,\"barcode\":\"%s\",\"businessId\":%d,\"baseUnit\":\"%s\",\"setSize\":%d}",
             product.getProductId(),
-            product.getBarcode(),
+            product.getProductBarcode(),
             product.getBusinessId(),
             product.getBaseUnit(),
             product.getSetSize()
@@ -102,7 +102,7 @@ public class QRCodeServiceImpl implements QRCodeService {
         String categoryName = categoryDAO.selectCategoryNameById(product.getCategoryId());
 
         // 상품명, 카테고리명에서 파일 이름에 사용할 수 없는 문자를 제거
-        String safeProductName = product.getName().replaceAll("[\\\\/:*?\"<>|]", "_");
+        String safeProductName = product.getProductName().replaceAll("[\\\\/:*?\"<>|]", "_");
         String safeCategoryName = categoryName.replaceAll("[\\\\/:*?\"<>|]", "_");
 
         // QR 코드 저장 경로 생성
@@ -164,10 +164,6 @@ public class QRCodeServiceImpl implements QRCodeService {
      */
     @Override
     public QRCodeVO getQRCodeByProductId(int productId) throws Exception {
-        QRCodeVO qrCode = qrCodeDAO.selectQRCodeByProductId(productId);
-        if (qrCode == null) {
-            throw new IllegalArgumentException("QR 코드 정보를 찾을 수 없습니다. Product ID: " + productId);
-        }
-        return qrCode;
+        return qrCodeDAO.selectQRCodeByProductId(productId);
     }
 }

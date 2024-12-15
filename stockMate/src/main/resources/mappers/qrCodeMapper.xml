@@ -17,7 +17,7 @@
 
         <!-- QR 코드 데이터 삽입 -->
     <insert id="insertQRCode" parameterType="com.stockm8.domain.vo.QRCodeVO">
-        INSERT INTO test_qr_codes (
+        INSERT INTO qr_codes (
             product_id, 
             qr_code_data, 
             qr_code_path, 
@@ -42,20 +42,35 @@
             qr_code_path, 
             created_at, 
             updated_at
-        FROM test_qr_codes
+        FROM qr_codes
         WHERE product_id = #{productId}
     </select>
 
     <!-- QR 코드 데이터 업데이트 -->
     <update id="updateQRCodePath" parameterType="com.stockm8.domain.vo.QRCodeVO">
-        UPDATE test_qr_codes
+        UPDATE qr_codes
         SET qr_code_path = #{qrCodePath}, updated_at = CURRENT_TIMESTAMP
         WHERE qr_code_id = #{qrCodeId};
     </update>
+    
+        <!-- QR 코드 경로와 연결된 product_id 조회 -->
+    <select id="selectQRCodePathsByBusinessId" parameterType="int" resultType="com.stockm8.domain.vo.QRCodeVO">
+        SELECT 
+            product_id AS productId,
+            qr_code_path AS qrCodePath
+        FROM qr_codes
+        WHERE product_id IN (
+            SELECT product_id 
+            FROM products 
+            WHERE business_id = #{businessId} 
+              AND is_deleted = 0
+        ) 
+        AND qr_code_path IS NOT NULL;
+    </select>
 
     <!-- QR 코드 데이터 삭제 -->
     <delete id="deleteQRCodeById" parameterType="int">
-        DELETE FROM test_qr_codes WHERE qr_code_id = #{qrCodeId};
+        DELETE FROM qr_codes WHERE qr_code_id = #{qrCodeId};
     </delete>
 
 </mapper>

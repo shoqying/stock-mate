@@ -118,10 +118,10 @@ body {
 
     <!-- Navigation -->
     <div class="nav">
-        <a href="signup">회원가입</a>
-        <a href="signin">로그인</a>
-        <a href="howtouse">대시보드 사용법</a>
-        <a href="consultation">상담문의</a>
+        <a href="user/signup">회원가입</a>
+        <a href="user/signin">로그인</a>
+        <a href="user/howtouse">대시보드 사용법</a>
+        <a href="user/consultation">상담문의</a>
         <a href="intro">회사소개</a>
     </div>
 
