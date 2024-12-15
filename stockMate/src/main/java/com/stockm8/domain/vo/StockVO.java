@@ -24,7 +24,5 @@ public class StockVO {
     private CategoryVO category;    // 카테고리 정보
     private WarehouseVO warehouse;  // 창고 정보
     private String warehouseName;
-    private String productName;    // 상품 이름(JOIN 용)
-    private int productBarcode;           // 바코드(JOIN 용)
 
 }
