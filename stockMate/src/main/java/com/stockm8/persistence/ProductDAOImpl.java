@@ -45,5 +45,11 @@ public class ProductDAOImpl implements ProductDAO {
 	    return sqlSession.selectList(NAMESPACE + "selectProductsWithQRCode", businessId);
 	}
 
+    // 회사 정보를 통해 상품 조회
+	@Override
+	public List<ProductVO> selectProductsByBusinessId(int businessId) throws Exception {
+	    return sqlSession.selectList(NAMESPACE + "selectProductsByBusinessId", businessId);
+	}
 
+	
 }

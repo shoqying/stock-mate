@@ -5,13 +5,15 @@
 <head>
     <meta charset="UTF-8">
     <title>창고 등록</title>
-    <link rel="stylesheet" href="<c:url value='/resources/css/warehouseStyle.css' />">
+    <link rel="stylesheet" href="<c:url value='/resources/css/registerStyle.css' />">
     <link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css' />">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.querySelector("form");
+
+            // 폼 제출 처리
             form.addEventListener("submit", function (event) {
-                event.preventDefault(); // 기본 제출 동작 방지
+                event.preventDefault();
 
                 const formData = new FormData(form);
                 const warehouseData = {};
@@ -30,6 +32,7 @@
                     .then((data) => {
                         if (data.success) {
                             showToast(data.message, "success");
+                            form.reset(); // 폼 초기화
                         } else {
                             showToast(data.message, "error");
                         }
@@ -39,41 +42,71 @@
                         console.error("Error:", error);
                     });
             });
+
+            // 입력 검증 및 실시간 피드백
+            const capacityInput = document.getElementById("capacity");
+            capacityInput.addEventListener("input", function () {
+                if (this.value < 0) {
+                    this.value = 0; // 음수 방지
+                }
+            });
         });
 
-        // Toast 메시지 표시 함수
-        function showToast(message, type) {
+        function showToast(message, type, position = "top") {
+            // 토스트 요소 생성
             const toast = document.createElement("div");
-            toast.className = `toast ${type}`;
+            toast.className = `toast ${type} ${position}`; // success/error와 위치 클래스
             toast.textContent = message;
+
+            // DOM에 추가
             document.body.appendChild(toast);
+
+            // 표시 애니메이션
             setTimeout(() => {
-                toast.style.opacity = 1;
-            }, 100);
+                toast.classList.add("show");
+            }, 10); // 약간의 딜레이로 애니메이션 적용
+
+            // 자동 제거
             setTimeout(() => {
-                toast.style.opacity = 0;
+                toast.classList.remove("show");
                 setTimeout(() => {
                     document.body.removeChild(toast);
-                }, 500);
-            }, 3000);
+                }, 300); // 애니메이션 시간과 동기화
+            }, 4000); // 4초 후 사라짐
         }
     </script>
 </head>
 <body>
     <div class="container">
+        <button class="dashboard-btn" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
         <h1>창고 등록</h1>
-        <form>
+        <form action="registerWarehouse" method="post">
             <!-- 사용자 ID와 비즈니스 ID -->
             <input type="hidden" name="userId" value="${userId}">
             <input type="hidden" name="businessId" value="${businessId}">
+            
+            <label for="warehouseName">창고 이름</label>
+            <input type="text" id="warehouseName" name="warehouseName" required autofocus>
+			
+            <label for="region">창고 지역</label>
+            <input type="text" id="region" name="region">
+            
+            <label for="location">상세 주소</label>
+            <input type="text" id="location" name="location" required>
 
-            <label for="warehouseName">창고명</label>
-            <input type="text" name="warehouseName" placeholder="창고명을 입력해주세요." required />
+            <label for="capacity">창고 용량</label>
+            <input type="number" id="capacity" name="capacity" min="0">
 
-            <label for="location">창고 주소</label>
-            <input type="text" name="location" placeholder="주소를 입력해주세요." required />
+            <label for="warehouseDescription">창고 상세 설명</label>
+            <input type="text" id="warehouseDescription" name="warehouseDescription">
 
-            <button type="submit">등록</button>
+		    <!-- 버튼 그룹 -->
+		    <div class="button-group">
+		        <button type="submit" class="primary-button">등록</button>
+		    </div>
+		    <div class="button-group">
+		        <button type="reset" class="secondary-button">초기화</button>
+		    </div>
         </form>
     </div>
 </body>

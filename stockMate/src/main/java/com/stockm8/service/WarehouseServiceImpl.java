@@ -2,13 +2,12 @@ package com.stockm8.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stockm8.domain.dto.WarehouseDetailDTO;
 import com.stockm8.domain.vo.WarehouseVO;
 import com.stockm8.persistence.WarehouseDAO;
 
@@ -39,6 +38,14 @@ public class WarehouseServiceImpl implements WarehouseService {
 		return warehouseDAO.selectWarehousesByBusinessId(businessId);
 	}
 	
-	
+    @Override
+    public WarehouseDetailDTO getWarehouseDetail(int warehouseId, int sessionBusinessId) throws Exception {
+    	WarehouseDetailDTO warehouseDetail = warehouseDAO.selectWarehouseDetailById(warehouseId);
 
+        if (warehouseDetail == null) {
+            throw new IllegalArgumentException("창고를 찾을 수 없습니다.");
+        }
+
+        return warehouseDetail;
+    }
 }

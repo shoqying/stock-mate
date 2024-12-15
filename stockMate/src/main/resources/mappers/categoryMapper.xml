@@ -78,8 +78,7 @@
             category_name,
             level,
             created_at,
-            updated_at,
-            is_deleted
+            updated_at
         FROM categories
         WHERE business_id = #{businessId}
           AND is_deleted = 0

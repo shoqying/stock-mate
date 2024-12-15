@@ -11,12 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.stockm8.domain.dto.WarehouseDetailDTO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.domain.vo.WarehouseVO;
 import com.stockm8.service.UserService;
@@ -39,11 +42,10 @@ public class WarehouseController {
      * 창고 등록 페이지(GET)
      */
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String warehouseRegistGET(Model model, HttpServletRequest request) throws Exception {
+    public String warehouseRegistGET(Model model, HttpSession session) throws Exception {
         logger.info("warehouseRegistGET() 호출");
 
         // 세션에서 userId 가져오기
-        HttpSession session = request.getSession(false);
         Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
 
         // userId로 사용자 정보 조회
@@ -101,6 +103,26 @@ public class WarehouseController {
 
         return response;
     }
+    
+	// http://localhost:8088/warehouse/detail?warehouseId=2
+    /**
+     * 창고 상세 정보 페이지(GET)
+     * @throws Exception 
+     */
+    @GetMapping("/detail")
+    public String getWarehouseDetail(@RequestParam int warehouseId, HttpSession session, Model model) throws Exception {
+        
+    	// 세션에서 userId 가져오기
+    	Long userId = (Long) session.getAttribute("userId");
+        
+    	// userId로 사용자 정보 조회
+        UserVO user = userService.getUserById(userId);
+        int businessId = user.getBusinessId();
 
-
+        WarehouseDetailDTO warehouseDetail = warehouseService.getWarehouseDetail(warehouseId, businessId);
+        
+        model.addAttribute("warehouseDetail", warehouseDetail);
+        
+        return "warehouse/detail";
+    }
 }

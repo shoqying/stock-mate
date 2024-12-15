@@ -81,21 +81,15 @@
 	<!-- 상품 상세 페이지 -->
 	<c:if test="${product != null}">
 	    <p>카테고리명: ${categoryName}</p>
-	    <p>상품명: ${product.name}</p>
-	    <p>바코드: ${product.barcode}</p>
+	    <p>상품명: ${product.productName}</p>
+	    <p>바코드: ${product.productBarcode}</p>
 		<p>기본 단위: ${product.baseUnit}</p>
 		<p>세트 크기: ${product.setSize}</p>
-		<p>가격: ${product.price}</p>
-		<p>설명: ${product.description}</p>
-		
-		<h3>입출고를 위한 QR 코드 생성</h3>
-	    <form action="/api/qrcode/generate" method="post">
-	        <input type="hidden" name="productId" value="${product.productId}">
-	        <button type="submit">QR 코드 생성</button>
-	    </form>
+		<p>가격: ${product.productPrice}</p>
+		<p>설명: ${product.productDescription}</p>
 	    
 		<!-- QR 코드 생성 버튼 -->
-		<c:if test="${product.qrCodePath == null}">
+		<c:if test="${product.productQrCodePath == null}">
 		    <form action="/product/generateQR" method="get" style="display:inline;">
 		        <input type="hidden" name="productId" value="${product.productId}">
 		        <button type="submit" class="btn">QR 코드 생성</button>
@@ -103,7 +97,7 @@
 		</c:if>
 		
 		<!-- QR 코드 다운로드 버튼 -->
-		<c:if test="${product.qrCodePath != null}">
+		<c:if test="${product.productQrCodePath != null}">
 		    <form action="/product/downloadQr" method="get" style="display:inline;">
 		        <input type="hidden" name="productId" value="${product.productId}">
 		        <button type="submit" class="btn">QR 코드 다운로드</button>

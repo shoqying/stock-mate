@@ -13,12 +13,15 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.stockm8.domain.vo.CategoryVO;
@@ -72,20 +75,19 @@ public class ProductController {
 
 	// 상품 등록 처리
 	@PostMapping("/register")
-	public String productRegistPOST(ProductVO product, 
+	public String productRegistPOST(ProductVO product,
+							 @SessionAttribute("userId") Long userId,
 							 HttpServletRequest request, 
 							 RedirectAttributes rttr) throws Exception {
 		logger.info("productRegistPOST() 호출");
 
 		// 전달정보(파라미터) 확인
 		logger.info("product: {}", product);
-	    
-		// 세션에서 userId 가져오기 
-		HttpSession session = request.getSession(false);
-		Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
 		
-        // userId로 사용자 정보 조회
+        // 사용자 정보 및 회사정보 가져오기
         UserVO user = userService.getUserById(userId);
+        int businessId = user.getBusinessId();
+        logger.info("Business ID for user: {}", businessId);
         
         // user의 businessId 설정
         product.setBusinessId(user.getBusinessId());
@@ -95,16 +97,6 @@ public class ProductController {
 		
 		// DB insert 후 생성된 productId PK
 		int productId = product.getProductId();
-		
-
-//	    // QR 코드 생성
-//	    try {
-//	        productService.generateQRCode(productId);
-//	        rttr.addFlashAttribute("successMessage", "QR 코드가 성공적으로 생성되었습니다! 상품 ID: " + productId);
-//	    } catch (Exception e) {
-//	        logger.error("QR 코드 생성 중 오류 발생: productId={}", productId, e);
-//	        rttr.addFlashAttribute("errorMessage", "QR 코드 생성 중 문제가 발생했습니다.");
-//	    }
 		
 		logger.info("연결된 뷰페이지(/product/detail.jsp) 이동");
 		return "redirect:/product/detail?productId=" + productId;
@@ -143,12 +135,12 @@ public class ProductController {
 
 	    // 상품 정보 가져오기
 	    ProductVO product = productService.getProductByID(productId);
-	    if (product == null || product.getQrCodePath() == null) {
+	    if (product == null || product.getProductQrCodePath() == null) {
 	        throw new IllegalArgumentException("QR 코드가 존재하지 않습니다.");
 	    }
 
 	    // QR 코드 파일 경로
-	    File qrCodeFile = new File(product.getQrCodePath());
+	    File qrCodeFile = new File(product.getProductQrCodePath());
 	    if (!qrCodeFile.exists()) {
 	        throw new IllegalArgumentException("QR 코드 파일이 존재하지 않습니다.");
 	    }
@@ -198,7 +190,7 @@ public class ProductController {
 	}
 	
 	// http://localhost:8088/product/list
-    @GetMapping("/product/list")
+    @GetMapping("/list")
     public String listProducts(HttpServletRequest request, Model model) throws Exception{
 	    // 세션에서 userId 가져오기
 	    HttpSession session = request.getSession(false);
@@ -216,5 +208,4 @@ public class ProductController {
 
         return "product/list"; // /WEB-INF/views/product/list.jsp로 매핑
     }
-	
 }

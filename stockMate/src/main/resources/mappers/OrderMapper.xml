@@ -15,12 +15,12 @@
             s.reserved_quantity, 
             s.available_stock,
             s.description as stock_description,
-            p.name, 
-            p.barcode, 
+            p.product_name, 
+            p.product_barcode, 
             p.base_unit, 
             p.set_size, 
-            p.price,
-            p.description as product_description,
+            p.product_price,
+            p.product_description as product_description,
             w.warehouse_name
         FROM 
             stocks s
@@ -32,7 +32,7 @@
             AND w.is_deleted = false
             AND s.available_stock > 0
         ORDER BY 
-            p.name ASC
+            p.product_name ASC
     </select>
 
     <!-- ResultMap은 한 번만 정의 -->
@@ -48,12 +48,12 @@
         <result property="warehouseName" column="warehouse_name"/>
         <association property="product" javaType="com.stockm8.domain.vo.ProductVO">
             <id property="productId" column="product_id"/>
-            <result property="name" column="name"/>
-            <result property="barcode" column="barcode"/>
+            <result property="productName" column="product_name"/>
+            <result property="productBarcode" column="product_barcode"/>
             <result property="baseUnit" column="base_unit"/>
             <result property="setSize" column="set_size"/>
-            <result property="price" column="price"/>
-            <result property="description" column="product_description"/>
+            <result property="productPrice" column="product_price"/>
+            <result property="productDescription" column="product_description"/>
         </association>
     </resultMap>
 
@@ -70,7 +70,7 @@
             #{totalPrice},
             #{createdBy},
             NOW(),
-            'pending'
+            'PENDING'
         )
         <selectKey keyProperty="orderId" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()

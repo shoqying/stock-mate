@@ -44,7 +44,7 @@ public class QRCodeGenerationTest {
         ProductVO product = productService.getProductByID(testProductId);
         Assert.assertNotNull("상품 정보가 존재해야 합니다.", product);
 
-        String qrCodePath = product.getQrCodePath();
+        String qrCodePath = product.getProductQrCodePath();
         Assert.assertNotNull("QR 코드 경로가 설정되어야 합니다.", qrCodePath);
 
         // QR 코드 파일 존재 여부 확인

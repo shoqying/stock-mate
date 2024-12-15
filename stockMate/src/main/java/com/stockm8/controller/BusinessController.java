@@ -11,12 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.stockm8.domain.vo.BusinessVO;
-import com.stockm8.domain.vo.ProductVO;
-import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.BusinessService;
 import com.stockm8.service.UserService;
 
@@ -84,10 +80,10 @@ public class BusinessController {
 		Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
 		
 	    // 비즈니스 정보 확인
-	    BusinessVO foundBusiness = businessService.getBusinessByNumberAndName(business.getBusinessNumber(), business.getCompanyName());
+	    BusinessVO foundBusiness = businessService.getBusinessByNumberAndName(business.getBusinessNumber(), business.getBusinessName());
 	    
 	    logger.info("사용자가 입력한 사업자 등록 번호: {}", business.getBusinessNumber());
-	    logger.info("사용자가 입력한 회사 이름: {}", business.getCompanyName());
+	    logger.info("사용자가 입력한 회사 이름: {}", business.getBusinessName());
 	    
 	    if (foundBusiness == null || foundBusiness.getBusinessId() == null) {
 			logger.warn("입력된 비즈니스 정보가 존재하지 않습니다.");

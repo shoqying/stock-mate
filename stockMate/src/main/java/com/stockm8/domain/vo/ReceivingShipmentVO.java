@@ -24,7 +24,7 @@ public class ReceivingShipmentVO {
     private String memo;        // 작업 사유
     
 //  조인된 VO
-    private String name;
-    private String description;
-    private int price;
+    private String productName;
+    private String productDescription;
+    private int productPrice;
 }

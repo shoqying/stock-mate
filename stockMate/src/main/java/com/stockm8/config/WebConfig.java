@@ -69,14 +69,14 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
     	// Intercepter 적용
         registry.addInterceptor(authorizationInterceptor)
-                .addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**" ) // 인터셉터를 적용할 경로
+                .addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**", "/stock/**" ) // 인터셉터를 적용할 경로
                 .excludePathPatterns( // 인터셉터를 제외할 경로
                         "/",               // HomeController 경로
                         "/favicon.ico",    // 브라우저 기본 요청
                         "/resources/**",   // 정적 리소스
                         "/user/**",	       // 로그인 및 회원가입 관련 요청
                         "/static/**",
-                		"/api/qrcode/**"   // QR 코드 생성 요청에 대해서는 세션 체크를 제외
+                		"/api/**"    	    // API 요청에 대해서는 세션 체크를 제외
                 );   
         // Flash 메시지 처리 인터셉터
         registry.addInterceptor(new FlashMessageInterceptor());

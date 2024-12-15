@@ -52,6 +52,21 @@
         SET qr_code_path = #{qrCodePath}, updated_at = CURRENT_TIMESTAMP
         WHERE qr_code_id = #{qrCodeId};
     </update>
+    
+        <!-- QR 코드 경로와 연결된 product_id 조회 -->
+    <select id="selectQRCodePathsByBusinessId" parameterType="int" resultType="com.stockm8.domain.vo.QRCodeVO">
+        SELECT 
+            product_id AS productId,
+            qr_code_path AS qrCodePath
+        FROM qr_codes
+        WHERE product_id IN (
+            SELECT product_id 
+            FROM products 
+            WHERE business_id = #{businessId} 
+              AND is_deleted = 0
+        ) 
+        AND qr_code_path IS NOT NULL;
+    </select>
 
     <!-- QR 코드 데이터 삭제 -->
     <delete id="deleteQRCodeById" parameterType="int">

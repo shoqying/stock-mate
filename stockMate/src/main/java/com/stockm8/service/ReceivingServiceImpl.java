@@ -68,13 +68,5 @@ public class ReceivingServiceImpl implements ReceivingService {
 		logger.info("insertReceiving() 호출");
 		rdao.insertReceiving();
 	}
-	
-	
-	
-
-	
-	
-	
-	
 
 } // ReceivingServiceImpl end

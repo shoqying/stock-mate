@@ -16,7 +16,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.stockm8.domain.enums.Role;
+import com.stockm8.domain.enums.UserRole;
 import com.stockm8.domain.enums.UserStatus;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
@@ -132,16 +132,16 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     private boolean isValidUser(HttpServletRequest request, HttpServletResponse response, UserVO user) throws Exception {
         
     	// 허용된 역할 정의
-        List<Role> allowedRoles = Arrays.asList(Role.MANAGER, Role.ADMIN /*Role.STAFF*/);
+        List<UserRole> allowedRoles = Arrays.asList(UserRole.MANAGER, UserRole.ADMIN /*Role.STAFF*/);
 
         // 1. PENDING 상태 처리
-        if (user.getStatus() == UserStatus.PENDING) {
-            if (user.getRole() == Role.MANAGER && user.getBusinessId() == null) {
+        if (user.getUserStatus() == UserStatus.PENDING) {
+            if (user.getUserRole() == UserRole.MANAGER && user.getBusinessId() == null) {
                 logger.warn("PENDING 상태의 매니저 사용자({})입니다. 비즈니스 등록 페이지로 이동합니다.", user.getUserId());
                 return sendErrorMessage(request, response, "비즈니스 정보를 등록해주세요.", "/business/register");
             }
 
-            if (user.getRole() == Role.STAFF && user.getBusinessId() == null) {
+            if (user.getUserRole() == UserRole.STAFF && user.getBusinessId() == null) {
                 logger.warn("PENDING 상태의 직원 사용자({})입니다. 비즈니스 인증 페이지로 이동합니다.", user.getUserId());
                 return sendErrorMessage(request, response, "비즈니스 정보를 인증해주세요.", "/business/verify");
             }
@@ -154,9 +154,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         // 2. APPROVED 상태 처리
-        if (user.getStatus() == UserStatus.APPROVED) {
-            if (!allowedRoles.contains(user.getRole())) {
-                logger.warn("권한 없는 사용자({})가 접근을 시도했습니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getRole());
+        if (user.getUserStatus() == UserStatus.APPROVED) {
+            if (!allowedRoles.contains(user.getUserRole())) {
+                logger.warn("권한 없는 사용자({})가 접근을 시도했습니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getUserRole());
                 return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
             }
 
@@ -165,7 +165,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         // 3. 그 외 상태 처리
-        logger.warn("유효하지 않은 상태의 사용자({}). 접근이 차단됩니다. (상태: {})", user.getUserId(), user.getStatus());
+        logger.warn("유효하지 않은 상태의 사용자({}). 접근이 차단됩니다. (상태: {})", user.getUserId(), user.getUserStatus());
         return sendErrorMessage(request, response, "유효하지 않은 사용자 상태입니다.", "/user/signin");
     }
 
