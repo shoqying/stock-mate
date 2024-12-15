@@ -104,7 +104,7 @@ public class WarehouseController {
         return response;
     }
     
-	// http://localhost:8088/warehouse/detail?warehouseId=1
+	// http://localhost:8088/warehouse/detail?warehouseId=12
     /**
      * 창고 상세 정보 페이지(GET)
      * @throws Exception 

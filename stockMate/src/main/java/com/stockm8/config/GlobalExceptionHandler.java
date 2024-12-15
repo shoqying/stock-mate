@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
         // 리다이렉트 경로 결정
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동
-        return "redirect:" + (referer != null ? referer : "/");
+        return "redirect:" + (referer != null ? referer : "/dashboard");
     }
 
     /**
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
 
         // 리다이렉트 경로 결정
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동
-        return "redirect:" + (referer != null ? referer : "/");
+        return "redirect:" + (referer != null ? referer : "/dashboard");
     }
 
     /**
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
 
         // 리다이렉트 경로 결정
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동
-        return "redirect:" + (referer != null ? referer : "/");
+        return "redirect:" + (referer != null ? referer : "/dashboard");
     }
 
     /**
@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
         
         // 리다이렉트 경로 결정
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동
-        return "redirect:" + (referer != null ? referer : "/");
+        return "redirect:" + (referer != null ? referer : "/dashboard");
     }
 
     /**
@@ -106,8 +106,9 @@ public class GlobalExceptionHandler {
         logger.error("잘못된 요청 - URL: {}", request.getRequestURL(), ex);
 
         redirectAttributes.addFlashAttribute("errorMessage", "잘못된 요청입니다: " + ex.getMessage());
+        
         // 리다이렉트 경로 결정
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동
-        return "redirect:" + (referer != null ? referer : "/");
+        return "redirect:" + (referer != null ? referer : "/dashboard");
     }
 }
