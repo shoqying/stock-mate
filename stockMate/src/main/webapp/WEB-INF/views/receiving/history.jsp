@@ -239,6 +239,7 @@ tr:hover {
 
 	<h1>입고 내역</h1>
 	<a href="/receiving/main">입고 메인</a>
+	<a href="/receiving/scan">실시간 입고</a>
 	<form action="/receiving/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
@@ -282,6 +283,7 @@ tr:hover {
 				<th>입고 수량</th>
 				<th>수량 단위</th>
 				<th>제품 단가</th>
+				<th>창고 위치</th>
 				<th>작업 메모</th>
 			</tr>
 			<c:forEach var="vo" items="${ReceivingList }">
@@ -292,11 +294,12 @@ tr:hover {
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${vo.status }</td>
 					<td>${vo.productId }</td>
-					<td>${vo.name }</td>
-					<td>${vo.description }</td>
+					<td>${vo.productName }</td>
+					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
 					<td>${vo.transactionUnit }</td>
-					<td>${vo.price }</td>
+					<td>${vo.productPrice }</td>
+					<td>${vo.warehouseId }</td>
 					<td>${vo.memo }</td>
 				</tr>
 			</c:forEach>

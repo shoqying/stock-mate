@@ -13,6 +13,10 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
         <result property="dscription" column="dscription"/>
+        
+        <!-- receiving scan 을 위한 매핑 -->
+        <result property="productName" column="product_name"/>
+	    <result property="productBarcode" column="product_barcode"/>
     </resultMap>
 
     <!-- WarehouseVO 결과 매핑 -->
@@ -82,5 +86,39 @@
             category_name, description
         FROM test_categories
     </select>
+    
+    
+    
+    
+    <!-- receiving scan을 위한 매퍼 -->
+    <!-- 바코드로 제품 조회 -->
+	<select id="selectQuantityCheckByBarcode" resultType="com.stockm8.domain.vo.StockVO">
+        SELECT s.product_id, p.product_name, s.total_quantity, s.warehouse_id
+        FROM stocks s
+        JOIN products p ON p.product_id = s.product_id
+        WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+	</select>
+	
+	<!-- 바코드로 재고 1 감소 -->
+	<update id="updateIncreseStock">
+	    UPDATE stocks s
+	    JOIN products p on p.product_id = s.product_id
+	    SET s.total_quantity = s.total_quantity + 1
+	    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+	    AND s.total_quantity > 0
+	</update>
+	
+	<!-- 바코드로 남은 재고 조회 -->
+	<select id="selectStockByBarcode" resultType="int">
+	    SELECT s.total_quantity
+	    FROM stocks s
+	    JOIN products p on p.product_id = s.product_id
+	    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+	</select>
+	<!-- receiving scan을 위한 매퍼 -->
+	
+	
+	
+	
 
 </mapper> 

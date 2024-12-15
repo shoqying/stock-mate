@@ -20,15 +20,16 @@
   	<result property="memo" column="memo"/>
   	
   	<!-- 조인된 데이터 매핑 -->
-    <result property="name" column="name"/>
-    <result property="description" column="description"/>
-    <result property="price" column="price"/>
+    <result property="productName" column="product_name"/>
+    <result property="productDescription" column="product_description"/>
+    <result property="productPrice" column="product_price"/>   
+    <result property="businessId" column="business_id"/>   
   </resultMap>
   
 
 <!-- 테이블에 입고 데이터 입력 -->
 <insert id="insertReceiving">
-	INSERT INTO test_receiving_shipment (
+	INSERT INTO receiving_shipment (
 	transaction_type, 
 	status, 
 	product_id, 
@@ -49,10 +50,10 @@
 	s.stock_id,
 	o.warehouse_id,
     u.created_by
-	FROM test_products p
-	JOIN test_order_items o ON o.product_id = p.product_id
-	JOIN test_stocks s ON s.product_id = p.product_id
-    JOIN test_users u ON u.business_id = p.business_id;
+	FROM products p
+	JOIN order_items o ON o.product_id = p.product_id
+	JOIN stocks s ON s.product_id = p.product_id
+    JOIN users u ON u.business_id = p.business_id;
 </insert>
 	
 <!-- 오늘 입고 예정 리스트 -->
@@ -63,14 +64,16 @@
 	r.created_at, 
 	r.status, 
 	r.product_id, 
-	p.name, 
-	p.description, 
+	p.product_name, 
+	p.product_description, 
 	r.change_quantity, 
 	r.memo
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	where Date(r.created_at) = CURRENT_DATE and r.status = 'pending' and r.transaction_type = 'INBOUND'
+	JOIN users u on u.created_by = r.created_by
+	where Date(r.created_at) = CURRENT_DATE and r.status = 'PENDING' and r.transaction_type = 'INBOUND'
+	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
 	limit 0, 20
 </select>
@@ -83,14 +86,16 @@
 	r.created_at, 
 	r.status, 
 	r.product_id, 
-	p.name, 
-	p.description, 
+	p.product_name, 
+	p.product_description, 
 	r.change_quantity, 
 	r.memo
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
+	JOIN users u on u.created_by = r.created_by
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -1 DAY) 
+	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
 	limit 0, 20
 </select>
@@ -103,14 +108,16 @@
 	r.created_at, 
 	r.status, 
 	r.product_id, 
-	p.name, 
-	p.description, 
+	p.product_name, 
+	p.product_description, 
 	r.change_quantity, 
 	r.memo
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
+	JOIN users u on u.created_by = r.created_by
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -2 DAY) 
+	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
 	limit 0, 20
 </select>
@@ -123,17 +130,19 @@
 	r.created_at, 
 	r.status, 
 	r.product_id, 
-	p.name, 
-	p.description, 
+	p.product_name, 
+	p.product_description, 
 	r.change_quantity, 
-	p.price,
+	p.product_price,
+	r.warehouse_id,
 	r.memo
-	from test_receiving_shipment r
-	join test_products p on r.product_id = p.product_id
-	join test_warehouses w on w.warehouse_id = r.warehouse_id
-	where transaction_type = 'in'
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
+	JOIN users u on u.created_by = r.created_by
+	where transaction_type = 'INBOUND' AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
-	limit #{startPage},#{pageSize};
+	limit #{cri.startPage},#{cri.pageSize};
 </select>
 
 <!-- 입고 내역 검색 -->
@@ -144,14 +153,16 @@
     r.created_at, 
     r.status, 
     r.product_id, 
-    p.name, 
-    p.description, 
+    p.product_name, 
+    p.product_description, 
     r.change_quantity, 
-    p.price,
+    p.product_price,
+    r.warehouse_id,
     r.memo
     FROM receiving_shipment r
     JOIN products p ON r.product_id = p.product_id
     JOIN warehouses w ON w.warehouse_id = r.warehouse_id
+    JOIN users u on u.created_by = r.created_by
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -160,9 +171,10 @@
             AND r.created_at &lt;= #{endDate}
         </if>
         <if test="keyword != ''">
-            AND (p.name LIKE CONCAT('%', #{keyword}, '%') )
+            AND (p.product_name LIKE CONCAT('%', #{keyword}, '%') )
         </if>
-        	AND transaction_type = 'INBOUND'
+        	AND transaction_type = 'INBOUND' 
+        	AND u.business_id = #{businessId}
     </where>
     ORDER BY r.receiving_shipment_no desc
     limit #{cri.startPage},#{cri.pageSize};
@@ -173,6 +185,7 @@
     SELECT COUNT(*) 
     FROM receiving_shipment r
     JOIN products p ON r.product_id = p.product_id
+    JOIN users u on u.created_by = r.created_by
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -181,9 +194,10 @@
             AND r.created_at &lt;= #{endDate}
         </if>
         <if test="keyword != ''">
-            AND p.name LIKE CONCAT('%', #{keyword}, '%')
+            AND p.product_name LIKE CONCAT('%', #{keyword}, '%')
         </if>
         AND r.transaction_type = 'INBOUND'
+        AND u.business_id = #{businessId}
     </where>
     ORDER BY r.receiving_shipment_no desc
 </select>
@@ -191,8 +205,11 @@
 <!-- 입출고 모든 개수 카운트 -->
 <select id="getTotalCount" resultType="int">
 	select count(*)
-	from test_receiving_shipment
-	where transaction_type = 'in'
+	from receiving_shipment r
+	JOIN users u on u.created_by = r.created_by
+	where transaction_type = 'INBOUND'
+	AND u.business_id = #{businessId}
 </select>
+
   	
   </mapper>

@@ -20,5 +20,8 @@ public class StockVO {
     
     private ProductVO product;     // 상품 정보 (JOIN 용)
     private String warehouseName;  // 창고명 (JOIN 용)
+    
+    private String productName;    // 상품 이름(JOIN 용)
+    private int productBarcode;           // 바코드(JOIN 용)
 
 }
