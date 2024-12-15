@@ -88,14 +88,14 @@
             <label for="warehouseName">창고 이름</label>
             <input type="text" id="warehouseName" name="warehouseName" required autofocus>
 			
-            <label for="region">창고 지역</label>
-            <input type="text" id="region" name="region">
+            <label for="warehouseRegion">창고 지역</label>
+            <input type="text" id="warehouseRegion" name="warehouseRegion">
             
-            <label for="location">상세 주소</label>
-            <input type="text" id="location" name="location" required>
+            <label for="warehouseLocation">상세 주소</label>
+            <input type="text" id="warehouseLocation" name="warehouseLocation" required>
 
-            <label for="capacity">창고 용량</label>
-            <input type="number" id="capacity" name="capacity" min="0">
+            <label for="warehouseCapacity">창고 용량</label>
+            <input type="number" id="warehouseCapacity" name="warehouseCapacity" min="0">
 
             <label for="warehouseDescription">창고 상세 설명</label>
             <input type="text" id="warehouseDescription" name="warehouseDescription">

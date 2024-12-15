@@ -39,9 +39,15 @@ public class WarehouseServiceImpl implements WarehouseService {
 	}
 	
     @Override
-    public WarehouseDetailDTO getWarehouseDetail(int warehouseId, int sessionBusinessId) throws Exception {
+    public WarehouseDetailDTO getWarehouseDetail(int warehouseId, int businessId) throws Exception {
+    	
     	WarehouseDetailDTO warehouseDetail = warehouseDAO.selectWarehouseDetailById(warehouseId);
-
+    	
+    	// 비즈니스 ID가 일치하지 않는 경우
+        if (warehouseDetail.getBusinessId() != businessId) {
+            throw new SecurityException("잘못된 접근입니다. 권한이 없습니다.");
+        }
+    	
         if (warehouseDetail == null) {
             throw new IllegalArgumentException("창고를 찾을 수 없습니다.");
         }

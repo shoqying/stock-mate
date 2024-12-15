@@ -5,23 +5,23 @@
 
 <mapper namespace="com.stockm8.mapper.WarehouseMapper">
 
-    <!-- ResultMap 정의 -->
+	<!-- ResultMap 정의 -->
 	<resultMap id="warehouseResultMap" type="com.stockm8.domain.dto.WarehouseDetailDTO">
 	    <id property="warehouseId" column="warehouse_id" />
 	    <result property="warehouseName" column="warehouse_name" />
 	    <result property="warehouseRegion" column="warehouse_region" />
 	    <result property="warehouseLocation" column="warehouse_location" />
 	    <result property="businessId" column="business_id" />
-	    <result property="userId" column="manager_id" />
+	    <result property="managerId" column="manager_id" />
 	    <result property="createdAt" column="created_at" />
 	    <result property="updatedAt" column="updated_at" />
 	    <result property="warehouseCapacity" column="warehouse_capacity" />
 	    <result property="warehouseDescription" column="warehouse_description" />
 	    <result property="warehouseStatus" column="warehouse_status" />
-	    
-	    <association property="business" javaType="com.stockm8.domain.vo.BusinessVO" resultMap="com.stockm8.mapper.BusinessMapper.businessResultMap" />
-	    <association property="user" javaType="com.stockm8.domain.vo.UserVO" resultMap="com.stockm8.mapper.UserMapper.userResultMap" />
+	    <result property="businessName" column="business_name" />
+	    <result property="managerName" column="manager_name" />
 	</resultMap>
+
 
     <!-- 창고 등록 -->
     <insert id="insertWarehouse" parameterType="com.stockm8.domain.vo.WarehouseVO">
@@ -53,27 +53,28 @@
 		);
     </insert>
 
-    <!-- 창고 상세 조회 -->
-    <select id="selectWarehouseDetailById" parameterType="int" resultMap="warehouseResultMap">
-		SELECT 
-		    w.warehouse_id AS warehouseId,
-		    w.warehouse_name AS warehouseName,
-		    w.warehouse_capacity AS warehouseCapacity,
-		    w.warehouse_region AS warehouseRegion,
-		    w.warehouse_location AS warehouseLocation,
-		    w.created_at AS createdAt,
-		    w.updated_at AS updatedAt,
-		    w.warehouse_description AS warehouseDescription,
-		    w.warehouse_status AS warehouseStatus,
-		    w.business_id AS businessId,
-		    w.manager_id AS userId,
-		    b.business_name AS businessName,
-		    u.user_name AS managerName
-		FROM warehouses w
-		LEFT JOIN businesses b ON w.business_id = b.business_id
-		LEFT JOIN users u ON w.manager_id = u.user_id
-		WHERE w.warehouse_id = #{warehouseId} AND w.is_deleted = 0;
-    </select>
+<!-- 창고 상세 조회 -->
+<select id="selectWarehouseDetailById" parameterType="int" resultMap="warehouseResultMap">
+    SELECT 
+        w.warehouse_id,
+        w.warehouse_name,
+        w.warehouse_capacity,
+        w.warehouse_region,
+        w.warehouse_location,
+        w.created_at,
+        w.updated_at,
+        w.warehouse_description,
+        w.warehouse_status,
+        w.business_id,
+        b.business_name, 
+        w.manager_id,
+        u.user_name
+    FROM warehouses w
+    LEFT JOIN businesses b ON w.business_id = b.business_id
+    LEFT JOIN users u ON w.manager_id = u.user_id
+    WHERE w.warehouse_id = #{warehouseId} AND w.is_deleted = 0;
+</select>
+
 
     <!-- 창고 존재 여부 확인 -->
     <select id="existsById" parameterType="map" resultType="int">

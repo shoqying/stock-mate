@@ -9,47 +9,69 @@
 </head>
 <body>
     <div class="container">
+		<button class="dashboard-btn" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
         <h1>창고 상세 정보</h1>
         <table>
             <tr>
                 <th>창고 이름</th>
-                <td>${warehouse.warehouseName}</td>
+                <td>${warehouseDetail.warehouseName}</td>
             </tr>
             <tr>
                 <th>창고 지역</th>
-                <td>${warehouse.region}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${not empty warehouseDetail.warehouseRegion}">
+                            ${warehouseDetail.warehouseRegion}
+                        </c:when>
+                        <c:otherwise>N/A</c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
             <tr>
                 <th>상세 주소</th>
-                <td>${warehouse.location}</td>
+                <td>${warehouseDetail.warehouseLocation}</td>
             </tr>
             <tr>
                 <th>회사명</th>
-                <td>${warehouse.businessName}</td>
+                <td>${warehouseDetail.businessName}</td>
             </tr>
             <tr>
                 <th>관리자명</th>
-                <td>${warehouse.managerName}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${not empty warehouseDetail.managerName}">
+                            ${warehouseDetail.managerName}
+                        </c:when>
+                        <c:otherwise>N/A</c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
             <tr>
                 <th>창고 용량</th>
-                <td>${warehouse.capacity}</td>
+                <td>${warehouseDetail.warehouseCapacity}</td>
             </tr>
             <tr>
                 <th>상세 설명</th>
-                <td>${warehouse.warehouseDescription}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${not empty warehouseDetail.warehouseDescription}">
+                            ${warehouseDetail.warehouseDescription}
+                        </c:when>
+                        <c:otherwise>N/A</c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
             <tr>
                 <th>상태</th>
-                <td>${warehouse.status}</td>
+                <td>${warehouseDetail.warehouseStatus}</td>
             </tr>
             <tr>
                 <th>등록 날짜</th>
-                <td>${warehouse.createdAt}</td>
+                <td>${warehouseDetail.createdAt}</td>
             </tr>
             <tr>
                 <th>수정 날짜</th>
-                <td>${warehouse.updatedAt}</td>
+                <td>${warehouseDetail.updatedAt}</td>
             </tr>
         </table>
         <button onclick="location.href='/warehouse/list'">목록으로 돌아가기</button>

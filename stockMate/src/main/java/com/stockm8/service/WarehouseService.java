@@ -14,6 +14,6 @@ public interface WarehouseService {
 	List<WarehouseVO> getWarehousesByBusinessId(Integer businessId) throws Exception;
 	
 	// 창고 ID를 통한 창고 정보 
-    public WarehouseDetailDTO getWarehouseDetail(int warehouseId, int sessionBusinessId) throws Exception;
+    public WarehouseDetailDTO getWarehouseDetail(int warehouseId, int businessId) throws Exception;
 
 }

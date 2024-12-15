@@ -104,7 +104,7 @@ public class WarehouseController {
         return response;
     }
     
-	// http://localhost:8088/warehouse/detail?warehouseId=2
+	// http://localhost:8088/warehouse/detail?warehouseId=1
     /**
      * 창고 상세 정보 페이지(GET)
      * @throws Exception 
@@ -120,7 +120,7 @@ public class WarehouseController {
         int businessId = user.getBusinessId();
 
         WarehouseDetailDTO warehouseDetail = warehouseService.getWarehouseDetail(warehouseId, businessId);
-        
+
         model.addAttribute("warehouseDetail", warehouseDetail);
         
         return "warehouse/detail";
