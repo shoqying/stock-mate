@@ -1,5 +1,6 @@
 package com.stockm8.persistence;
 
+
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.WarehouseVO;
@@ -10,9 +11,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
+
+import com.stockm8.domain.vo.ProductVO;
+import com.stockm8.domain.vo.StockVO;
 
 @Repository
 public class StockDAOImpl implements StockDAO {
@@ -22,11 +32,17 @@ public class StockDAOImpl implements StockDAO {
     @Inject
     private SqlSession sqlSession;
 
-    private static final String NAMESPACE = "com.stockm8.mapper.stockMapper.";
-
+    private static final String NAMESPACE = "com.stockm8.mapper.StockMapper.";
+    
+    // 재고 등록
     @Override
-    public List<StockVO> selectAllStockByBusinessId(int businessId) throws Exception {
-        return sqlSession.selectList(NAMESPACE + "selectAllStockByBusinessId", businessId);
+	public void insertStock(StockVO stock) throws Exception {
+        sqlSession.insert(NAMESPACE + "insertStock", stock);
+	}
+
+	@Override
+    public List<StockVO> selectStockListByBusinessId(int businessId) throws Exception {
+        return sqlSession.selectList(NAMESPACE + "selectStockListByBusinessId", businessId);
     }
 
     @Override
@@ -36,28 +52,33 @@ public class StockDAOImpl implements StockDAO {
 
     @Override
     public List<StockVO> selectFilteredStocks(String warehouseName, String categoryName, String sortOrder) throws Exception {
-        // 파라미터를 Map으로 감싸서 전달
         Map<String, Object> params = new HashMap<>();
-        params.put("warehouseName", warehouseName);
-        params.put("categoryName", categoryName);
+        if (warehouseName != null && !warehouseName.isEmpty()) {
+            params.put("warehouseName", warehouseName);
+        }
+        if (categoryName != null && !categoryName.isEmpty()) {
+            params.put("categoryName", categoryName);
+        }
         params.put("sortOrder", sortOrder);
 
-
-        // 필터링 조건에 맞는 재고 목록을 조회하는 SQL 쿼리 호출
         return sqlSession.selectList(NAMESPACE + "selectFilteredStocks", params);
     }
 
-    @Override
-    public List<WarehouseVO> selectAllWarehouses() throws Exception {
-        return sqlSession.selectList(NAMESPACE + "selectAllWarehouses");
-    }
-
-    @Override
-    public List<CategoryVO> selectAllCategories() throws Exception {
-        return sqlSession.selectList(NAMESPACE + "selectAllCategories");
-    }
-
 	@Override
+	public List<StockVO> selectOnlyStockByBusinessId(int businessId) throws Exception {
+        return sqlSession.selectList(NAMESPACE + "selectOnlyStockByBusinessId", businessId);
+	}
+    
+
+
+   @Override
+   public List<CategoryVO> selectAllCategories() throws Exception {
+         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
+   }
+
+ 
+  
+  @Override
 	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception {
 		logger.info("selectReceiving() 호출");
 		Map<String, Object> paramMap = new HashMap();
@@ -95,4 +116,5 @@ public class StockDAOImpl implements StockDAO {
 	
     
     
+
 }

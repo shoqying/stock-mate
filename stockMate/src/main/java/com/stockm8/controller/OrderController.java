@@ -3,9 +3,9 @@ package com.stockm8.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
 import com.stockm8.domain.vo.StockVO;
-import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.OrderService;
 import com.stockm8.service.UserService;
 

@@ -139,7 +139,7 @@
 		<td>${vo.receivingShipmentNo }</td>
 		<td>${vo.transactionType }</td>
 		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-		<td>${vo.status }</td>
+		<td>${vo.status}</td>
 		<td>${vo.productId }</td>
 		<td>${vo.productName }</td>
 		<td>${vo.productDescription }</td>

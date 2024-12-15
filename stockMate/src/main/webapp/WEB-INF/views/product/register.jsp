@@ -1,102 +1,90 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>상품 등록</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-    /* 스타일 추가: 카테고리 선택 및 버튼을 한 줄로 배치 */
-    .category-container {
-        display: flex;
-        align-items: center;
-    }
-    .category-container select {
-        margin-right: 10px;
-    }
-    .category-container button {
-        padding: 5px 10px;
-        background-color: #007BFF;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .category-container button:hover {
-        background-color: #0056b3;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 등록</title>
+<link rel="stylesheet" href="<c:url value='/resources/css/registerStyle.css' />">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<h1>상품 등록</h1>
+    <div class="container">
+        <button class="dashboard-btn" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
+        <h1>상품 등록</h1>
+        <form method="post" action="/product/register">
+            <!-- 카테고리 선택 -->
+            <label for="categoryId">카테고리 선택</label>
+            <div class="category-group">
+                <select id="categoryId" name="categoryId" required>
+                    <option value="">-- 카테고리 선택 --</option>
+                    <c:forEach var="cat" items="${categoryList}">
+                        <option value="${cat.categoryId}">${cat.categoryName}</option>
+                    </c:forEach>
+                </select>
+                <a href="/category/register" class="category-link">새로운 카테고리 등록</a>
+            </div>
 
-	<!-- 상품 등록 폼 -->
-	<form method="post" action="/product/register">
-		
-        <!-- 카테고리 선택 필드와 카테고리 등록 버튼 -->
-        <div class="category-container">
-            <label for="categoryId">카테고리 선택:</label>
-            <select id="categoryId" name="categoryId" required>
-                <option value="">-- 카테고리 선택 --</option> <!-- 기본값 옵션 추가 -->
-                <c:forEach var="cat" items="${categoryList}">
-                    <option value="${cat.categoryId}">${cat.categoryName}</option>
-                   <script>
-                 	  console.log("category " + ${cat.level} + ": " + "${cat.categoryName}");
-           		  </script>
-                </c:forEach>
-            </select>
-            <!-- 카테고리 등록 버튼 -->
-            <button type="button" onclick="window.location.href='/category/register';">새로운 카테고리 등록</button>
-        </div>
-        
-        <br><br>
+            <!-- 상품명 -->
+            <label for="productName">상품명</label>
+            <input type="text" id="productName" name="productName" required placeholder="예: 무선 마우스">
 
-		<!-- 상품명 필드 -->
-		<label for="name">상품명:</label> 
-		<input type="text" id="name" name="name" required autofocus placeholder="예: 무선 마우스" /><br>
-		<br>
-		
-		<!-- 바코드와 자동 생성 버튼 -->
-		<label for="barcode">바코드:</label> 
-		<input type="text" id="barcode" name="barcode" placeholder="예: 1234567890123" pattern="\d{13}"/>
-		<button type="button" id="generateBarcode">자동 생성</button><br>
-		<br>
+            <!-- 바코드 -->
+            <label for="productBarcode">바코드</label>
+            <div class="barcode-group">
+                <input type="text" id="productBarcode" name="productBarcode" placeholder="예: 1234567890123" pattern="\d{13}">
+                <button type="button" id="generateBarcode" class="barcode-btn">자동 생성</button>
+            </div>
 
-		<!-- 기본 단위 필드: 예를 들어 '개', '박스' 등을 placeholder -->
-		<label for="baseUnit">기본 단위:</label> 
-		<input type="text" id="baseUnit" name="baseUnit" required placeholder="예: 박스" /><br>
-		<br>
+            <!-- 기본 단위 -->
+            <label for="baseUnit">기본 단위</label>
+            <input type="text" id="baseUnit" name="baseUnit" required placeholder="예: 박스">
 
-		<!-- 세트 크기 필드: number로 입력받고 예시 표시 -->
-		<label for="setSize">세트 크기:</label> 
-		<input type="number" id="setSize" name="setSize" required placeholder="예: 10 (한 세트 당 10개)" /><br>
-		<br>
+            <!-- 세트 크기 -->
+            <label for="setSize">세트 크기</label>
+            <input type="number" id="setSize" name="setSize" required placeholder="예: 10 (한 세트 당 10개)">
 
-		<!-- 기본 단가 필드: 숫자/가격에 맞는 placeholder -->
-		<label for="price">기본 단가:</label> 
-		<input type="number" id="price" name="price" required placeholder="예: 15000" /><br>
-		<br>
-		
-		<!-- 상품 설명 필드: textarea에 placeholder -->
-		<label for="description">상품 설명:</label><br>
-		<textarea id="description" name="description"
-			placeholder="상품에 대한 추가 설명을 입력하세요." rows="5" cols="50"></textarea>
-		<br>
-		<br>
+            <!-- 기본 단가 -->
+            <label for="productPrice">기본 단가</label>
+            <input type="number" id="productPrice" name="productPrice" required placeholder="예: 15000">
 
-		<!-- 등록 버튼 -->
-		<button type="submit">상품 등록</button>
-	</form>
-	
-    <!-- JavaScript -->
+            <!-- 상품 설명 -->
+            <label for="productDescription">상품 설명</label>
+            <textarea id="productDescription" name="productDescription" rows="4" placeholder="상품에 대한 추가 설명을 입력하세요."></textarea>
+
+		    <!-- 버튼 그룹 -->
+		    <div class="button-group">
+		        <button type="submit" class="primary-button">등록</button>
+		    </div>
+		    <div class="button-group">
+		        <button type="reset" class="secondary-button">초기화</button>
+		    </div>
+   		 </div>
     <script>
-        // 바코드 자동 생성 버튼 동작
-        document.getElementById('generateBarcode').addEventListener('click', function() {
-            const randomBarcode = String(Math.floor(1000000000000 + Math.random() * 9000000000000));
-            document.getElementById('barcode').value = randomBarcode;
-        });
-    </script>
+	    function generateEAN13Barcode() {
+	        const countryCode = [8, 8, 0];
+	        const randomDigits = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10));
+	        const digits = countryCode.concat(randomDigits);
+	        const checkDigit = calculateCheckDigit(digits);
+	        return digits.join('') + checkDigit;
+	    }
+
+	    function calculateCheckDigit(digits) {
+	        let sum = 0;
+	        digits.forEach((digit, index) => {
+	            const weight = index % 2 === 0 ? 1 : 3;
+	            sum += digit * weight;
+	        });
+	        const remainder = sum % 10;
+	        return remainder === 0 ? 0 : 10 - remainder;
+	    }
+
+	    document.getElementById('generateBarcode').addEventListener('click', function () {
+	        const randomBarcode = generateEAN13Barcode();
+	        document.getElementById('productBarcode').value = randomBarcode;
+	    });
+	</script>
 </body>
 </html>

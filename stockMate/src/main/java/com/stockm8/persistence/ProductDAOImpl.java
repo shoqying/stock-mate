@@ -1,5 +1,7 @@
 package com.stockm8.persistence;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,11 +33,23 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 
-
 	@Override
 	public ProductVO getProductById(int productId) throws Exception{
 
 	    return sqlSession.selectOne(NAMESPACE + "getProductById", productId);
 	}
+	
 
+	@Override
+	public List<ProductVO> selectProductsWithQRCode(int businessId) throws Exception{
+	    return sqlSession.selectList(NAMESPACE + "selectProductsWithQRCode", businessId);
+	}
+
+    // 회사 정보를 통해 상품 조회
+	@Override
+	public List<ProductVO> selectProductsByBusinessId(int businessId) throws Exception {
+	    return sqlSession.selectList(NAMESPACE + "selectProductsByBusinessId", businessId);
+	}
+
+	
 }

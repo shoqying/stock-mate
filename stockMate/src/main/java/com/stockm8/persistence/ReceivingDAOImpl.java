@@ -19,7 +19,7 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ReceivingDAOImpl.class);
 	
-	private static final String NAMESPACE = "com.stockm8.mappers.receivingMapper.";
+	private static final String NAMESPACE = "com.stockm8.mapper.ReceivingShipmentMapper.";
 	
 	// 디비 연결 객체 주입
 	@Inject
@@ -100,12 +100,11 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		sqlSession.insert(NAMESPACE + "insertReceiving", businessId);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 
+	
+	
+	
+	
+	
+	
 } // ReceivingDAOImpl end

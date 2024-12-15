@@ -1,6 +1,6 @@
 package com.stockm8.domain.enums;
 
-public enum Status {
+public enum UserStatus {
     APPROVED,
     PENDING,
     REJECTED

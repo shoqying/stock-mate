@@ -291,14 +291,15 @@ tr:hover {
 					<td>${vo.transactionType }</td>
 					<td><fmt:formatDate value="${vo.createdAt}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td>${vo.status }</td>
+					<td>${vo.status}</td>
 					<td>${vo.productId }</td>
 					<td>${vo.productName }</td>
 					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
 					<td>${vo.transactionUnit }</td>
-					<td>${vo.price }</td>
 					<td>${vo.warehouseId }</td>
+					<td>${vo.transactionUnit }</td>
+					<td>${vo.productPrice }</td>
 					<td>${vo.memo }</td>
 				</tr>
 			</c:forEach>

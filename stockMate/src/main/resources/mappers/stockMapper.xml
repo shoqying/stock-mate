@@ -1,85 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//MyBatis//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.stockm8.mapper.stockMapper">
+<mapper namespace="com.stockm8.mapper.StockMapper">
 
-    <!-- StockVO 결과 매핑 -->
-    <resultMap id="stockResultMap" type="com.stockm8.domain.vo.StockVO">
-        <id property="stockId" column="stock_id"/>
-        <result property="productId" column="product_id"/>
-        <result property="warehouseId" column="warehouse_id"/>
-        <result property="businessId" column="business_id"/>
-        <result property="totalQuantity" column="total_quantity"/>
-        <result property="reservedQuantity" column="reserved_quantity"/>
-        <result property="createdAt" column="created_at"/>
-        <result property="updatedAt" column="updated_at"/>
-        <result property="dscription" column="dscription"/>
-        
-        <!-- receiving scan 을 위한 매핑 -->
-        <result property="productName" column="product_name"/>
-	    <result property="productBarcode" column="product_barcode"/>
-    </resultMap>
-
-    <!-- WarehouseVO 결과 매핑 -->
-    <resultMap id="warehouseResultMap" type="com.stockm8.domain.vo.WarehouseVO">
-        <result property="warehouseName" column="warehouse_name"/>
-        <result property="address" column="address"/>
-        <!-- 필요한 다른 필드들을 추가 -->
-    </resultMap>
-
-    <resultMap id="categoryResultMap" type="com.stockm8.domain.vo.CategoryVO">
-	    <result property="categoryName" column="category_name"/>
+    <!-- StockVO 매핑 -->
+	<resultMap id="stockResultMap" type="com.stockm8.domain.vo.StockVO">
+	    <id property="stockId" column="stock_id"/>
+	    <result property="productId" column="product_id"/>
+	    <result property="warehouseId" column="warehouse_id"/>
+	    <result property="businessId" column="business_id"/>
+	    <result property="totalQuantity" column="total_quantity"/>
+	    <result property="reservedQuantity" column="reserved_quantity"/>
+	    <result property="availableStock" column="available_stock"/>
+	    <result property="updatedAt" column="updated_at"/>
+	    <result property="createdAt" column="created_at"/>
 	    <result property="description" column="description"/>
-	</resultMap>
-    
-    <!-- 사업자 ID에 해당하는 재고 목록 조회 -->
-    <select id="selectAllStockByBusinessId" resultMap="stockResultMap">
-        SELECT 
-            stock_id, product_id, warehouse_id, business_id, total_quantity, 
-            reserved_quantity, created_at, updated_at, description
-        FROM test_stocks
-        WHERE business_id = #{businessId}
-    </select>
-    
-    <!-- 상품 ID로 상품 상세 조회 -->
-    <select id="selectProductById" resultType="com.stockm8.domain.vo.ProductVO">
-        SELECT 
-            product_id, product_name, price, description
-        FROM test_products
-        WHERE product_id = #{productId}
-    </select>
-    
-    <!-- 필터링된 재고 목록 조회 -->
-    <select id="selectFilteredStocks" resultMap="stockResultMap">
-        SELECT 
-            stock_id, product_id, warehouse_id, business_id, total_quantity, 
-            reserved_quantity, created_at, updated_at, description
-        FROM test_stocks
-        <where>
-            <if test="warehouseName != null and warehouseName != ''">
-                AND warehouse_name = #{warehouseName}
-            </if>
-            <if test="categoryName != null and categoryName != ''">
-                AND category_name = #{categoryName}
-            </if>
-        </where>
-        <!-- 수량을 기준으로 정렬 -->
-	    <choose>
-            <when test="sortOrder != null and sortOrder == 'asc'">
-                ORDER BY total_quantity ASC
-            </when>
-            <otherwise>
-                ORDER BY total_quantity DESC
-            </otherwise>
-        </choose>
-	</select>	
+	    <result property="isDeleted" column="is_deleted"/>
 	
-	<!-- 창고 목록 조회 -->
-    <select id="selectAllWarehouses" resultMap="warehouseResultMap">
+	    <!-- ProductVO 매핑 -->
+	    <association property="product" javaType="com.stockm8.domain.vo.ProductVO">
+	        <result property="productId" column="product_id"/>
+	        <result property="productName" column="product_name"/>
+	        <result property="productBarcode" column="product_barcode"/>
+	    </association>
+	
+	    <!-- CategoryVO 매핑 -->
+	    <association property="category" javaType="com.stockm8.domain.vo.CategoryVO">
+	        <result property="categoryId" column="category_id"/>
+	        <result property="categoryName" column="category_name"/>
+	    </association>
+	
+	    <!-- WarehouseVO 매핑 -->
+	    <association property="warehouse" javaType="com.stockm8.domain.vo.WarehouseVO">
+	        <result property="warehouseId" column="warehouse_id"/>
+	        <result property="warehouseName" column="warehouse_name"/>
+	        <result property="warehouseLocation" column="warehouse_location"/>
+	    </association>
+	</resultMap>
+	
+	<!-- 재고 등록 (INSERT) -->
+    <insert id="insertStock" parameterType="com.stockm8.domain.vo.StockVO" useGeneratedKeys="true" keyProperty="stockId">
+        INSERT INTO stocks (
+            product_id,
+            warehouse_id,
+            business_id,
+            total_quantity,
+            reserved_quantity,
+            available_stock,
+            description,
+            is_deleted,
+            created_at,
+            updated_at
+        )
+        VALUES (
+            #{productId},
+            #{warehouseId},
+            #{businessId},
+            #{totalQuantity},
+            #{reservedQuantity},
+            #{availableStock},
+            #{description},
+            0,
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+    
+    <select id="selectOnlyStockByBusinessId" resultMap="stockResultMap">
+	    SELECT 
+	        s.stock_id AS stockId,
+	        s.product_id AS productId,
+	        s.warehouse_id AS warehouseId,
+	        s.business_id AS businessId,
+	        s.total_quantity AS totalQuantity,
+	        s.reserved_quantity AS reservedQuantity,
+	        s.available_stock AS availableStock,
+	        s.updated_at AS updatedAt,
+	        s.created_at AS createdAt,
+	        s.description AS description,
+	        s.is_deleted AS isDeleted
+	    FROM stocks s
+	    WHERE s.business_id = #{businessId} AND s.is_deleted = 0
+	    ORDER BY s.updated_at DESC;
+	</select>
+
+    <!-- 재고 리스트 조회 -->
+    <select id="selectStockListByBusinessId" resultMap="stockResultMap">
         SELECT 
-            warehouse_name, address
-        FROM test_warehouses
+	        s.stock_id AS stockId,
+	        s.product_id AS productId,
+	        s.warehouse_id AS warehouseId,
+	        s.business_id AS businessId,
+	        s.total_quantity AS totalQuantity,
+	        s.reserved_quantity AS reservedQuantity,
+	        s.available_stock AS availableStock,
+	        s.updated_at AS updatedAt,
+	        s.created_at AS createdAt,
+	        s.description AS description,
+            p.product_id AS productId,
+            p.product_name AS productName,
+            p.product_barcode AS productBarcode,
+            c.category_id AS categoryId,
+            c.category_name AS categoryName,
+            w.warehouse_id AS warehouseId,
+            w.warehouse_name AS warehouseName,
+            w.warehouse_location AS warehouseLocation
+        FROM stocks s
+        JOIN products p ON s.product_id = p.product_id
+        JOIN categories c ON p.category_id = c.category_id
+        JOIN warehouses w ON s.warehouse_id = w.warehouse_id
+        WHERE s.business_id = #{businessId} AND s.is_deleted = 0
+        ORDER BY s.updated_at DESC;
     </select>
     
+    <select id="selectFilteredStocks" resultMap="stockResultMap">
+	    SELECT 
+	        s.stock_id AS stockId,
+	        s.product_id AS productId,
+	        s.warehouse_id AS warehouseId,
+	        s.business_id AS businessId,
+	        s.total_quantity AS totalQuantity,
+	        s.reserved_quantity AS reservedQuantity,
+	        s.available_stock AS availableStock,
+	        s.updated_at AS updatedAt,
+	        s.created_at AS createdAt,
+	        s.description AS description,
+	        s.is_deleted AS isDeleted
+	    FROM stocks s
+	    <where>
+	        s.is_deleted = 0
+	        <if test="warehouseId != null">
+	            AND s.warehouse_id = #{warehouseId}
+	        </if>
+	        <if test="productId != null">
+	            AND s.product_id = #{productId}
+	        </if>
+	        <if test="sortOrder != null and sortOrder == 'asc'">
+	            ORDER BY s.available_stock ASC
+	        </if>
+	        <if test="sortOrder == 'desc'">
+	            ORDER BY s.available_stock DESC
+	        </if>
+	    </where>
+	</select>
+    
+
     <!-- 카테고리 목록 조회 -->
     <select id="selectAllCategories" resultMap="categoryResultMap">
         SELECT 
@@ -122,3 +186,4 @@
 	
 
 </mapper> 
+

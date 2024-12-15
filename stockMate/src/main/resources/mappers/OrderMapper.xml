@@ -15,24 +15,24 @@
             s.reserved_quantity, 
             s.available_stock,
             s.description as stock_description,
-            p.name, 
-            p.barcode, 
+            p.product_name, 
+            p.product_barcode, 
             p.base_unit, 
             p.set_size, 
-            p.price,
-            p.description as product_description,
+            p.product_price,
+            p.product_description as product_description,
             w.warehouse_name
         FROM 
-            test_stocks s
-            JOIN test_products p ON s.product_id = p.product_id
-            JOIN test_warehouses w ON s.warehouse_id = w.warehouse_id
+            stocks s
+            JOIN products p ON s.product_id = p.product_id
+            JOIN warehouses w ON s.warehouse_id = w.warehouse_id
         WHERE
             s.is_deleted = false
             AND p.is_deleted = false
             AND w.is_deleted = false
             AND s.available_stock > 0
         ORDER BY 
-            p.name ASC
+            p.product_name ASC
     </select>
 
     <!-- ResultMap은 한 번만 정의 -->
@@ -48,18 +48,18 @@
         <result property="warehouseName" column="warehouse_name"/>
         <association property="product" javaType="com.stockm8.domain.vo.ProductVO">
             <id property="productId" column="product_id"/>
-            <result property="name" column="name"/>
-            <result property="barcode" column="barcode"/>
+            <result property="productName" column="product_name"/>
+            <result property="productBarcode" column="product_barcode"/>
             <result property="baseUnit" column="base_unit"/>
             <result property="setSize" column="set_size"/>
-            <result property="price" column="price"/>
-            <result property="description" column="product_description"/>
+            <result property="productPrice" column="product_price"/>
+            <result property="productDescription" column="product_description"/>
         </association>
     </resultMap>
 
     <!-- 주문 등록 -->
     <insert id="insertOrder" parameterType="com.stockm8.domain.vo.OrderVO">
-        INSERT INTO test_orders (
+        INSERT INTO orders (
             order_number,
             total_price,
             created_by,
@@ -70,7 +70,7 @@
             #{totalPrice},
             #{createdBy},
             NOW(),
-            'pending'
+            'PENDING'
         )
         <selectKey keyProperty="orderId" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
@@ -79,7 +79,7 @@
 
     <!-- 주문 상세 항목 등록 -->
     <insert id="insertOrderItem" parameterType="com.stockm8.domain.vo.OrderItemVO">
-        INSERT INTO test_order_items (
+        INSERT INTO order_items (
             order_id,
             product_id,
             warehouse_id,
@@ -102,7 +102,7 @@
 
     <!-- 재고 예약 수량 업데이트 -->
     <update id="updateStockReservedQuantity">
-        UPDATE test_stocks 
+        UPDATE stocks 
         SET reserved_quantity = reserved_quantity + #{quantity}
         WHERE stock_id = #{stockId}
     </update>
@@ -110,7 +110,7 @@
     <!-- 해당 날짜의 마지막 주문번호 조회 -->
     <select id="getLastOrderNumberForDate" resultType="String">
         SELECT order_number 
-        FROM test_orders 
+        FROM orders 
         WHERE order_number LIKE CONCAT('ORD-', #{date}, '-%')
         ORDER BY order_number DESC 
         LIMIT 1

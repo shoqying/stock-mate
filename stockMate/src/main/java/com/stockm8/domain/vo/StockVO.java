@@ -18,9 +18,12 @@ public class StockVO {
     private String description;    // 재고 설명
     private boolean isDeleted;     // 논리 삭제 여부
     
-    private ProductVO product;     // 상품 정보 (JOIN 용)
-    private String warehouseName;  // 창고명 (JOIN 용)
-    
+
+    // 연관 VO 필드
+    private ProductVO product;      // 상품 정보
+    private CategoryVO category;    // 카테고리 정보
+    private WarehouseVO warehouse;  // 창고 정보
+    private String warehouseName;
     private String productName;    // 상품 이름(JOIN 용)
     private int productBarcode;           // 바코드(JOIN 용)
 

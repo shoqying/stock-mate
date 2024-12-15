@@ -1,6 +1,6 @@
 package com.stockm8.domain.enums;
 
-public enum Role {
+public enum UserRole {
     ADMIN,
     MANAGER,
     STAFF

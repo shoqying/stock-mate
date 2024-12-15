@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>주문 발주 페이지</title>
     <!-- CSS 파일 연결 -->
-    <link href="${pageContext.request.contextPath}/css/OrderStyle.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/OrderStyle.css" rel="stylesheet">
 </head>
 <body>
     <!-- 메인 컨테이너 -->
