@@ -23,6 +23,9 @@ $(document).ready(function () {
                             $("#stockInfo").html("재고 업데이트 성공! 남은 재고: <b>" + response.remainingStock + "</b>");
                         } else {
                             $("#stockInfo").html("오류 발생: " + response.message);
+                            if (confirm("새 제품으로 등록하시겠습니까?")) {
+                                window.location.href = "/product/register";
+                        	}
                         }
                     },
                     error: function () {
