@@ -74,7 +74,7 @@ public class StockController {
 		logger.info("Stock registered successfully: {}", stock);
 		
 		model.addAttribute("success", "재고 등록이 성공적으로 완료되었습니다.");
-		return "redirect:/stock/list"; // 재고 목록 페이지로 이동
+		return "/stock/register";
 	}
 	
 	// 재고 목록 조회

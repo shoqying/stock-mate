@@ -56,10 +56,5 @@ public class StockDAOImpl implements StockDAO {
     public List<CategoryVO> selectAllCategories() throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
     }
-    
-   @Override
-   public List<CategoryVO> selectAllCategories() throws Exception {
-         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
-   }
 }
 

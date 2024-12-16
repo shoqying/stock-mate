@@ -138,11 +138,20 @@ th, td {
 	            toggleScannerBtn.textContent = "웹캠 시작";
 	        }).catch(err => console.error("스캐너 종료 오류:", err));
 	    }
+	    
+		let lastScannedTime = 0; // 마지막 스캔 시간 저장
 
 	    // **스캔 성공 시 호출**  
 	    function onScanSuccess(decodedText) {
-	        if (isScanning) return; // 중복 방지  
+	        const currentTime = new Date().getTime(); // 현재 시간 (밀리초)
+	        
+	        if (isScanning || currentTime - lastScannedTime < 1000) { 
+	            // 1초 내에 같은 QR 코드 중복 스캔 방지
+	            return;
+	        }
+	        
 	        isScanning = true;
+	        lastScannedTime = currentTime; // 마지막 스캔 시간 업데이트
 	        beepSound.play();
 	        console.log("Scanned Text:", decodedText); // 디버깅 로그 추가
 
