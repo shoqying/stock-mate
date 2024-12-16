@@ -53,27 +53,27 @@
 		);
     </insert>
 
-<!-- 창고 상세 조회 -->
-<select id="selectWarehouseDetailById" parameterType="int" resultMap="warehouseResultMap">
-    SELECT 
-        w.warehouse_id,
-        w.warehouse_name,
-        w.warehouse_capacity,
-        w.warehouse_region,
-        w.warehouse_location,
-        w.created_at,
-        w.updated_at,
-        w.warehouse_description,
-        w.warehouse_status,
-        w.business_id,
-        b.business_name, 
-        w.manager_id,
-        u.user_name
-    FROM warehouses w
-    LEFT JOIN businesses b ON w.business_id = b.business_id
-    LEFT JOIN users u ON w.manager_id = u.user_id
-    WHERE w.warehouse_id = #{warehouseId} AND w.is_deleted = 0;
-</select>
+	<!-- 창고 상세 조회 -->
+	<select id="selectWarehouseDetailById" parameterType="int" resultMap="warehouseResultMap">
+	    SELECT 
+	        w.warehouse_id,
+	        w.warehouse_name,
+	        w.warehouse_capacity,
+	        w.warehouse_region,
+	        w.warehouse_location,
+	        w.created_at,
+	        w.updated_at,
+	        w.warehouse_description,
+	        w.warehouse_status,
+	        w.business_id,
+	        b.business_name, 
+	        w.manager_id,
+	        u.user_name
+	    FROM warehouses w
+	    LEFT JOIN businesses b ON w.business_id = b.business_id
+	    LEFT JOIN users u ON w.manager_id = u.user_id
+	    WHERE w.warehouse_id = #{warehouseId} AND w.is_deleted = 0;
+	</select>
 
 
     <!-- 창고 존재 여부 확인 -->
@@ -118,11 +118,5 @@
 		test_warehouses WHERE warehouse_id = #{warehouseId}
 	</delete>
 	
-	<!-- 회사 정보에 따른 창고 목록 조회 stock가 씀-->
-	<select id="selectWarehousesByBusinessId" resultType="com.stockm8.domain.vo.WarehouseVO">
-    SELECT warehouse_id AS warehouseId, warehouse_name AS warehouseName, location
-    FROM test_warehouses
-    WHERE business_id = #{businessId}
-	</select>
 </mapper>
 
