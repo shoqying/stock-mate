@@ -18,8 +18,7 @@
 		<result property="createdBy" column="created_by" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
-		<result property="userStatus" column="user_status"
-			javaType="com.stockm8.domain.enums.UserStatus" />
+		<result property="userStatus" column="user_status" javaType="com.stockm8.domain.enums.UserStatus" />
 		<result property="isDeleted" column="is_deleted" />
 	</resultMap>
 
@@ -63,13 +62,6 @@
 		is_deleted
 		FROM users
 		WHERE email = #{email} AND password = #{password}
-	</select>
-
-
-	<!-- 회원정보 조회 -->
-	<select id="getUser" resultMap="UserResultMap">
-		SELECT * FROM users
-		WHERE user_id = #{userId} AND password = #{password}
 	</select>
 
 	<!-- 회원정보 조회 -->
