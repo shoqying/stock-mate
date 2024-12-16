@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.stockm8.domain.dto.QRCodeDTO;
+import com.stockm8.domain.dto.ScanProductDTO;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.QRCodeVO;
 import com.stockm8.exceptions.QRCodeGenerationException;
@@ -106,6 +109,37 @@ public class QRCodeApiController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .contentLength(qrCodeFile.length())
                 .body(resource);
+    }
+    
+
+    // QR 코드 스캔 후 DB 조회
+    @PostMapping("/scan")
+    public Map<String, Object> scanProduct(@RequestBody ScanProductDTO scanProduct) {
+        Map<String, Object> response = new HashMap<>();
+        Gson gson = new Gson();
+
+        try {
+            // QR 코드 데이터에서 상품 ID 추출
+            int productId = scanProduct.getProductId();
+            
+            // DB에서 상품 정보 조회
+            ProductVO product = productService.getProductByID(productId);
+
+            if (product != null) {
+                response.put("success", true);
+                response.put("productName", product.getProductName());
+                response.put("productPrice", product.getProductPrice());
+                response.put("productUnit", product.getBaseUnit());
+                response.put("productBarcode", product.getProductBarcode());
+            } else {
+                response.put("success", false);
+                response.put("message", "해당 상품을 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "오류가 발생했습니다: " + e.getMessage());
+        }
+        return response;
     }
 
 }
