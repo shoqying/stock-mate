@@ -95,11 +95,13 @@
                                 <td>
                                     <!-- 상품명을 클릭하면 product/detail 페이지로 이동 -->
                                     <c:choose>
-                                        <c:when test="${not empty stock.product}">
-                                            <a href="<c:url value='/product/detail/${stock.product.productId}' />">${stock.product.productName}</a>
-                                        </c:when>
-                                        <c:otherwise>N/A</c:otherwise>
-                                    </c:choose>
+									    <c:when test="${not empty stock.product}">
+									        <a href="<c:url value='/product/detail' />?productId=${stock.product.productId}">
+									            ${stock.product.productName}
+									        </a>
+									    </c:when>
+									    <c:otherwise>N/A</c:otherwise>
+									</c:choose>
                                 </td>
                                 <td>${stock.product != null ? stock.product.productBarcode : 'N/A'}</td>
                                 <td>${stock.category != null ? stock.category.categoryName : 'N/A'}</td>
