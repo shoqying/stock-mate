@@ -31,6 +31,7 @@
             AND p.is_deleted = false
             AND w.is_deleted = false
             AND s.available_stock > 0
+            AND s.business_id = #{businessId} <!-- 비즈니스 id를 가져와야지만 됨 해당목록???만 보이게 ??  -->
         ORDER BY 
             p.product_name ASC
     </select>
@@ -64,13 +65,13 @@
             total_price,
             created_by,
             created_at,
-            status
+            order_type
         ) VALUES (
             #{orderNumber},
             #{totalPrice},
             #{createdBy},
             NOW(),
-            'PENDING'
+            #{orderType}
         )
         <selectKey keyProperty="orderId" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
@@ -87,6 +88,7 @@
             unit_price,
             remarks,
             created_at
+            <!-- stock_id -->
             <!-- subtotal_price -->
         ) VALUES (
             #{orderId},
@@ -96,16 +98,18 @@
             #{unitPrice},
             #{remarks},
             NOW()
+            <!-- #{stockId} -->
             <!-- #{stotalPrice} -->
         )
     </insert>
 
     <!-- 재고 예약 수량 업데이트 -->
-    <update id="updateStockReservedQuantity">
+    <update id="updateStockQuantity" parameterType="map">
         UPDATE stocks 
         SET reserved_quantity = reserved_quantity + #{quantity}
         WHERE stock_id = #{stockId}
-    </update>
+
+	</update>
 
     <!-- 해당 날짜의 마지막 주문번호 조회 -->
     <select id="getLastOrderNumberForDate" resultType="String">
@@ -115,4 +119,69 @@
         ORDER BY order_number DESC 
         LIMIT 1
     </select>
+    
+    <!-- 오더목록 조회 -->
+    <select id="orderList" resultType="com.stockm8.domain.vo.OrderVO">
+    	select * from test_orders
+    
+    </select>
+    
+    
+    
+    <!-- 재고 정보 단건 조회  미사용 -->
+    <select id="getStockById" resultMap="stockWithProductMap">
+        SELECT 
+            s.stock_id, 
+            s.product_id, 
+            s.warehouse_id, 
+            s.business_id,
+            s.total_quantity, 
+            s.reserved_quantity, 
+            s.available_stock,
+            s.description as stock_description,
+            p.name, 
+            p.barcode, 
+            p.base_unit, 
+            p.set_size, 
+            p.price,
+            p.description as product_description,
+            w.warehouse_name
+        FROM 
+            test_stocks s
+            JOIN test_products p ON s.product_id = p.product_id
+            JOIN test_warehouses w ON s.warehouse_id = w.warehouse_id
+        WHERE
+            s.stock_id = #{stockId}
+            AND s.is_deleted = false
+            AND p.is_deleted = false
+            AND w.is_deleted = false
+    </select>
+    
+    
+    <!-- 재고 이력 등록 미사용 -->
+    <insert id="insertStockHistory" parameterType="map">
+        INSERT INTO test_stock_history (
+            stock_id,
+            order_id,
+            quantity_changed,
+            action_type,
+            created_by,
+            created_at,
+            remarks
+        ) VALUES (
+            #{stockId},
+            #{orderId},
+            #{quantityChanged},
+            #{actionType},
+            #{createdBy},
+            NOW(),
+            #{remarks}
+        )
+    </insert>
+    
+    
+    
+    
+    
+    
 </mapper>
