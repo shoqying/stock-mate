@@ -27,4 +27,6 @@ public class ReceivingShipmentVO {
     private String productName;
     private String productDescription;
     private int productPrice;
+    private int businessId;
+
 }
