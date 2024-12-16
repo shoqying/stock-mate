@@ -48,5 +48,18 @@ public class HomeController {
 		
 		return "dashboard";
 	}
-	
+    // http://localhost:8088/qrScanner
+	@RequestMapping(value = "/qrScanner", method = RequestMethod.GET)
+	public String qrScanner(Locale locale, Model model) {
+		logger.info("😁Welcome scanner😁! The client locale is {}.", locale);
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+		
+		return "qrScanner";
+	}
 }
