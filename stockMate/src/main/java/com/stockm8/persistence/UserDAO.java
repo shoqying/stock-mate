@@ -18,26 +18,29 @@ public interface UserDAO {
     public UserVO userLogin(UserVO user);
 
     // 회원정보 조회동작
-    public UserVO getUser(String email , String password); //
+    public UserVO getUser(Long userId , String password); //
 
     // 회원정보 수정동작
     public void updateUser (UserVO user);
+    
+    public UserVO getUserInfoById(Long userId) throws Exception;
+
+    void updatePassword(@Param("userId") Long userId, @Param("newPassword") String newPassword);
 
     // 사용자의 businessId 수정
     int updateUserBusinessId(@Param("userId") Long userId, @Param("businessId") int businessId);
 
+    
     // 회원정보 삭제동작
     public int deleteUser (UserVO user);
 
     // 회원정보 목록(list)
     public List<UserVO> getUserList();
 
-    
-    
     @Select("SELECT * FROM users WHERE user_id = #{userId}")
     UserVO getUserById(@Param("userId")Long userId) throws Exception;
 
 
-   
     int getIsDeleted(Long userId) throws Exception;
+
 }

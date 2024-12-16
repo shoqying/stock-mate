@@ -16,12 +16,17 @@ public interface UserService {
    public UserVO userLogin(UserVO user) throws Exception;
    
    // 회원정보 조회
-   public UserVO getUser(String userId,String password) throws Exception;
+   public UserVO getUser(Long userId,String password) throws Exception;
    
    // 회원정보 수정
    public void updateUser(UserVO user) throws Exception;
    
-   // 회원정보에서 BusinessId 수정
+   public UserVO getUserInfoById(Long userId) throws Exception;
+   
+   void updatePassword(Long userId, String newPassword) throws Exception;
+
+
+   // 회원정보에서 비밀번호 수정
    public void updateUserBusinessId(Long userId, int businessId) throws Exception;
    
    // 회원정보 삭제
