@@ -113,31 +113,43 @@ public class QRCodeApiController {
 
     // QR 코드 스캔 후 DB 조회
     @PostMapping("/scan")
-    public Map<String, Object> scanProduct(@RequestBody ScanProductDTO scanProduct) {
+    public Map<String, Object> scanProduct(@RequestBody Map<String, String> qrData) {
         Map<String, Object> response = new HashMap<>();
         Gson gson = new Gson();
 
         try {
-            // QR 코드 데이터에서 상품 ID 추출
-            int productId = scanProduct.getProductId();
-            
-            // DB에서 상품 정보 조회
-            ProductVO product = productService.getProductByID(productId);
+            // Step 1: 원본 데이터 확인 (디버깅 로그 추가)
+            logger.info("Received QR Data: " + qrData);
 
+            // Step 2: productId 문자열이 JSON 객체인 경우 파싱
+            String rawProductId = qrData.get("productId");
+            logger.info("Raw productId: " + rawProductId);
+
+            // JSON 객체를 ScanProductDTO로 변환
+            ScanProductDTO scanProduct = gson.fromJson(rawProductId, ScanProductDTO.class);
+            int productId = scanProduct.getProductId();
+            logger.info("Parsed productId: " + productId);
+
+            // Step 3: DB에서 상품 정보 조회
+            ProductVO product = productService.getProductByID(productId);
             if (product != null) {
+            	logger.info("Product Found: " + product);
                 response.put("success", true);
                 response.put("productName", product.getProductName());
                 response.put("productPrice", product.getProductPrice());
                 response.put("productUnit", product.getBaseUnit());
                 response.put("productBarcode", product.getProductBarcode());
             } else {
+                logger.warn("Product Not Found with ID: " + productId);
                 response.put("success", false);
                 response.put("message", "해당 상품을 찾을 수 없습니다.");
             }
         } catch (Exception e) {
+        	logger.error("Error Occurred: " + e.getMessage());
             response.put("success", false);
             response.put("message", "오류가 발생했습니다: " + e.getMessage());
         }
+
         return response;
     }
 
