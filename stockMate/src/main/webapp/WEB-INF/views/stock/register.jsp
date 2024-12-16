@@ -13,6 +13,7 @@
 <body>
     <div class="container">
         <button class="dashboard-btn" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
+        <button class="dashboard-btn" onclick="location.href='/stock/list';">재고 리스트</button>
         <h1>재고 등록</h1>
         <form id="stockForm" method="post" action="/stock/register">
             <!-- 창고 선택 -->
@@ -33,8 +34,8 @@
 
             <!-- 수량 입력 -->
             <div class="form-group">
-                <label for="quantity">초기 수량</label>
-                <input type="number" id="quantity" name="quantity" min="1" required>
+                <label for="totalQuantity">초기 수량</label>
+                <input type="number" id="totalQuantity" name="totalQuantity" min="1" required>
             </div>
             
             <!-- 재고 설명 입력 -->
