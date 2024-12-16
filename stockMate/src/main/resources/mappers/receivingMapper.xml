@@ -33,18 +33,16 @@
 	status, 
 	product_id, 
 	change_quantity, 
-	transaction_unit,
 	order_item_id,
 	stock_id,
 	warehouse_id,
     created_by
 	)
 	SELECT 
-	'INBOUND', 
-	'PENDING',
+	'in', 
+	'pending',
 	p.product_id, 
 	o.quantity, 
-	p.base_unit,
 	o.order_item_id,
 	s.stock_id,
 	o.warehouse_id,

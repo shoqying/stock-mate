@@ -21,4 +21,4 @@ public class StockVO {
     private ProductVO product;     // 상품 정보 (JOIN 용)
     private String warehouseName;  // 창고명 (JOIN 용)
 
-}
+} //StockVO

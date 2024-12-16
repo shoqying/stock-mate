@@ -16,4 +16,9 @@ public class OrderItemVO {
     private double stotalPrice;     // 주문 1건의 전체 총 금액
     private Timestamp createdAt;   // 생성 시간
     private Timestamp updatedAt;   // 수정 시간
+    
+    
+    private int stockId; // 가용 재고 구분위해 필요
+    
+    
 } //OrderItemVO
