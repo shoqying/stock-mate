@@ -2,14 +2,17 @@ package com.stockm8.domain.vo;
 
 import java.sql.Timestamp;
 
+import com.stockm8.domain.enums.OrderStatus;
+import com.stockm8.domain.enums.OrderType;
+
 import lombok.Data;
 
 @Data
 public class ReceivingShipmentVO {
     private int receivingShipmentNo;         // 고유 트랜잭션 ID
-    private String transactionType;    // 입출고 유형 (in, out, adjustment, transfer)
+    private OrderType transactionType;    // 입출고 유형 (INBOUND, OUTBOUND,)
     private Timestamp createdAt;       // 입출고 생성 날짜
-    private String status;             // 트랜잭션 상태
+    private OrderStatus status;             // 트랜잭션 상태(PENDING, COMPLETED, CANCELLED)
     private Integer productId;         // 관련 상품 ID
     private int changeQuantity;        // 입출고 수량
     private String transactionUnit;    // 입출고 단위
@@ -21,7 +24,9 @@ public class ReceivingShipmentVO {
     private String memo;        // 작업 사유
     
 //  조인된 VO
-    private String name;
-    private String description;
-    private int price;
+    private String productName;
+    private String productDescription;
+    private int productPrice;
+    private int businessId;
+
 }

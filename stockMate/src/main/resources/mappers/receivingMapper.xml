@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.stockm8.mappers.receivingMapper">
   
-  <resultMap type="com.stockm8.domain.vo.ReceivingShipmentVO" id="receivingshipmentMap">
+  <resultMap type="com.stockm8.domain.vo.ReceivingShipmentVO" id="receivingShipmentMap">
   	<id property="productId" column="product_id"/>
   	<result property="receivingShipmentNo" column="receiving_shipment_no"/>
   	<result property="createdAt" column="created_at"/>
@@ -57,7 +57,7 @@
 </insert>
 	
 <!-- 오늘 입고 예정 리스트 -->
-<select id="getReceivingList" resultMap="receivingshipmentMap">
+<select id="getReceivingList" resultMap="receivingShipmentMap">
 	select
 	r.receiving_shipment_no, 
 	r.transaction_type, 
@@ -79,7 +79,7 @@
 </select>
 
 <!-- 어제 입고 리스트 -->
-<select id="getYesterdayReceivingList" resultMap="receivingshipmentMap">
+<select id="getYesterdayReceivingList" resultMap="receivingShipmentMap">
 	select
 	r.receiving_shipment_no, 
 	r.transaction_type, 
@@ -101,7 +101,7 @@
 </select>
 
 <!-- 그저께 입고 리스트 -->
-<select id="getTDBYReceivingList" resultMap="receivingshipmentMap">
+<select id="getTDBYReceivingList" resultMap="receivingShipmentMap">
 	select
 	r.receiving_shipment_no, 
 	r.transaction_type, 
@@ -123,7 +123,7 @@
 </select>
 
 <!-- 입고 내역 히스토리 -->
-<select id="getReceivingHistoryList" resultMap="receivingshipmentMap">
+<select id="getReceivingHistoryList" resultMap="receivingShipmentMap">
 	select
 	r.receiving_shipment_no, 
 	r.transaction_type, 
@@ -146,7 +146,7 @@
 </select>
 
 <!-- 입고 내역 검색 -->
-<select id="getHistoryByDateRange" parameterType="map" resultMap="receivingshipmentMap">
+<select id="getHistoryByDateRange" parameterType="map" resultMap="receivingShipmentMap">
     SELECT 
     r.receiving_shipment_no, 
     r.transaction_type, 
@@ -211,5 +211,31 @@
 	AND u.business_id = #{businessId}
 </select>
 
-  	
-  </mapper>
+   <!-- receiving scan을 위한 매퍼 -->
+   <!-- 바코드로 제품 조회 -->
+<select id="selectQuantityCheckByBarcode" resultType="com.stockm8.domain.vo.StockVO">
+       SELECT s.product_id, p.product_name, s.total_quantity, s.warehouse_id
+       FROM stocks s
+       JOIN products p ON p.product_id = s.product_id
+       WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+</select>
+
+<!-- 바코드로 재고 1 감소 -->
+<update id="updateIncreseStock">
+    UPDATE stocks s
+    JOIN products p on p.product_id = s.product_id
+    SET s.total_quantity = s.total_quantity + 1
+    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+    AND s.total_quantity > 0
+</update>
+
+<!-- 바코드로 남은 재고 조회 -->
+<select id="selectStockByBarcode" resultType="int">
+    SELECT s.total_quantity
+    FROM stocks s
+    JOIN products p on p.product_id = s.product_id
+    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+</select>
+<!-- receiving scan을 위한 매퍼 -->
+
+</mapper>

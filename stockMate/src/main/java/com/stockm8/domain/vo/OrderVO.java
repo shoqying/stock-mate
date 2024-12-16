@@ -3,6 +3,8 @@ package com.stockm8.domain.vo;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.stockm8.domain.enums.OrderType;
+
 import lombok.Data;
 
 
@@ -21,7 +23,7 @@ import lombok.Data;
 	    private Timestamp createdAt;   // 주문 생성 날짜
 	    private Timestamp updatedAt;   // 주문 수정 날짜
 	    private OrderType orderType;   // 주문 유형 (INBOUND/OUTBOUND)
-	    
+	    private String status;         // 주문 상태 (pending, confirmed, cancelled)
 	    private List<OrderItemVO> orderItems;  // 주문 항목 리스트
 	 
 	

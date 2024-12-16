@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
+import com.stockm8.domain.vo.StockVO;
 
 @Repository
 public class ReceivingDAOImpl implements ReceivingDAO {
@@ -27,39 +28,43 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	
 	// 입고 메인 오늘 들어올 리스트
 	@Override
-	public List<ReceivingShipmentVO> selectReceivingList() throws Exception {
-		logger.info("ReceivingList() 호출");
+	public List<ReceivingShipmentVO> selectReceivingList(int businessId) throws Exception {
+		logger.info("selectReceivingList() 호출");
 		
-		return sqlSession.selectList(NAMESPACE + "getReceivingList"); 
+		return sqlSession.selectList(NAMESPACE + "getReceivingList", businessId); 
 	}
 	
 	// 입고 메인 오늘 들어올 리스트
 	@Override
-	public List<ReceivingShipmentVO> selectYesterdayReceivingList() throws Exception {
-		logger.info("ReceivingList() 호출");
+	public List<ReceivingShipmentVO> selectYesterdayReceivingList(int businessId) throws Exception {
+		logger.info("selectYesterdayReceivingList() 호출");
 		
-		return sqlSession.selectList(NAMESPACE + "getYesterdayReceivingList"); 
+		return sqlSession.selectList(NAMESPACE + "getYesterdayReceivingList", businessId); 
 	}
 		
 	// 입고 메인 오늘 들어올 리스트
 	@Override
-	public List<ReceivingShipmentVO> selectTDBYReceivingList() throws Exception {
-		logger.info("ReceivingList() 호출");
+	public List<ReceivingShipmentVO> selectTDBYReceivingList(int businessId) throws Exception {
+		logger.info("selectTDBYReceivingList() 호출");
 		
-		return sqlSession.selectList(NAMESPACE + "getTDBYReceivingList"); 
+		return sqlSession.selectList(NAMESPACE + "getTDBYReceivingList", businessId); 
 	}
 	
 	// 입고 내역 히스토리 리스트
 	@Override
-	public List<ReceivingShipmentVO> selectReceivingHistoryList(Criteria cri) throws Exception {
+	public List<ReceivingShipmentVO> selectReceivingHistoryList(Criteria cri, int businessId) throws Exception {
 		logger.info("selectReceivingHistoryList() 호출");
 		
-		return sqlSession.selectList(NAMESPACE + "getReceivingHistoryList", cri);
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("cri", cri);
+		paramMap.put("businessId", businessId);	   
+		
+		return sqlSession.selectList(NAMESPACE + "getReceivingHistoryList", paramMap);
 	}
 
 	// 입고 내역 검색
 	@Override
-	public List<ReceivingShipmentVO> selectHistoryByDateRange(String startDate, String endDate, String keyword, Criteria cri) throws Exception {
+	public List<ReceivingShipmentVO> selectHistoryByDateRange(String startDate, String endDate, String keyword, Criteria cri, int businessId) throws Exception {
 		logger.info("selectHistoryByDateRange() 호출");
 		
 	    Map<String, Object> paramMap = new HashMap();
@@ -67,31 +72,64 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	    paramMap.put("endDate", endDate);
 	    paramMap.put("keyword", keyword);
 	    paramMap.put("cri", cri);
+	    paramMap.put("businessId", businessId);	    
 	    
 		return sqlSession.selectList(NAMESPACE + "getHistoryByDateRange", paramMap);
 	}
 
 	@Override
-	public int selectTotalCountBySearch(String startDate, String endDate, String keyword) throws Exception {
+	public int selectTotalCountBySearch(String startDate, String endDate, String keyword, int businessId) throws Exception {
 	    
 		Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("startDate", startDate);
 	    paramMap.put("endDate", endDate);
 	    paramMap.put("keyword", keyword);
+	    paramMap.put("businessId", businessId);	
 	    return sqlSession.selectOne(NAMESPACE + "getTotalCountBySearch", paramMap);
 	}
 	
 	@Override
-	public int selectTotalCount() throws Exception {
+	public int selectTotalCount(int businessId) throws Exception {
 		logger.info("selectTotalCount() 호출");
 		
-		return sqlSession.selectOne(NAMESPACE + "getTotalCount");
+		return sqlSession.selectOne(NAMESPACE + "getTotalCount", businessId);
 	}
 
 	@Override
-	public void insertReceiving() throws Exception {
+	public void insertReceiving(int businessId) throws Exception {
 		logger.info("insertReceiving() 호출");
-		sqlSession.insert(NAMESPACE + "insertReceiving");
+		sqlSession.insert(NAMESPACE + "insertReceiving", businessId);
+	}
+	
+  @Override
+	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception {
+		logger.info("selectReceiving() 호출");
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("businessId", businessId);	   
+		paramMap.put("barcode", barcode);
+		
+		return sqlSession.selectList(NAMESPACE + "selectQuantityCheckByBarcode", paramMap);
+	}
+
+	@Override
+	public int updateIncreseStock(int businessId, String barcode) throws Exception {
+		logger.info("updateDecreaseStock() 호출");
+	    // 매개변수 묶기
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("businessId", businessId);
+	    params.put("barcode", barcode);
+
+	    // SQL 실행
+	    return sqlSession.update(NAMESPACE + "updateIncreseStock", params);
+	}
+
+	@Override
+	public int selectStockByBarcode(int businessId, String barcode) throws Exception {
+		logger.info("selectStockByBarcode() 호출");
+		Map<String, Object> params = new HashMap<>();
+	    params.put("businessId", businessId);
+	    params.put("barcode", barcode);
+		return sqlSession.selectOne(NAMESPACE + "selectStockByBarcode", params);
 	}
 	
 	
@@ -99,5 +137,4 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	
 	
 	
-
 } // ReceivingDAOImpl end

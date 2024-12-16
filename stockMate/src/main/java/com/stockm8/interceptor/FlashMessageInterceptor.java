@@ -27,12 +27,14 @@ public class FlashMessageInterceptor implements HandlerInterceptor {
                            ModelAndView modelAndView) throws Exception {
         // FlashMap에서 메시지 가져오기
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        
         if (flashMap != null && modelAndView != null) {
             String errorMessage = (String) flashMap.get("errorMessage");
             if (errorMessage != null) {
                 modelAndView.addObject("errorMessage", errorMessage);
             }
-
+            
+            // successMessage가 있으면 모델에 추가
             String successMessage = (String) flashMap.get("successMessage");
             if (successMessage != null) {
                 modelAndView.addObject("successMessage", successMessage);

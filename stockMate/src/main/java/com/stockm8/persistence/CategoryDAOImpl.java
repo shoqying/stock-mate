@@ -28,7 +28,11 @@ public class CategoryDAOImpl implements CategoryDAO {
     // 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회)
     @Override
     public List<CategoryVO> selectAllCategories() throws Exception {
-        return sqlSession.selectList(NAMESPACE + "selectAllCategories");
+        try {
+            return sqlSession.selectList(NAMESPACE + "selectAllCategories");
+        } catch (Exception e) {
+            throw new Exception("카테고리 목록 조회 실패", e);
+        }
     }
     
     // 특정 사업자(businessId) 소속의 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회)

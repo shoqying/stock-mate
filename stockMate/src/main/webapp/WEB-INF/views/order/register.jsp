@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>주문 발주 페이지</title>
-    <link href="${pageContext.request.contextPath}/css/OrderStyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="<c:url value='/resources/css/OrderStyle.css' />">
 </head>
 <body>
     <!-- 메인 컨테이너 -->
@@ -342,14 +342,14 @@
 		    
 		    [
 		        stock.stockId,
-		        stock.product.name,
-		        stock.product.barcode || '-',
+		        stock.product.productName,
+		        stock.product.productBarcode || '-',
 		        stock.warehouseName,
 		        stock.warehouseId,
 		        stock.totalQuantity,
 		        stock.reservedQuantity,
 		        stock.availableStock,
-		        stock.product.price,
+		        stock.product.productPrice,
 		        stock.product.baseUnit
 		    ].forEach(text => {
 		        row.append($('<td>').text(text));
@@ -466,6 +466,15 @@
 		    card.find('.available-stock').val(stock.availableStock); // 실제 주문 가능한 재고량
 		    card.find('.base-unit').val(stock.product.baseUnit);  // 기본 단위
 		    card.find('.unit-price').val(stock.product.price); // 단가
+		    // 표시 필드 업데이트
+		    card.find('.product-name').val(stock.product.productName);
+		    card.find('.warehouse-name').val(stock.warehouseName);
+		    card.find('.barcode').val(stock.product.productBarcode);
+		    card.find('.total-quantity').val(stock.totalQuantity);
+		    card.find('.reserved-quantity').val(stock.reservedQuantity);
+		    card.find('.available-stock').val(stock.availableStock);
+		    card.find('.base-unit').val(stock.product.baseUnit);
+		    card.find('.unit-price').val(stock.product.productPrice);
 		    
 		    // 주문 수량 최대값 설정(가용 재고량으로 설정)
 		    const quantityInput = card.find('.order-quantity'); 
