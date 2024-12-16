@@ -71,7 +71,7 @@ public class StockController {
 	}
 
 	// 재고 등록 처리
-	@PostMapping("/stock/register")
+	@PostMapping("/register")
 	public String registerStock(@ModelAttribute StockVO stock, @SessionAttribute("userId") Long userId, Model model)
 			throws Exception {
 
@@ -133,36 +133,4 @@ public class StockController {
 		return sortOrder; // 이부분 수정 필요 확인해주세요 
 	}
 
-	// http://localhost:8088/stock/list
-	/**
-	 * 비즈니스 ID를 기반으로 재고 목록 조회
-	 */
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String list(@SessionAttribute("userId") Long userId, Model model) throws Exception {
-		logger.info("Fetching stock list for userId: {}", userId);
-
-		UserVO user = userService.getUserById(userId);
-		int businessId = user.getBusinessId();
-		logger.info("Business ID for user: {}", businessId);
-
-		// 재고 및 카테고리 데이터 조회
-		List<StockVO> stockList = stockService.getStockListByBusinessId(businessId);
-		List<CategoryVO> categoryList = categoryService.getCategoriesByBusinessId(businessId);
-
-		logger.info("Fetched stockList: {}", stockList);
-		logger.info("Fetched categoryList: {}", categoryList);
-
-		model.addAttribute("stockList", stockList);
-		model.addAttribute("categoryList", categoryList);
-
-		return "/stock/list";
-	}
-
-	// 상품명 클릭 시 상품 상세 페이지로 리다이렉트
-	@RequestMapping("/detail/{productId}")
-	public String productDetail(@PathVariable("productId") int productId) {
-		// 상품 상세 페이지로 리다이렉트
-		logger.info("상품 상세 페이지로 이동: productId = {}", productId);
-		return "redirect:/product/detail/" + productId;
-	}
 }

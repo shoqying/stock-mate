@@ -104,7 +104,7 @@ public class ProductController {
 	
 	// QR코드 등록 처리
 	@GetMapping("/generateQR")
-	public String generateQR(@RequestParam("productId") int productId, RedirectAttributes rttr) throws Exception {
+	public String generateQRGET(@RequestParam("productId") int productId, RedirectAttributes rttr) throws Exception {
 	    logger.info("generateQR() 호출");
 	    logger.info("전송된 productId: {}", productId);
 
@@ -129,7 +129,7 @@ public class ProductController {
 	// http://localhost:8088/product/downloadQr
 	// QR코드 다운로드 처리
 	@GetMapping("/downloadQr")
-	public void downloadQrCode(
+	public void downloadQrCodeGET(
 	        @RequestParam("productId") int productId,
 	        HttpServletResponse response) throws Exception {
 
@@ -168,7 +168,7 @@ public class ProductController {
 	// http://localhost:8088/product/detail
 	// 상품 상세 정보 페이지
 	@GetMapping("/detail")
-	public String detail(@RequestParam("productId") int productId, Model model) throws Exception {
+	public String detailGET(@RequestParam("productId") int productId, Model model) throws Exception {
 	    // 상품 상세 정보 조회
 	    ProductVO product = productService.getProductByID(productId);
 	    if (product == null) {
@@ -191,7 +191,7 @@ public class ProductController {
 	
 	// http://localhost:8088/product/list
     @GetMapping("/list")
-    public String listProducts(HttpServletRequest request, Model model) throws Exception{
+    public String listProductsGET(HttpServletRequest request, Model model) throws Exception{
 	    // 세션에서 userId 가져오기
 	    HttpSession session = request.getSession(false);
 	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;

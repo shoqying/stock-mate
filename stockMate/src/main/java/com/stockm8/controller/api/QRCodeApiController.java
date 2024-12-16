@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.stockm8.domain.dto.QRCodeDTO;
 import com.stockm8.domain.dto.ScanProductDTO;
 import com.stockm8.domain.vo.ProductVO;
