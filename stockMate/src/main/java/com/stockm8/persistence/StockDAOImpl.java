@@ -62,7 +62,7 @@ public class StockDAOImpl implements StockDAO {
     public List<CategoryVO> selectCategoryList() throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectCategoryList");  // CategoryDAO에서 카테고리 목록 조회
     }
-}
+    
     public ProductVO selectProductById(int productId) throws Exception {
         return sqlSession.selectOne(NAMESPACE + "selectProductById", productId);
     }

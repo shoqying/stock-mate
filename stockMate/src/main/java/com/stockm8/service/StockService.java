@@ -24,10 +24,8 @@ public interface StockService {
     // 필터링된 재고 목록 조회 (정렬 기준 추가)
     public List<StockVO> getStockList(FilterCriteria criteria, String sortOrder) throws Exception;  // sortOrder 추가
 
-
     // 카테고리 목록 조회
     public List<CategoryVO> getCategoryList() throws Exception;
-}
 
     // 사용 가능한 재고 자동 계산
     public int calculateAvailableStock(StockVO stock) throws Exception;

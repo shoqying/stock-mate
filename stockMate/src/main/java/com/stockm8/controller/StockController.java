@@ -8,17 +8,16 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.stockm8.domain.vo.CategoryVO;
@@ -35,149 +34,135 @@ import com.stockm8.service.WarehouseService;
 @Controller
 @RequestMapping("/stock")
 public class StockController {
-    private static final Logger logger = LoggerFactory.getLogger(StockController.class);
-
-    @Inject
-    private StockService stockService;
-
-    @Inject
-    private UserService userService;
-
-    @Inject
-    private WarehouseService warehouseService;  // WarehouseService 주입
-
-    // http://localhost:8088/stock/list
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String getStockList(StockVO stock, Model model, HttpServletRequest request,
-                                @RequestParam(required = false) Integer warehouseId, 
-                                @RequestParam(required = false) String categoryName, 
-                                @RequestParam(required = false) Integer minStock, 
-                                @RequestParam(required = false) Integer maxStock,
-                                @RequestParam(required = false, defaultValue = "desc") String sortOrder) throws Exception {
-        logger.info("getStockList 호출");
-
-        // 세션에서 userId 가져오기 
-        HttpSession session = request.getSession(false);
-        Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
-        
-        // userId로 사용자 정보 조회
-        UserVO user = userService.getUserById(userId);   
-
-        int businessId = user.getBusinessId();
-        stock.setBusinessId(businessId);
-
-        // 창고 목록 조회 (businessId에 맞는 창고 목록)
-        List<WarehouseVO> warehouseList = warehouseService.getWarehousesByBusinessId(businessId);
-        logger.info("조회된 창고 목록: {}", warehouseList.size());
-
-        // 창고명과 카테고리명 정보 제공
-        model.addAttribute("warehouseList", warehouseList);
-        model.addAttribute("categoryList", stockService.getCategoryList());
-
-        // 재고 리스트 조회 (FilterCriteria 객체를 사용하여 파라미터 전달)
-        FilterCriteria criteria = new FilterCriteria(warehouseId, categoryName, minStock, maxStock, sortOrder, businessId);
-        List<StockVO> stockList = stockService.getStockList(criteria, sortOrder);  // 정렬 순서 추가
-        model.addAttribute("stockList", stockList);
-        
-        // 필터링된 파라미터들을 모델에 추가
-        model.addAttribute("warehouseId", warehouseId);
-        model.addAttribute("categoryName", categoryName);
-        model.addAttribute("minStock", minStock);
-        model.addAttribute("maxStock", maxStock);
-        model.addAttribute("sortOrder", sortOrder);  // 정렬 상태 추가
-
-        // /stock/list.jsp로 포워딩
-@RequestMapping(value = "/stock/*")  // 모든 요청이 /stock으로 시작합니다.
-public class StockController {
-	
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
 
-    @Inject
-    private StockService stockService;
-    
-    @Autowired
-    private UserService userService;
-    
-    @Autowired
-    private CategoryService categoryService;
-    
-    @Autowired
-    private WarehouseService warehouseService;
-    
-    @Autowired
-    private ProductService productService;
-    
-    // http://localhost:8088/stock/register
-    /**
-     * 재고 등록 페이지 
-     */
-    @GetMapping("/register")
-    public String stockRegisterGET(@SessionAttribute("userId") Long userId, Model model) throws Exception {
-        logger.info("Fetching stock register page for userId: {}", userId);
+	@Inject
+	private StockService stockService;
 
-        // 사용자 정보 가져오기
-        UserVO user = userService.getUserById(userId);
-        int businessId = user.getBusinessId();
-        logger.info("Business ID for user: {}", businessId);
+	@Autowired
+	private UserService userService;
 
-        // 모델에 데이터 추가
-        model.addAttribute("businessId", businessId);
+	@Autowired
+	private CategoryService categoryService;
 
-        return "/stock/register";
-    }
-    
-    // 재고 등록 처리
-    @PostMapping("/stock/register")
-    public String registerStock(@ModelAttribute StockVO stock, @SessionAttribute("userId") Long userId, Model model) throws Exception {
-	        
-    	// 사용자 정보 가져오기
-        UserVO user = userService.getUserById(userId);
-        int businessId = user.getBusinessId();
+	@Autowired
+	private WarehouseService warehouseService;
 
-        // StockVO에 추가 데이터 설정
-        stock.setBusinessId(businessId);
-        stock.setReservedQuantity(0); // 초기 예약 수량은 0
-        stock.setAvailableStock(stock.getTotalQuantity()); // 초기 재고 = 입력 수량
+	@Autowired
+	private ProductService productService;
 
-        // 재고 등록 서비스 호출
-        stockService.registerStock(stock);
+	// http://localhost:8088/stock/register
+	/**
+	 * 재고 등록 페이지
+	 */
+	@GetMapping("/register")
+	public String stockRegisterGET(@SessionAttribute("userId") Long userId, Model model) throws Exception {
+		logger.info("Fetching stock register page for userId: {}", userId);
 
-        model.addAttribute("success", "재고 등록이 성공적으로 완료되었습니다.");
-        return "redirect:/stock/list"; // 재고 목록 페이지로 이동
-    } 
+		// 사용자 정보 가져오기
+		UserVO user = userService.getUserById(userId);
+		int businessId = user.getBusinessId();
+		logger.info("Business ID for user: {}", businessId);
 
-    
-    // http://localhost:8088/stock/list
-    /**
-     * 비즈니스 ID를 기반으로 재고 목록 조회
-     */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(@SessionAttribute("userId") Long userId, Model model) throws Exception {
-        logger.info("Fetching stock list for userId: {}", userId);
+		// 모델에 데이터 추가
+		model.addAttribute("businessId", businessId);
 
-        UserVO user = userService.getUserById(userId);
-        int businessId = user.getBusinessId();
-        logger.info("Business ID for user: {}", businessId);
+		return "/stock/register";
+	}
 
-        // 재고 및 카테고리 데이터 조회
-        List<StockVO> stockList = stockService.getStockListByBusinessId(businessId);
-        List<CategoryVO> categoryList = categoryService.getCategoriesByBusinessId(businessId);
+	// 재고 등록 처리
+	@PostMapping("/stock/register")
+	public String registerStock(@ModelAttribute StockVO stock, @SessionAttribute("userId") Long userId, Model model)
+			throws Exception {
 
-        logger.info("Fetched stockList: {}", stockList);
-        logger.info("Fetched categoryList: {}", categoryList);
+		// 사용자 정보 가져오기
+		UserVO user = userService.getUserById(userId);
+		int businessId = user.getBusinessId();
 
-        model.addAttribute("stockList", stockList);
-        model.addAttribute("categoryList", categoryList);
+		// StockVO에 추가 데이터 설정
+		stock.setBusinessId(businessId);
+		stock.setReservedQuantity(0); // 초기 예약 수량은 0
+		stock.setAvailableStock(stock.getTotalQuantity()); // 초기 재고 = 입력 수량
 
-        return "/stock/list";
-    }
-    
+		// 재고 등록 서비스 호출
+		stockService.registerStock(stock);
 
-    // 상품명 클릭 시 상품 상세 페이지로 리다이렉트
-    @RequestMapping("/detail/{productId}")
-    public String productDetail(@PathVariable("productId") int productId) {
-        // 상품 상세 페이지로 리다이렉트
-        logger.info("상품 상세 페이지로 이동: productId = {}", productId);
-        return "redirect:/product/detail/" + productId;
-    }
+		model.addAttribute("success", "재고 등록이 성공적으로 완료되었습니다.");
+		return "redirect:/stock/list"; // 재고 목록 페이지로 이동
+	}
+
+	// http://localhost:8088/stock/list
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public String getStockList(StockVO stock, Model model, HttpServletRequest request,
+			@RequestParam(required = false) Integer warehouseId, @RequestParam(required = false) String categoryName,
+			@RequestParam(required = false) Integer minStock, @RequestParam(required = false) Integer maxStock,
+			@RequestParam(required = false, defaultValue = "desc") String sortOrder) throws Exception {
+		logger.info("getStockList 호출");
+
+		// 세션에서 userId 가져오기
+		HttpSession session = request.getSession(false);
+		Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
+
+		// userId로 사용자 정보 조회
+		UserVO user = userService.getUserById(userId);
+
+		int businessId = user.getBusinessId();
+//		stock.setBusinessId(businessId);
+
+		// 창고 목록 조회 (businessId에 맞는 창고 목록)
+		List<WarehouseVO> warehouseList = warehouseService.getWarehousesByBusinessId(businessId);
+		logger.info("조회된 창고 목록: {}", warehouseList.size());
+
+		// 창고명과 카테고리명 정보 제공
+		model.addAttribute("warehouseList", warehouseList);
+		model.addAttribute("categoryList", stockService.getCategoryList());
+
+		// 재고 리스트 조회 (FilterCriteria 객체를 사용하여 파라미터 전달)
+		FilterCriteria criteria = new FilterCriteria(warehouseId, categoryName, minStock, maxStock, sortOrder,
+				businessId);
+		List<StockVO> stockList = stockService.getStockList(criteria, sortOrder); // 정렬 순서 추가
+		model.addAttribute("stockList", stockList);
+
+		// 필터링된 파라미터들을 모델에 추가
+		model.addAttribute("warehouseId", warehouseId);
+		model.addAttribute("categoryName", categoryName);
+		model.addAttribute("minStock", minStock);
+		model.addAttribute("maxStock", maxStock);
+		model.addAttribute("sortOrder", sortOrder); // 정렬 상태 추가
+		
+		return sortOrder; // 이부분 수정 필요 확인해주세요 
+	}
+
+	// http://localhost:8088/stock/list
+	/**
+	 * 비즈니스 ID를 기반으로 재고 목록 조회
+	 */
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public String list(@SessionAttribute("userId") Long userId, Model model) throws Exception {
+		logger.info("Fetching stock list for userId: {}", userId);
+
+		UserVO user = userService.getUserById(userId);
+		int businessId = user.getBusinessId();
+		logger.info("Business ID for user: {}", businessId);
+
+		// 재고 및 카테고리 데이터 조회
+		List<StockVO> stockList = stockService.getStockListByBusinessId(businessId);
+		List<CategoryVO> categoryList = categoryService.getCategoriesByBusinessId(businessId);
+
+		logger.info("Fetched stockList: {}", stockList);
+		logger.info("Fetched categoryList: {}", categoryList);
+
+		model.addAttribute("stockList", stockList);
+		model.addAttribute("categoryList", categoryList);
+
+		return "/stock/list";
+	}
+
+	// 상품명 클릭 시 상품 상세 페이지로 리다이렉트
+	@RequestMapping("/detail/{productId}")
+	public String productDetail(@PathVariable("productId") int productId) {
+		// 상품 상세 페이지로 리다이렉트
+		logger.info("상품 상세 페이지로 이동: productId = {}", productId);
+		return "redirect:/product/detail/" + productId;
+	}
 }
