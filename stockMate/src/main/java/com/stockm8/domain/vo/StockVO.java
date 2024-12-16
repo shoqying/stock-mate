@@ -22,6 +22,6 @@ public class StockVO {
     private ProductVO product;      // 상품 정보
     private CategoryVO category;    // 카테고리 정보
     private WarehouseVO warehouse;  // 창고 정보
-    private String warehouseName;
+    private String warehouseName;   // 창고명
 
 }
