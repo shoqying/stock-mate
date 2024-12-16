@@ -13,13 +13,14 @@ import org.springframework.stereotype.Repository;
 
 import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
+import com.stockm8.domain.vo.StockVO;
 
 @Repository
 public class ReceivingDAOImpl implements ReceivingDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ReceivingDAOImpl.class);
 	
-	private static final String NAMESPACE = "com.stockm8.mapper.ReceivingShipmentMapper.";
+	private static final String NAMESPACE = "com.stockm8.mappers.receivingMapper.";
 	
 	// 디비 연결 객체 주입
 	@Inject
@@ -28,7 +29,7 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	// 입고 메인 오늘 들어올 리스트
 	@Override
 	public List<ReceivingShipmentVO> selectReceivingList(int businessId) throws Exception {
-		logger.info("ReceivingList() 호출");
+		logger.info("selectReceivingList() 호출");
 		
 		return sqlSession.selectList(NAMESPACE + "getReceivingList", businessId); 
 	}
@@ -36,7 +37,7 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	// 입고 메인 오늘 들어올 리스트
 	@Override
 	public List<ReceivingShipmentVO> selectYesterdayReceivingList(int businessId) throws Exception {
-		logger.info("ReceivingList() 호출");
+		logger.info("selectYesterdayReceivingList() 호출");
 		
 		return sqlSession.selectList(NAMESPACE + "getYesterdayReceivingList", businessId); 
 	}
@@ -44,7 +45,7 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	// 입고 메인 오늘 들어올 리스트
 	@Override
 	public List<ReceivingShipmentVO> selectTDBYReceivingList(int businessId) throws Exception {
-		logger.info("ReceivingList() 호출");
+		logger.info("selectTDBYReceivingList() 호출");
 		
 		return sqlSession.selectList(NAMESPACE + "getTDBYReceivingList", businessId); 
 	}
@@ -100,7 +101,36 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		sqlSession.insert(NAMESPACE + "insertReceiving", businessId);
 	}
 	
+  @Override
+	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception {
+		logger.info("selectReceiving() 호출");
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("businessId", businessId);	   
+		paramMap.put("barcode", barcode);
+		
+		return sqlSession.selectList(NAMESPACE + "selectQuantityCheckByBarcode", paramMap);
+	}
 
+	@Override
+	public int updateIncreseStock(int businessId, String barcode) throws Exception {
+		logger.info("updateDecreaseStock() 호출");
+	    // 매개변수 묶기
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("businessId", businessId);
+	    params.put("barcode", barcode);
+
+	    // SQL 실행
+	    return sqlSession.update(NAMESPACE + "updateIncreseStock", params);
+	}
+
+	@Override
+	public int selectStockByBarcode(int businessId, String barcode) throws Exception {
+		logger.info("selectStockByBarcode() 호출");
+		Map<String, Object> params = new HashMap<>();
+	    params.put("businessId", businessId);
+	    params.put("barcode", barcode);
+		return sqlSession.selectOne(NAMESPACE + "selectStockByBarcode", params);
+	}
 	
 	
 	

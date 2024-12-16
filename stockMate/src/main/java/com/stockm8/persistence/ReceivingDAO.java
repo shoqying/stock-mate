@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
+import com.stockm8.domain.vo.StockVO;
 
 public interface ReceivingDAO {
 	
@@ -30,5 +31,14 @@ public interface ReceivingDAO {
 	
 	// recevingShipment 테이블 insert
 	public void insertReceiving(int businessId) throws Exception;
+	
+    // 바코드로 재고 조회
+  	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception;
+ 	
+   	// 바코드로 재고 감소
+  	public int updateIncreseStock(int businessId, String barcode) throws Exception;
+ 	
+  	// 바코드로 재고 감소 실시간 조회
+   	public int selectStockByBarcode(int businessId, String barcode) throws Exception;
 		
 } // ReceivingDAO end

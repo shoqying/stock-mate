@@ -211,31 +211,6 @@
         WHERE business_id = #{businessId} AND is_deleted = 0
     </select>
     
-    <!-- receiving scan을 위한 매퍼 -->
-    <!-- 바코드로 제품 조회 -->
-	<select id="selectQuantityCheckByBarcode" resultType="com.stockm8.domain.vo.StockVO">
-        SELECT s.product_id, p.product_name, s.total_quantity, s.warehouse_id
-        FROM stocks s
-        JOIN products p ON p.product_id = s.product_id
-        WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
-	</select>
-	
-	<!-- 바코드로 재고 1 감소 -->
-	<update id="updateIncreseStock">
-	    UPDATE stocks s
-	    JOIN products p on p.product_id = s.product_id
-	    SET s.total_quantity = s.total_quantity + 1
-	    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
-	    AND s.total_quantity > 0
-	</update>
-	
-	<!-- 바코드로 남은 재고 조회 -->
-	<select id="selectStockByBarcode" resultType="int">
-	    SELECT s.total_quantity
-	    FROM stocks s
-	    JOIN products p on p.product_id = s.product_id
-	    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
-	</select>
-	<!-- receiving scan을 위한 매퍼 -->
+
 
 </mapper>
