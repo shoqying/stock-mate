@@ -12,28 +12,48 @@
     <div class="container">
         <h1 style="margin-bottom: 20px;">주문 발주</h1>
         
+        <div>
+		    <a class="btn btn-success" href="/dashboard" style="text-decoration: none;">대시 보드</a>
+		</div>
         <!-- 주문 폼 시작 -->
         <form id="orderForm" action="/order/register" method="post">
             <!-- 주문 정보 카드 -->
             <div class="card">
-                <div class="card-header">주문 정보</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="createdAt" class="form-label required-label">발주일자</label>
-                                <input type="date" class="form-control" id="createdAt" name="createdAt" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="orderNumber" class="form-label">주문번호</label>
-                                <input type="text" class="form-control" id="orderNumber" name="orderNumber" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+			    <div class="card-header">주문 정보</div>
+			    <div class="card-body">
+			        <div class="row mb-3">
+			            <div class="col-12">
+			                <div class="form-group">
+			                    <label class="form-label required-label">주문 유형</label>
+			                    <div class="form-check">
+			                    	수주
+			                        <input class="form-check-input" type="radio" name="orderType" id="inbound" value="INBOUND" required>
+			                        <label class="form-check-label" for="inbound">
+			                        </label>
+			                        발주
+			                        <label class="form-check-label" for="outbound">
+			                            <input class="form-check-input" type="radio" name="orderType" id="outbound" value="OUTBOUND" required>
+			                        </label>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			        <div class="row">
+			            <div class="col-md-6">
+			                <div class="form-group">
+			                    <label for="createdAt" class="form-label required-label">발주일자</label>
+			                    <input type="date" class="form-control" id="createdAt" name="createdAt" required>
+			                </div>
+			            </div>
+			            <div class="col-md-6">
+			                <div class="form-group">
+			                    <label for="orderNumber" class="form-label">주문번호</label>
+			                    <input type="text" class="form-control" id="orderNumber" name="orderNumber" readonly>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
 
             <!-- 재고 정보 컨테이너 (동적으로 카드가 추가됨) -->
             <div id="stockInfoContainer">
@@ -235,9 +255,10 @@
 	    // 첫 번째 재고 정보 카드 추가
 	    addOrder();
 	});
-			// 재고 정보 카드 추가
+		// 재고 정보 카드 추가
 		function addOrder() {
-		    // 템플릿 복제
+			
+		 // 템플릿 복제
 		    const newCard = $('#stockInfoTemplate').clone()
 		        .removeAttr('id')
 		        .show();
@@ -424,13 +445,27 @@
 			
 		// 재고 선택
 		function selectStock(stock) {
+			// 현재 표시된 재고 정보 카드 중 현재 인덱스에 해당하는 카드를 선택
 		    const card = $('.stock-info-card:visible').eq(currentItemIndex);
+			
+			 // stockId 설정이 제대로 되는지 확인 디버깅
+		    card.find('.stock-id').val(stock.stockId);
+		    console.log('Selected Stock ID:', stock.stockId); // 디버깅용
 		    
 		    // 숨겨진 필드 업데이트
-		    card.find('.stock-id').val(stock.stockId);
-		    card.find('.product-id').val(stock.product.productId);
-		    card.find('.warehouse-id').val(stock.warehouseId);
+		    card.find('.stock-id').val(stock.stockId); // 재고 고유 ID
+		    card.find('.product-id').val(stock.product.productId); // 제품 고유 ID
+		    card.find('.warehouse-id').val(stock.warehouseId); // 창고 고유 ID
 		    
+		    // 사용자 View 표시 필드 업데이트
+		    card.find('.product-name').val(stock.product.name); // 제품명
+		    card.find('.warehouse-name').val(stock.warehouseName); // 창고명
+		    card.find('.barcode').val(stock.product.barcode); // 바코드
+		    card.find('.total-quantity').val(stock.totalQuantity); // 총 재고량
+		    card.find('.reserved-quantity').val(stock.reservedQuantity); // 예약된 수량
+		    card.find('.available-stock').val(stock.availableStock); // 실제 주문 가능한 재고량
+		    card.find('.base-unit').val(stock.product.baseUnit);  // 기본 단위
+		    card.find('.unit-price').val(stock.product.price); // 단가
 		    // 표시 필드 업데이트
 		    card.find('.product-name').val(stock.product.productName);
 		    card.find('.warehouse-name').val(stock.warehouseName);
@@ -441,38 +476,45 @@
 		    card.find('.base-unit').val(stock.product.baseUnit);
 		    card.find('.unit-price').val(stock.product.productPrice);
 		    
-		    // 주문 수량 최대값 설정
-		    const quantityInput = card.find('.order-quantity');
-		    quantityInput.attr('max', stock.availableStock);
-		    validateQuantity(quantityInput);
+		    // 주문 수량 최대값 설정(가용 재고량으로 설정)
+		    const quantityInput = card.find('.order-quantity'); 
+		    quantityInput.attr('max', stock.availableStock);  // HTML input의 max 속성 설정
+		    validateQuantity(quantityInput); // 현재 입력된 수량의 유효성 검사 실행
 		    
 		    closeModal();
 		}
-		
-		// 수량 유효성 검사
+		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 수정
+		// 수량 유효성 검사(입력된 수량이 유효한지 확인)
 		function validateQuantity(input) {
+			// 현재 수량 입력이 속한 카드 요소 찾기
 		    const card = input.closest('.stock-info-card');
-		    const quantity = parseInt(input.val()) || 0;
-		    const available = parseInt(card.find('.available-stock').val()) || 0;
+			 // 입력된 수량과 가용 재고를 정수로 변환 (값이 없으면 0으로 설정)
+		    const quantity = parseInt(input.val()) || 0; // 입력된 주문 수량   반환실패 시  null 대신 0 값 들어감
+		    const available = parseInt(card.find('.available-stock').val()) || 0; // 가용 재고량
 		    
-		    if (quantity < 1) {
+			// 수량 유효성 검사 조건문
+		    if (quantity < 1) { // 최소 주문 수량(1개) 미만인 경우
 		        alert('주문 수량은 1 이상이어야 합니다.');
-		        input.val(1);
-		    } else if (quantity > available) {
+		        input.val(1); // 수량을 1로 재설정
+		    } else if (quantity > available) { // 가용 재고보다 많은 경우
 		        alert('주문 수량이 가용 재고를 초과할 수 없습니다.');
-		        input.val(available);
+		        input.val(available); // 수량을 가용 재고량으로 재설정
 		    }
 		    
-		    calculateSubtotal(card);
+		    calculateSubtotal(card); // 수량 변경에 따른 소계 재계산
 		}
 		
-		// 소계 계산
+		// 소계 계산(주문 수량과 단가를 곱하여 소계 계산)
 		function calculateSubtotal(card) {
-		    const quantity = parseInt(card.find('.order-quantity').val()) || 0;
-		    const unitPrice = parseFloat(card.find('.unit-price').val()) || 0;
-		    const subtotal = quantity * unitPrice;
+			// 현재 카드의 수량과 단가 가져오기 (값이 없으면 0으로 설정)
+		    const quantity = parseInt(card.find('.order-quantity').val()) || 0; // 주문 수량
+		    const unitPrice = parseFloat(card.find('.unit-price').val()) || 0; // 단가
+		    const subtotal = quantity * unitPrice; // 소계 계산 (수량 * 단가)
 		    
+		 	// 계산된 소계를 소수점 둘째 자리까지 표시하여 필드에 설정
 		    card.find('.subtotal-price').val(subtotal.toFixed(2));
+		    
+			// 전체 주문 금액 업데이트 (다른 함수에서 구현)
 		    updateGrandTotal();
 		}
 		
@@ -491,10 +533,17 @@
 		    buttons.prop('disabled', buttons.length <= 1);
 		}
 		
-				// 폼 유효성 검사
+		// 폼 유효성 검사
 		function validateForm() {
 		    let isValid = true;
 		    let hasUnselectedItems = false;
+		    
+		    // 주문 유형 체크(수주/ 발주)
+		    if (!$('input[name="orderType"]:checked').val()){
+		    	alert('주문 유형을 선택 해주세요.');
+		    	return false;
+		    }
+		    
 		    
 		    $('.stock-info-card:visible').each(function() {
 		        const card = $(this);
@@ -532,16 +581,18 @@
 	            quantity: parseInt(card.find('.order-quantity').val()),
 	            unitPrice: parseFloat(card.find('.unit-price').val()),
 	            remarks: card.find('.remarks').val(),
-	            stotalPrice: parseFloat(card.find('.subtotal-price').val()) // 소계 추가
+	            stotalPrice: parseFloat(card.find('.subtotal-price').val()),// 소계 추가
+	            stockId: parseInt(card.find('.stock-id').val()) // 스톡 아이디 추가
 	        });
 	    });
-	
+		// formData 객체 값추가 필요시 추가 해야함
 	    const formData = {
 	        orderNumber: $('#orderNumber').val(),
 	        createdAt: $('#createdAt').val(),
 	        totalPrice: parseFloat($('#grandTotal').val()),
 	        createdBy: $('#createdBy').val(),
-	        orderItems: orderItems
+	        orderItems: orderItems,
+	        orderType: $('input[name="orderType"]:checked').val() // INBOUND 또는 OUTBOUND 추가
 	    };
 	
 	    showLoading();
@@ -571,6 +622,7 @@
 		    $('#orderForm')[0].reset();
 		    $('#stockInfoContainer').empty();
 		    $('#grandTotal').val('0.00');
+		    $('input[name="orderType"]').prop('checked', false); // 수주/ 발주 라디오 버튼 초기화 추가 
 		    
 		    // 날짜 재설정
 		    document.getElementById('createdAt').value = new Date().toISOString().split('T')[0];

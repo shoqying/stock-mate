@@ -21,14 +21,4 @@ public interface StockDAO {
 
     // 카테고리 목록 조회
     public List<CategoryVO> selectAllCategories() throws Exception;
-
-    // 조한수씨 메서드
-    // 바코드로 재고 조회
-  	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception;
- 	
-   	// 바코드로 재고 감소
-  	public int updateIncreseStock(int businessId, String barcode) throws Exception;
- 	
-  	// 바코드로 재고 감소 실시간 조회
-   	public int selectStockByBarcode(int businessId, String barcode) throws Exception;
 }

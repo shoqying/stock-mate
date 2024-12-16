@@ -51,45 +51,15 @@ public class StockDAOImpl implements StockDAO {
     public List<StockVO> selectOnlyStockByBusinessId(int businessId) throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectOnlyStockByBusinessId", businessId);
 	}
-    
     // 카테고리 목록 조회
     @Override
     public List<CategoryVO> selectAllCategories() throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
     }
     
-    // 바코드로 재고 조회
-    @Override
-	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception {
-		logger.info("selectQuantityCheckByBarcode() 호출");
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("businessId", businessId);	   
-		paramMap.put("barcode", barcode);
-		
-		return sqlSession.selectList(NAMESPACE + "selectQuantityCheckByBarcode", paramMap);
-	}
-
-	// 바코드로 재고 증가
-	@Override
-	public int updateIncreseStock(int businessId, String barcode) throws Exception {
-		logger.info("updateIncreseStock() 호출");
-	    // 매개변수 묶기
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("businessId", businessId);
-	    params.put("barcode", barcode);
-
-	    // SQL 실행
-	    return sqlSession.update(NAMESPACE + "updateIncreseStock", params);
-	}
-
-	// 바코드로 재고 실시간 조회
-	@Override
-	public int selectStockByBarcode(int businessId, String barcode) throws Exception {
-		logger.info("selectStockByBarcode() 호출");
-		Map<String, Object> params = new HashMap<>();
-	    params.put("businessId", businessId);
-	    params.put("barcode", barcode);
-		return sqlSession.selectOne(NAMESPACE + "selectStockByBarcode", params);
-	}
+   @Override
+   public List<CategoryVO> selectAllCategories() throws Exception {
+         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
+   }
 }
 
