@@ -58,6 +58,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private AuthorizationInterceptor authorizationInterceptor;
     
+    @Autowired
+    private FlashMessageInterceptor flashMessageInterceptor;
+    
     /**
      * 인터셉터 설정
      * 특정 URL 패턴에 대해 AuthorizationInterceptor를 적용하며, 일부 URL은 제외합니다.
@@ -66,13 +69,14 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
     	// Intercepter 적용
         registry.addInterceptor(authorizationInterceptor)
-                .addPathPatterns("/category/**", "/product/**", "/dashboard", "/business") // 인터셉터를 적용할 경로
+                .addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**", "/stock/**", "/order/**" ) // 인터셉터를 적용할 경로
                 .excludePathPatterns( // 인터셉터를 제외할 경로
                         "/",               // HomeController 경로
                         "/favicon.ico",    // 브라우저 기본 요청
                         "/resources/**",   // 정적 리소스
                         "/user/**",	       // 로그인 및 회원가입 관련 요청
-                        "/static/**"
+                        "/static/**",
+                		"/api/**"    	    // API 요청에 대해서는 세션 체크를 제외
                 );   
         // Flash 메시지 처리 인터셉터
         registry.addInterceptor(new FlashMessageInterceptor());
@@ -89,8 +93,8 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/resources/");
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
     }
     
     /**

@@ -74,7 +74,7 @@ public class UserController {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String userSignUpPOST(/* @ModelAttribute */ UserVO user) throws Exception {
 		logger.info("/user/signup -> userSignUpPOST(UserVO uservo)실행 ");
-		logger.info("Role received: " + user.getRole());
+		logger.info("Role received: " + user.getUserRole());
 
 		// 전달정보 저장
 		logger.info("vo :" + user);

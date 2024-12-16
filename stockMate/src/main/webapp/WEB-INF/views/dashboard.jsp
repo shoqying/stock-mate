@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -21,6 +23,22 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh; /* 화면 전체 높이를 채우기 */
+        }
+        
+        .error-banner {
+            width: 100%;
+            background-color: #FCE4E4;
+            color: #D32F2F;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            font-weight: 500;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #F5C6C6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Content Section */
@@ -150,6 +168,10 @@
 </head>
 <body>
     <div class="container">
+   	   <!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
+       <c:if test="${not empty errorMessage}">
+           <div class="error-banner">${errorMessage}</div>
+       </c:if>
         <!-- Header Section -->
         <div class="header">
             대시보드
@@ -178,6 +200,12 @@
 			    return true; // 링크 이동을 계속 진행
 			}
 			</script>
+                <a href="warehouse/register">창고 등록</a>
+                <a href="stock/register">재고 등록</a>
+                <a href="profile">내정보 조회/수정</a>
+                <a href="password">비밀번호 변경</a>
+                <a href="help">대시보드 사용법</a>
+                <a href="user/signout" style="color: red;">Sign out</a>
             </div>
             <!-- Main Content -->
             <div class="main-content">
