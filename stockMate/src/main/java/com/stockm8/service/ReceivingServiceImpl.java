@@ -81,14 +81,14 @@ public class ReceivingServiceImpl implements ReceivingService {
 	@Override
 	public int increseStockByBarcode(int businessId, String barcode) throws Exception {
 		logger.info("increseStockByBarcode() 호출");
-        List<StockVO> stock = sdao.selectQuantityCheckByBarcode(businessId, barcode);
+        List<StockVO> stock = rdao.selectQuantityCheckByBarcode(businessId, barcode);
         if (stock == null) {
             return -1; // 유효하지 않은 바코드
         }
         
-        int updatedRows = sdao.updateIncreseStock(businessId, barcode);
+        int updatedRows = rdao.updateIncreseStock(businessId, barcode);
         if (updatedRows > 0) {
-            return sdao.selectStockByBarcode(businessId, barcode); // 증가 후 남은 재고 반환
+            return rdao.selectStockByBarcode(businessId, barcode); // 증가 후 남은 재고 반환
         } else {
             throw new RuntimeException("재고 업데이트 실패");
         }
