@@ -28,10 +28,10 @@ public interface OrderDAO {
     // 주문 목록
     public List<OrderVO> getOrderList();
     
-    // 재고 정보 조회 미사용
+    // 재고 정보 조회 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ 미사용
     public StockVO getStockById(int stockId) throws Exception;
 
-    // 재고 이력 등록 미사용
+    // 재고 이력 등록 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ 미사용
     public void insertStockHistory(Map<String, Object> params) throws Exception;
     
     

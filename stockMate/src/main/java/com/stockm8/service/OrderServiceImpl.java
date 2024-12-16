@@ -123,14 +123,14 @@ public class OrderServiceImpl implements OrderService {
 		return odao.getOrderList();
 	}
 	
-	// 가용 재고 체크  =>  미사용
+	// 가용 재고 체크  ================>  미사용
 	@Override
 	public boolean checkAvailableStock(OrderItemVO item) throws Exception {
 		StockVO stock = odao.getStockById(item.getStockId());
 		return stock != null && stock.getAvailableStock() >= item.getQuantity();
 	}
 	
-	// 재고 이력 등록  => 미사용
+	// 재고 이력 등록  =================> 미사용
 	@Override
 	public void insertStockHistory(StockVO stock, OrderVO order, int quantityChanged) throws Exception {
 		Map<String, Object> params = new HashMap<>();
