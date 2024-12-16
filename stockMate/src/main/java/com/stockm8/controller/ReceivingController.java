@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.PageVO;
+import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
+import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.ReceivingService;
 import com.stockm8.service.UserService;
@@ -202,7 +204,7 @@ public class ReceivingController {
 	
 	// http://localhost:8088/receiving/scan
 	@RequestMapping(value = "/scan", method = RequestMethod.GET)
-	public String scanneGET(HttpServletRequest request) throws Exception {
+	public String scanGET(HttpServletRequest request) throws Exception {
 		logger.info("scanGET() 호출");
 		
 		// 세션에서 userId 가져오기
@@ -219,7 +221,8 @@ public class ReceivingController {
 	// http://localhost:8088/receiving/scan
 	@RequestMapping(value = "/scan", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> scannePOST(@RequestBody Map<String, String> bar, Model model, HttpServletRequest request) throws Exception {
+	public Map<String, Object> scanPOST(@RequestBody Map<String, String> bar, Model model, 
+											HttpServletRequest request) throws Exception {
 		logger.info("scanPOST() 호출");
         
         // 세션에서 userId 가져오기
@@ -241,10 +244,16 @@ public class ReceivingController {
 	    }
 
 	    try {
+	    	rService.ReceivingStatusToComplete(businessId, barcode);
             int remainingStock = rService.increseStockByBarcode(businessId, barcode);
+            int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode);
+            ProductVO product = rService.productNameBarcode(businessId, barcode);
             if (remainingStock >= 0) {
                 response.put("success", true);
                 response.put("remainingStock", remainingStock);
+                response.put("reservedQuantity", reservedQuantity);
+                response.put("productName", product.getProductName());
+                response.put("productPrice", product.getProductPrice());
             } else {
                 response.put("success", false);
                 response.put("message", "유효하지 않은 바코드입니다.");
@@ -256,7 +265,23 @@ public class ReceivingController {
         return response;
     }
 	
-
+	// http://localhost:8088/receiving/allScan
+	@RequestMapping(value = "/allScan", method = RequestMethod.GET)
+	public String allScanGET(HttpServletRequest request) throws Exception {
+		logger.info("allScanGET() 호출");
+		
+		// 세션에서 userId 가져오기
+	    HttpSession session = request.getSession(false);
+	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
+	    
+	    // userId로 사용자 정보 조회
+	    UserVO user = uService.getUserById(userId);
+	    int businessId = user.getBusinessId();
+	    
+	    
+        
+        return "/receiving/allScan";
+	}
 
    
 

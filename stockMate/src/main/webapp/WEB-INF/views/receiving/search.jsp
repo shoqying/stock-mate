@@ -291,15 +291,26 @@ tr:hover {
 					<td>${vo.transactionType }</td>
 					<td><fmt:formatDate value="${vo.createdAt}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td>${vo.status}</td>
+					<td>
+			            <c:choose>
+			                <c:when test="${vo.status == 'PENDING'}">
+			                    대기중
+			                </c:when>
+			                <c:when test="${vo.status == 'COMPLETED'}">
+			                    완료됨
+			                </c:when>
+			                <c:otherwise>
+			                    ${vo.status}
+			                </c:otherwise>
+			            </c:choose>
+			        </td>
 					<td>${vo.productId }</td>
 					<td>${vo.productName }</td>
 					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
 					<td>${vo.transactionUnit }</td>
-					<td>${vo.warehouseId }</td>
-					<td>${vo.transactionUnit }</td>
 					<td>${vo.productPrice }</td>
+					<td>${vo.warehouseId }</td>
 					<td>${vo.memo }</td>
 				</tr>
 			</c:forEach>

@@ -228,7 +228,7 @@
 			<version>3.0.0</version>
 		</dependency>
 
-		<dependency>
+    <dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.12.3</version>
@@ -266,12 +266,18 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.12.3</version>
+    </dependency>
+    
+    <dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-aspects</artifactId>
 		    <version>${org.springframework-version}</version>
 		</dependency>
 
-	    <dependency>
+	  <dependency>
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>
 		    <version>2.10.1</version>
