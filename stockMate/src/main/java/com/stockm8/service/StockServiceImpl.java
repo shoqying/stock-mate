@@ -1,8 +1,17 @@
 package com.stockm8.service;
 
+import com.stockm8.domain.vo.StockVO;
+import com.stockm8.domain.vo.WarehouseVO;
+import com.stockm8.persistence.FilterCriteria;
+import com.stockm8.domain.vo.CategoryVO;
+import com.stockm8.persistence.StockDAO;
+import com.stockm8.persistence.WarehouseDAO;
+import com.stockm8.persistence.CategoryDAO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import javax.inject.Inject;
 
@@ -30,6 +39,10 @@ public class StockServiceImpl implements StockService {
     	stockDAO.insertStock(stock);
 	}
 
+
+    @Inject
+    private WarehouseDAO warehouseDAO;
+
 	// 사업자 ID에 해당하는 재고 목록 조회
     @Override
     public List<StockVO> getStockListByBusinessId(int businessId) throws Exception {
@@ -42,21 +55,32 @@ public class StockServiceImpl implements StockService {
         return stockDAO.selectProductById(productId);
     }
 
-    // 사용 가능한 재고 자동 계산 (서비스 계층에서 직접 계산)
-    @Override
-    public int calculateAvailableStock(StockVO stock) throws Exception {
-        // totalQuantity - reservedQuantity 계산
-        return stock.getTotalQuantity() - stock.getReservedQuantity();
-    }
+    @Inject
+    private CategoryDAO categoryDAO;
 
+    // 사업자 ID에 해당하는 창고 목록 조회
     @Override
-    public List<StockVO> filterStocks(String warehouseName, String categoryName, String sortOrder) throws Exception {
-        return stockDAO.selectFilteredStocks(warehouseName, categoryName, sortOrder);
+    public List<WarehouseVO> getWarehousesByBusinessId(int businessId) throws Exception {
+        return warehouseDAO.selectWarehousesByBusinessId(businessId);
     }
     
     public Map<String, Object> getStockAndCategories(int businessId) throws Exception {
         // 재고 목록 조회
         List<StockVO> stockList = stockDAO.selectStockListByBusinessId(businessId);
+
+    // 필터링된 재고 목록 조회
+    @Override
+    public List<StockVO> getStockList(FilterCriteria criteria, String sortOrder) throws Exception {
+        // sortOrder를 전달하여 정렬 기준을 처리
+        return stockDAO.selectFilteredStocks(criteria, sortOrder);  // StockDAO에서 필터링된 재고 목록 조회
+    }
+
+    // 카테고리 목록 조회
+    @Override
+    public List<CategoryVO> getCategoryList() throws Exception {
+        return categoryDAO.selectAllCategories();  // CategoryDAO에서 카테고리 목록 조회
+    }
+}
 
         // 카테고리 목록은 CategoryService를 통해 가져오기
         List<CategoryVO> categoryList = categoryDAO.selectCategoriesByBusinessId(businessId);
@@ -70,3 +94,4 @@ public class StockServiceImpl implements StockService {
     }
     
 }
+
