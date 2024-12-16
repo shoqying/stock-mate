@@ -190,6 +190,16 @@
             <div class="sidebar">
                 <div class="disabled">Dashboard</div>
                 <a href="product/register">상품 등록</a>
+                <a href="user/editinfo1">내정보 조회/수정</a>
+                <a href="user/changepassword1">비밀번호 변경</a>
+                <a href="user/howtouse2">대시보드 사용법</a>
+               <a href="user/main" onclick="return confirmLogout();" style="color: red;">Sign out</a>
+			<script>
+			function confirmLogout() {
+			    alert("로그아웃 되었습니다");
+			    return true; // 링크 이동을 계속 진행
+			}
+			</script>
                 <a href="warehouse/register">창고 등록</a>
                 <a href="stock/register">재고 등록</a>
                 <a href="profile">내정보 조회/수정</a>
@@ -197,7 +207,6 @@
                 <a href="help">대시보드 사용법</a>
                 <a href="user/signout" style="color: red;">Sign out</a>
             </div>
-
             <!-- Main Content -->
             <div class="main-content">
                 <h2>Order Time</h2>

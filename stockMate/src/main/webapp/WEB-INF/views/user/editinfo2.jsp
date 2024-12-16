@@ -27,42 +27,67 @@
             text-align: center;
         }
         .back-button {
-            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
             margin-bottom: 20px;
         }
         .back-button a {
             text-decoration: none;
-            color: #007BFF;
             font-size: 18px;
+            color: #007BFF;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
         }
         .back-button a:hover {
             text-decoration: underline;
         }
+        .back-button svg {
+            margin-right: 5px;
+            fill: #007BFF;
+        }
         h1 {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-size: 24px;
             color: #333;
         }
-        .info {
-            width: 80%;
-            margin-bottom: 20px;
-        }
-        .info input {
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+        }
+        .form-group {
+            flex: 0 0 calc(50% - 10px);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .form-group label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 18px;
+            box-sizing: border-box;
         }
         button {
-            width: 80%;
-            padding: 10px;
+            margin-top: 30px;
+            width: 100%;
+            padding: 15px;
             background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
         }
         button:hover {
@@ -82,51 +107,45 @@
 <body>
     <!-- Container -->
     <div class="container">
+        <!-- 뒤로가기 버튼 -->
         <div class="back-button">
-            <a href="/user/dashboard">&larr; 뒤로 가기</a>
+            <a href="/dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                뒤로 가기
+            </a>
         </div>
-        <h1>홍길동님의 회원정보</h1>
-        <form id="editInfoForm" action="editinfo2" method="post" onsubmit="return handleFormSubmit(event);">
-            <div class="info">
-                <label for="email">이메일</label>
-                <input type="email" id="email" name="email" value="itwill@naver.com" required>
-                <label for="name">이름</label>
-                <input type="text" id="name" name="name" value="홍길동" required>
-                <label for="phone">전화번호</label>
-                <input type="text" id="phone" name="phone" value="010-1234-1234" required>
-            </div>
-            <button type="submit">저장하기</button>
-        </form>
+
+        <!-- 제목 -->
+        <!-- 회원정보 수정 폼 -->
+        <h1>회원정보 수정</h1>
+<form action="/user/updateInfo2" method="post">
+    <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" 
+               value="${userVO.email}" placeholder="이메일을 입력하세요" required>
     </div>
+    <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" 
+               value="${userVO.name}" placeholder="이름을 입력하세요" required>
+    </div>
+    <div class="form-group">
+        <label for="telNumber">전화번호</label>
+        <input type="tel" id="telNumber" name="telNumber" 
+               value="${userVO.telNumber}" placeholder="전화번호를 입력하세요" required>
+    </div>
+    <button type="submit">내 정보 수정하기</button>
+</form>       
+       
+       
+     
 
     <!-- Footer -->
     <div class="footer">
         회사 정보 - 사업자 번호, 연락처 등 유의 내용
     </div>
-
-    <script>
-    function handleFormSubmit(event) {
-        event.preventDefault(); // 기본 제출 방지
-        const form = event.target;
-
-        // 폼 데이터 서버로 전송
-        fetch(form.action, {
-            method: form.method,
-            body: new FormData(form),
-        })
-        .then(response => {
-            if (response.ok) {
-                // 성공 시 대시보드로 이동
-                window.location.href = "/user/dashboard";
-            } else {
-                alert("저장 실패: 다시 시도해주세요.");
-            }
-        })
-        .catch(error => {
-            console.error("저장 중 오류 발생:", error);
-            alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
-        });
-    }
-    </script>
 </body>
 </html>

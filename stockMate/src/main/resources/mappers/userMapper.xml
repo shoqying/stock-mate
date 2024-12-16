@@ -65,7 +65,14 @@
         WHERE email = #{email} AND password = #{password}
     </select>
 
-    <!-- 회원정보 조회 -->
+
+   <!-- 회원정보 조회 -->
+<select id="getUser" resultMap="UserResultMap">
+    SELECT * FROM test_users
+    WHERE user_id = #{userId} AND password = #{password}
+</select>
+  
+      <!-- 회원정보 조회 -->
     <select id="getUser" 
         parameterType="long"
         resultMap="userResultMap">
@@ -74,7 +81,17 @@
         WHERE user_id = #{userId}
     </select>
 
-    <!-- 회원정보 수정 -->
+    <!-- 회원정보 수정 (비밀번호 수정하지 않음) -->
+<update id="updateUser">
+    UPDATE test_users
+    SET 
+        email = #{email},
+        name = #{name},
+        tel_number = #{telNumber}
+    WHERE user_id = #{userId}
+</update>
+  
+      <!-- 회원정보 수정 -->
     <update id="updateUser">
         UPDATE users
         SET 
@@ -86,6 +103,18 @@
             AND password = #{password}
     </update>
 
+<select id="getUserInfoById" parameterType="Long" resultType="com.stockm8.domain.vo.UserVO">
+    SELECT user_id AS userId, name, email, tel_number AS telNumber
+    FROM test_users
+    WHERE user_id = #{userId}
+</select>
+
+<update id="updatePassword" parameterType="map">
+    UPDATE test_users
+    SET password = #{newPassword}
+    WHERE user_id = #{userId}
+</update>
+ 
     <!-- 사용자의 businessId 수정 -->
     <update id="updateUserBusinessId" 
         parameterType="map">
@@ -112,7 +141,7 @@
         FROM users
     </select>
 
-    <!-- 유저 정보를 user_id로 조회 -->
+    <!-- 유저 정보를 user_id로 조회 -->	
     <select id="getUserById" 
         parameterType="long"
         resultMap="userResultMap">
@@ -132,6 +161,7 @@
         FROM users
         WHERE user_id = #{userId}
     </select>
+
 
     <!-- 유저의 삭제 여부 확인 -->
     <select id="getIsDeleted" 
