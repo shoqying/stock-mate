@@ -114,7 +114,8 @@
 <h1>입고 메인</h1>
 
 <a href="/receiving/history">입고 내역</a>
-<a href="/receiving/scanner">입고 스캔</a>
+<a href="/receiving/scan">실시간 입고</a>
+<a href="/dashboard">대쉬보드</a>
 <form action="/receiving/insert1" method="POST">
    <input type="submit" value="새로고침">
 </form>
@@ -138,10 +139,10 @@
 		<td>${vo.receivingShipmentNo }</td>
 		<td>${vo.transactionType }</td>
 		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-		<td>${vo.status }</td>
+		<td>${vo.status}</td>
 		<td>${vo.productId }</td>
-		<td>${vo.name }</td>
-		<td>${vo.description }</td>
+		<td>${vo.productName }</td>
+		<td>${vo.productDescription }</td>
 		<td>${vo.changeQuantity }</td>
 		<td>${vo.transactionUnit }</td>
 		<td>${vo.memo }</td>
@@ -171,8 +172,8 @@
 		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 		<td>${vo.status }</td>
 		<td>${vo.productId }</td>
-		<td>${vo.name }</td>
-		<td>${vo.description }</td>
+		<td>${vo.productName }</td>
+		<td>${vo.productDescription }</td>
 		<td>${vo.changeQuantity }</td>
 		<td>${vo.transactionUnit }</td>
 		<td>${vo.memo }</td>
@@ -203,8 +204,8 @@
 		<td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 		<td>${vo.status }</td>
 		<td>${vo.productId }</td>
-		<td>${vo.name }</td>
-		<td>${vo.description }</td>
+		<td>${vo.productName }</td>
+		<td>${vo.productDescription }</td>
 		<td>${vo.changeQuantity }</td>
 		<td>${vo.transactionUnit }</td>
 		<td>${vo.memo }</td>

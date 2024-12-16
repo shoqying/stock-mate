@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;  // OrderItemVO import 제거
 import com.stockm8.domain.vo.ProductVO;
+import com.stockm8.domain.vo.StockVO;
 import com.stockm8.persistence.OrderDAO;
+import com.stockm8.persistence.ReceivingDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -20,17 +22,17 @@ public class OrderServiceImpl implements OrderService {
     @Inject
     private OrderDAO odao;
     
+    @Inject
+    private ReceivingDAO rdao;
+    
     @Override
     @Transactional
-    public void insertOrder(OrderVO order, OrderItemVO orderItem) throws Exception {
-        // 주문 등록
-        odao.insertOrder(order);
-        
-        // 생성된 주문 ID를 주문항목에 설정
-        orderItem.setOrderId(order.getOrderId());
-        
-        // 주문항목 등록
-        odao.insertOrderItem(orderItem);
+    public void insertOrder(OrderVO order) throws Exception {
+        odao.insertOrderWithItems(order);
+    }
+    @Override
+    public List<StockVO> findAvailableStocks() throws Exception {
+        return odao.findAvailableStocks();
     }
     
     @Override
@@ -38,8 +40,4 @@ public class OrderServiceImpl implements OrderService {
         return odao.generateOrderNumber();
     }
 
-	@Override
-    public List<ProductVO> findAllProducts() throws Exception {
-        return odao.findAllProducts();
-    }
-}
+} //OrderServiceImpl

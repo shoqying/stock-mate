@@ -2,6 +2,7 @@ package com.stockm8.service;
 
 import java.util.List;
 
+import com.stockm8.domain.vo.BusinessVO;
 import com.stockm8.domain.vo.UserVO;
 
 public interface UserService {
@@ -19,6 +20,9 @@ public interface UserService {
 	
 	// 회원정보 수정
 	public void updateUser(UserVO user) throws Exception;
+	
+	// 회원정보에서 BusinessId 수정
+	public void updateUserBusinessId(Long userId, int businessId) throws Exception;
 	
 	// 회원정보 삭제
 	public int deleteUser(UserVO user) throws Exception;

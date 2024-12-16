@@ -2,6 +2,10 @@ package com.stockm8.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import com.stockm8.domain.vo.UserVO;
 
 public interface UserDAO {
@@ -18,6 +22,9 @@ public interface UserDAO {
 	// 회원정보 수정동작
 	public void updateUser (UserVO user);
 	
+    // 사용자의 businessId 수정
+	int updateUserBusinessId(@Param("userId") Long userId, @Param("businessId") int businessId);
+	
 	// 회원정보 삭제동작
 	public int deleteUser (UserVO user);
 	
@@ -30,7 +37,8 @@ public interface UserDAO {
      * @return UserVO 유저 정보
      * @throws Exception 데이터베이스 작업 중 예외
      */
-    UserVO getUserById(Long userId) throws Exception;
+	@Select("SELECT * FROM users WHERE user_id = #{userId}")
+    UserVO getUserById(@Param("userId")Long userId) throws Exception;
 	
     /**
      * 유저의 삭제 여부를 가져옵니다.

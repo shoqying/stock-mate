@@ -28,7 +28,7 @@ public interface CategoryService {
     public List<CategoryVO> getCategoriesByBusinessId(int businessId) throws Exception;
 
     // 카테고리ID로 카테고리명 조회
-    public void getCategoryNameById(int categoryId) throws Exception;
+    public String getCategoryNameById(int categoryId) throws Exception;
 
     // 카테고리 수정	
     public void updateCategory(CategoryVO category) throws Exception;
