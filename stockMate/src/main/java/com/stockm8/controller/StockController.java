@@ -80,6 +80,7 @@ public class StockController {
         // /stock/list.jsp로 포워딩
         return "/stock/list";
     }
+    
 
     // 상품명 클릭 시 상품 상세 페이지로 리다이렉트
     @RequestMapping("/detail/{productId}")
