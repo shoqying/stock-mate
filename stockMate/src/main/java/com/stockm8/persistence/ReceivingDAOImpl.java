@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.stockm8.domain.vo.Criteria;
+import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
 import com.stockm8.domain.vo.StockVO;
 
@@ -131,6 +132,36 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	    params.put("barcode", barcode);
 		return sqlSession.selectOne(NAMESPACE + "selectStockByBarcode", params);
 	}
+
+	@Override
+	public int selectReservedQuantity(int businessId, String barcode) throws Exception {
+		logger.info("selectReservedQuantity() 호출");
+		Map<String, Object> params = new HashMap<>();
+	    params.put("businessId", businessId);
+	    params.put("barcode", barcode);
+		return sqlSession.selectOne(NAMESPACE + "selectReservedQuantity", params);
+	}
+	
+	@Override
+	public ProductVO selectProductNameBarcode(int businessId, String barcode) throws Exception {
+		logger.info("selectProductNameBarcode() 호출");
+		Map<String, Object> params = new HashMap<>();
+		params.put("businessId", businessId);
+		params.put("barcode", barcode);
+		return sqlSession.selectOne(NAMESPACE + "selectProductNameBarcode", params);
+	}
+
+	@Override
+	public void updateReceivingStatusToComplete(int businessId, String barcode) throws Exception {
+		logger.info("updateReceivingStatusToComplete() 호출");
+		Map<String, Object> params = new HashMap<>();
+		params.put("businessId", businessId);
+		params.put("barcode", barcode);
+		sqlSession.update(NAMESPACE + "updateReceivingStatusToComplete", params);
+		
+	}
+	
+	
 	
 	
 	

@@ -14,7 +14,6 @@ import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.persistence.ReceivingDAO;
-import com.stockm8.persistence.StockDAO;
 
 @Service
 public class ReceivingServiceImpl implements ReceivingService {
@@ -24,8 +23,6 @@ public class ReceivingServiceImpl implements ReceivingService {
 	@Inject
 	private ReceivingDAO rdao;
 	
-	@Inject
-	private StockDAO sdao;
 
 	// 메인 입고 리스트
 	@Override
@@ -93,6 +90,35 @@ public class ReceivingServiceImpl implements ReceivingService {
             throw new RuntimeException("재고 업데이트 실패");
         }
     }
+
+	@Override
+	public int decreaseReservedQuantity(int businessId, String barcode) throws Exception {
+		logger.info("decreaseReservedQuantity() 호출");
+		
+		return rdao.selectReservedQuantity(businessId, barcode);
+	}
+
+	@Override
+	public ProductVO productNameBarcode(int businessId, String barcode) throws Exception {
+		logger.info("productNameBarcode() 호출");
+		
+		return rdao.selectProductNameBarcode(businessId, barcode);
+	}
+	
+	@Override
+	public void ReceivingStatusToComplete(int businessId, String barcode) {
+	    try {
+	        // MyBatis 매퍼 호출
+	        rdao.updateReceivingStatusToComplete(businessId, barcode);
+	    } catch (Exception e) {
+	        // 예외 처리
+	        logger.error("입고 상태 업데이트 오류: " + e.getMessage());
+	    }
+	}
+	
+	
+	
+	
 
 
 
