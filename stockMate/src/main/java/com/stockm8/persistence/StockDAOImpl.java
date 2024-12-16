@@ -17,7 +17,7 @@ public class StockDAOImpl implements StockDAO {
     @Inject
     private SqlSession sqlSession;
 
-    private static final String NAMESPACE = "com.stockm8.mapper.StockMapper";
+    private static final String NAMESPACE = "com.stockm8.mapper.StockMapper.";
 
     // 필터링된 재고 목록 조회 (정렬 기준 포함)
     @Override
@@ -28,12 +28,12 @@ public class StockDAOImpl implements StockDAO {
         params.put("sortOrder", sortOrder);  // 정렬 기준 추가
 
         // MyBatis 매퍼에 정의된 SQL 쿼리 호출
-        return sqlSession.selectList(NAMESPACE + ".selectFilteredStocks", params);
+        return sqlSession.selectList(NAMESPACE + "selectFilteredStocks", params);
     }
 
     // 카테고리 목록 조회
     @Override
     public List<CategoryVO> selectCategoryList() throws Exception {
-        return sqlSession.selectList(NAMESPACE + ".selectCategoryList");  // CategoryDAO에서 카테고리 목록 조회
+        return sqlSession.selectList(NAMESPACE + "selectCategoryList");  // CategoryDAO에서 카테고리 목록 조회
     }
 }

@@ -17,7 +17,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Inject
     private SqlSession sqlSession;
 
-    private static final String NAMESPACE = "com.stockm8.mapper.CategoryMapper";
+    private static final String NAMESPACE = "com.stockm8.mapper.CategoryMapper.";
 
     // 카테고리 등록
     @Override
@@ -29,7 +29,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public List<CategoryVO> selectAllCategories() throws Exception {
         try {
-            return sqlSession.selectList(NAMESPACE + ".selectAllCategories");
+            return sqlSession.selectList(NAMESPACE + "selectAllCategories");
         } catch (Exception e) {
             throw new Exception("카테고리 목록 조회 실패", e);
         }
