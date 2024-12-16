@@ -448,7 +448,7 @@
 			// 현재 표시된 재고 정보 카드 중 현재 인덱스에 해당하는 카드를 선택
 		    const card = $('.stock-info-card:visible').eq(currentItemIndex);
 			
-			 // stockId 설정이 제대로 되는지 확인######################################################## 디버깅
+			 // stockId 설정이 제대로 되는지 확인 디버깅
 		    card.find('.stock-id').val(stock.stockId);
 		    console.log('Selected Stock ID:', stock.stockId); // 디버깅용
 		    
@@ -463,7 +463,7 @@
 		    card.find('.barcode').val(stock.product.barcode); // 바코드
 		    card.find('.total-quantity').val(stock.totalQuantity); // 총 재고량
 		    card.find('.reserved-quantity').val(stock.reservedQuantity); // 예약된 수량
-		    card.find('.available-stock').val(stock.availableStock); // 실제 주문 가능한 재고량 @@@@@@@@@@@@@@@@@
+		    card.find('.available-stock').val(stock.availableStock); // 실제 주문 가능한 재고량
 		    card.find('.base-unit').val(stock.product.baseUnit);  // 기본 단위
 		    card.find('.unit-price').val(stock.product.price); // 단가
 		    
@@ -524,7 +524,7 @@
 		    buttons.prop('disabled', buttons.length <= 1);
 		}
 		
-		// 폼 유효성 검사 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		// 폼 유효성 검사
 		function validateForm() {
 		    let isValid = true;
 		    let hasUnselectedItems = false;
