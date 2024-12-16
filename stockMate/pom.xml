@@ -251,8 +251,26 @@
 	        <groupId>com.google.zxing</groupId>
 	        <artifactId>javase</artifactId>
 	        <version>3.5.1</version>
-	    </dependency>
+	    </dependency>    
 	    
+	    <!-- AspectJ 트랜잭션때문에... 로그 확인을 위한것...-->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjrt</artifactId>
+		    <version>1.9.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.9.7</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-aspects</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+
 	    <dependency>
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>

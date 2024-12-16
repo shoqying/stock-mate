@@ -1,6 +1,7 @@
 package com.stockm8.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
@@ -13,18 +14,28 @@ public interface OrderDAO {
     public void insertOrder(OrderVO order) throws Exception;
     
     // 주문 항목 등록
-    public void insertOrderItem(OrderItemVO orderItem) throws Exception;
-    
-    // 주문과 주문항목을 한번에 처리
-    public void insertOrderWithItems(OrderVO order) throws Exception;
+    public void insertOrderItem(List<OrderItemVO> orderItem) throws Exception;
     
     // 모든 재고 목록 조회
-    public List<StockVO> findAvailableStocks() throws Exception;
+    public List<StockVO> findAvailableStocks(int businessId) throws Exception;
     
-    //주문번호 생성
+    // 주문번호 생성
     public String generateOrderNumber() throws Exception;
     
+    // 재고 수량 업데이트
+    public int updateStockQuantity(Map<String, Object> params) throws Exception;
     
-    // 재고의 예약 수량을 업데이트.. 이거는 뭐지..>>
-    public void updateStockReservedQuantity(int stockId, int quantity) throws Exception;
+    // 주문 목록
+    public List<OrderVO> getOrderList();
+    
+    // 재고 정보 조회 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ 미사용
+    public StockVO getStockById(int stockId) throws Exception;
+
+    // 재고 이력 등록 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ 미사용
+    public void insertStockHistory(Map<String, Object> params) throws Exception;
+    
+    
+    
+    
+    
 } // OrderDAO
