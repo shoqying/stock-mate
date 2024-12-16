@@ -214,19 +214,20 @@
    <!-- receiving scan을 위한 매퍼 -->
    <!-- 바코드로 제품 조회 -->
 <select id="selectQuantityCheckByBarcode" resultType="com.stockm8.domain.vo.StockVO">
-       SELECT s.product_id, p.product_name, s.total_quantity, s.warehouse_id
-       FROM stocks s
-       JOIN products p ON p.product_id = s.product_id
-       WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+	SELECT s.product_id, p.product_name, s.total_quantity, s.warehouse_id
+	FROM stocks s
+	JOIN products p ON p.product_id = s.product_id
+	WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
 </select>
 
 <!-- 바코드로 재고 1 감소 -->
 <update id="updateIncreseStock">
     UPDATE stocks s
     JOIN products p on p.product_id = s.product_id
-    SET s.total_quantity = s.total_quantity + 1
+    SET s.total_quantity = s.total_quantity + 1,
+    s.reserved_quantity = s.reserved_quantity -1
     WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
-    AND s.total_quantity > 0
+    AND s.reserved_quantity > 0
 </update>
 
 <!-- 바코드로 남은 재고 조회 -->
@@ -236,6 +237,33 @@
     JOIN products p on p.product_id = s.product_id
     WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
 </select>
+
+<!-- 바코드로 남은 발주 수량 조회 -->
+<select id="selectReservedQuantity" resultType="int">
+    SELECT s.reserved_quantity
+    FROM stocks s
+    JOIN products p on p.product_id = s.product_id
+    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+</select>
+
+<!-- 바코드로 제품 이름 조회 -->
+<select id="selectProductNameBarcode" resultType="com.stockm8.domain.vo.ProductVO">
+    SELECT p.product_name, p.product_price
+    FROM stocks s
+    JOIN products p on p.product_id = s.product_id
+    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+</select>
+
+<update id="updateReceivingStatusToComplete">
+    UPDATE receiving_shipment r
+    JOIN products p ON r.product_id = p.product_id
+    JOIN stocks s ON s.product_id = p.product_id
+    SET r.status = 'COMPLETED'
+    WHERE p.product_barcode = #{barcode}
+    AND s.reserved_quantity = 1
+    AND r.status = 'PENDING'
+    AND s.business_id = #{businessId};
+</update>
 <!-- receiving scan을 위한 매퍼 -->
 
   	
