@@ -103,17 +103,18 @@
             </a>
         </div>
         <h1>비밀번호 변경</h1>
-   <form action="/user/changepassword2" method="post">
+<form action="/user/changepassword2" method="post">
     <div>
         <label for="newPassword">변경할 비밀번호</label>
-        <input type="password" id="newPassword" name="newPassword" required>
+        <input type="password" id="newPassword" name="newPassword" placeholder="변경할 비밀번호 입력" required>
     </div>
     <div>
         <label for="confirmPassword">한 번 더 입력</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="한번 더 입력" required>
     </div>
     <button type="submit">정보 변경 하기</button>
 </form>
+
 
     </div>
 
