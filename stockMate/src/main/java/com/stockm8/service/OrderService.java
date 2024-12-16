@@ -24,10 +24,10 @@ public interface OrderService {
     // 주문목록
     public List<OrderVO> getOrderList();
 
-    // 가용 재고 체크   ===> 미사용
+    // 가용 재고 체크 미사용
     public boolean checkAvailableStock(OrderItemVO item) throws Exception;
     
-    // 재고 이력 등록  ====> 미사용
+    // 재고 이력 등록 미사용
     public void insertStockHistory(StockVO stock, OrderVO order, int quantityChanged) throws Exception;
     
 
