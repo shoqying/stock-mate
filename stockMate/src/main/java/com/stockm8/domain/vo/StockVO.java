@@ -19,8 +19,8 @@ public class StockVO {
     private Boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
 
     // 연관 VO 필드
-    private ProductVO product;      // 상품 정보
+    private ProductVO product;      // 상품 정보(JOIN)
     private CategoryVO category;    // 카테고리 정보
     private WarehouseVO warehouse;  // 창고 정보
-    private String warehouseName;   // 창고명
+    private String warehouseName;   // (JOIN)
 }

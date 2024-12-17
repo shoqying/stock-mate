@@ -15,7 +15,7 @@ $(document).ready(function () {
             let barcode = $(this).val().trim();
             if (barcode) {
                 $.ajax({
-                    url: "/receiving/scan",
+                    url: "/shipment/scan",
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ barcode: barcode }),
@@ -27,7 +27,7 @@ $(document).ready(function () {
                                         "<tr>" +
                                             "<th>제품명</th>" +
                                             "<th>남은 재고</th>" +
-                                            "<th>입고처리할 남은 수량</th>" +
+                                            "<th>출고처리할 남은 수량</th>" +
                                             "<th>단가</th>" +
                                         "</tr>" +
                                     "</thead>" +
@@ -42,7 +42,7 @@ $(document).ready(function () {
                                 "</table>"
                             );
                         } else {
-                            alert("더이상 입고할 수량이 없습니다.");
+                            alert("더이상 출고할 수량이 없습니다.");
                             if(confirm("발주를 새로 등록 하시겠습니까?")) {
                                 window.location.href = "/order/register";
                             }
@@ -202,10 +202,11 @@ td {
 </head>
 <body>
     <header>
-        <h1>실시간 입고 관리 시스템</h1>
-        <a href="/receiving/main">입고 메인</a>
-        <a href="/receiving/history">입고 내역</a>
+        <h1>실시간 출고 관리 시스템</h1>
+        <a href="/shipment/main">출고 메인</a>
+        <a href="/shipment/history">출고 내역</a>
         <a href="/dashboard">대쉬보드</a>
+        <a href="/shipment/allScan">스캔 다중 입력</a>
     </header>
     <main>
         <div>

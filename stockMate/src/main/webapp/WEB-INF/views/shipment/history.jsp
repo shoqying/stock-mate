@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>입고 내역</title>
+<title>출고 내역</title>
 <style>
 /* 전체 페이지 스타일 */
 /* 페이지네이션 컨테이너 스타일 */
@@ -237,15 +237,16 @@ tr:hover {
 </head>
 <body>
 
-	<h1>입고 내역</h1>
-	<a href="/receiving/main">입고 메인</a>
-	<a href="/receiving/scan">입고 검수</a>
-	<form action="/receiving/insert3" method="POST">
+	<h1>출고 내역</h1>
+	<a href="/shipment/main">출고 메인</a>
+	<a href="/shipment/scan">실시간 출고</a>
+	<form action="/shipment/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
+	
 
 	<!-- 기간별 검색 및 키워드 검색 폼 -->
-	<form action="/receiving/search" method="get"
+	<form action="/shipment/search" method="get"
 		onsubmit="return validateForm()" id="searchForm">
 		<label for="startDate">시작 날짜:</label> <input type="date"
 			id="startDate" name="startDate" value="${param.startDate}"> <label
@@ -269,25 +270,25 @@ tr:hover {
 
 
 
-		<!-- 입고 내역 히스토리 -->
+		<!-- 출고 내역 히스토리 -->
 		<table border="1">
 			<tr>
-				<th>입고 번호</th>
+				<th>출고 번호</th>
 				<th>입고 출고</th>
-				<th>입고 일자</th>
-				<th>입고 상태</th>
+				<th>출고 일자</th>
+				<th>출고 상태</th>
 				<th>제품 번호</th>
 				<th>제품명</th>
 				<th>옵션명</th>
-				<th>입고 수량</th>
+				<th>출고 수량</th>
 				<th>수량 단위</th>
 				<th>제품 단가</th>
 				<th>창고 위치</th>
 				<th>작업 메모</th>
 			</tr>
-			<c:forEach var="vo" items="${ReceivingList }">
+			<c:forEach var="vo" items="${ShipmentList }">
 				<tr>
-					<td>${vo.receivingShipmentNo }</td>
+					<td>${vo.shipmentShipmentNo }</td>
 					<td>${vo.transactionType }</td>
 					<td><fmt:formatDate value="${vo.createdAt}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
@@ -319,7 +320,7 @@ tr:hover {
 	</form>
 
 	<c:choose>
-		<c:when test="${empty ReceivingList}">
+		<c:when test="${empty ShipmentList}">
         검색 결과가 없습니다.
     </c:when>
 	</c:choose>
@@ -328,17 +329,17 @@ tr:hover {
 	    <ul class="pagination">
 	        <c:if test="${pageVO.prev}">
 	            <li class="paginate_button previous">
-	                <a href="/receiving/history?page=${pageVO.startPage - 10}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+	                <a href="/shipment/history?page=${pageVO.startPage - 10}&pageSize=${pageVO.cri.pageSize}" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
 	            </li>
 	        </c:if>
 	        <c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage}">
 	            <li class="paginate_button ${(i == pageVO.cri.page) ? 'active' : ''}">
-	                <a href="/receiving/history?page=${i}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="1" tabindex="0">${i}</a>
+	                <a href="/shipment/history?page=${i}&pageSize=${pageVO.cri.pageSize}" aria-controls="example2" data-dt-idx="1" tabindex="0">${i}</a>
 	            </li>
 	        </c:forEach>
 	        <c:if test="${pageVO.next}">
 	            <li class="paginate_button">
-	                <a href="/receiving/history?page=${pageVO.startPage + 1}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
+	                <a href="/shipment/history?page=${pageVO.startPage + 1}&pageSize=${pageVO.cri.pageSize}" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
 	            </li>
 	        </c:if>
 	    </ul>

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
 import com.stockm8.domain.vo.ProductVO;
@@ -109,27 +110,36 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 	
 	
-	// 재고 정보 조회  ==== > 미사용
+	// 가용재고 정보 조회 
 	@Override
 	public StockVO getStockById(int stockId) throws Exception {
 		return sqlSession.selectOne(NAMESPACE + "getStockById", stockId);
 	}
-
-	
-	// 재고 이력 등록 =====> 미사용
-	@Override
-	public void insertStockHistory(Map<String, Object> params) throws Exception {
-		sqlSession.insert(NAMESPACE + "insertStockHistory", params);
-		
-	}
 	
 	//오더 목록
 	@Override
-	public List<OrderVO> getOrderList() {
-		return sqlSession.selectList(NAMESPACE+ "orderList");
+	public List<OrderVO> getOrderList(Criteria cri, int businessId) {
+		Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("cri", cri);
+	    paramMap.put("businessId", businessId);
+		return sqlSession.selectList(NAMESPACE+ "orderList", paramMap);
 	}
-
-
+	// 주문 단건 조회
+	@Override
+	public OrderVO getOrderById(int orderId) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + "getOrderById", orderId);
+	}
+	// 주문 상세항목 조회
+	@Override
+	public List<OrderItemVO> getOrderItemsByOrderId(int orderId) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "getOrderItemsByOrderId", orderId);
+	}
+	// 전체 주문 개수 조회 (페이징 계산)
+	@Override
+	public int getTotalOrderCount(int businessId) {
+		return sqlSession.selectOne(NAMESPACE + "getTotalOrderCount", businessId);	}
+	
+	
 
 	
 } // OrderImpl

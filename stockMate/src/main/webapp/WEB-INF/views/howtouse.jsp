@@ -22,12 +22,17 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
-        .header {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 20px;
-            border-radius: 15px 15px 0 0;
-            margin-bottom: 20px;
+
+          .header {
+    position: relative;
+    height: 400px;
+    background: url(resources/css/9950253.jpg) no-repeat center center / cover;
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
         }
         .header h1 {
             font-size: 36px;

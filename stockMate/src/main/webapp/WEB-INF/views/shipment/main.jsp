@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>입고 메인</title>
+<title>출고 메인</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
     /* 전체 페이지 스타일 */
@@ -134,33 +134,33 @@
 </head>
 <body>
 
-<h1>입고 메인</h1>
+<h1>출고 메인</h1>
 
-<a href="/receiving/history">입고 내역</a>
-<a href="/receiving/scan">입고 검수</a>
+<a href="/shipment/history">출고 내역</a>
+<a href="/shipment/scan">실시간 출고</a>
 <a href="/dashboard">대쉬보드</a>
-<form action="/receiving/insert1" method="POST">
+<form action="/shipment/insert1" method="POST">
     <input type="submit" value="새로고침">
 </form>
 
-<!-- 오늘 입고 리스트 -->
-<h2>오늘 입고 리스트</h2>
+<!-- 오늘 출고 리스트 -->
+<h2>오늘 출고 리스트</h2>
 <table border="1">
     <tr>
-        <th>입고 번호</th>
+        <th>출고 번호</th>
         <th>입고 출고</th>
-        <th>입고 일자</th>
-        <th>입고 상태</th>
+        <th>출고 일자</th>
+        <th>출고 상태</th>
         <th>제품 번호</th>
         <th>제품명</th>
         <th>옵션명</th>
-        <th>입고 수량</th>
+        <th>출고 수량</th>
         <th>수량 단위</th>
         <th>작업 메모</th>
     </tr>
-    <c:forEach var="vo" items="${ReceivingList}">
+    <c:forEach var="vo" items="${ShipmentList}">
         <tr>
-            <td>${vo.receivingShipmentNo}</td>
+            <td>${vo.shipmentShipmentNo}</td>
             <td>${vo.transactionType}</td>
             <td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
             <td>
@@ -180,24 +180,24 @@
     </c:forEach>
 </table>
 
-<!-- 어제 입고 리스트 -->
-<h2>어제 입고 리스트</h2>
+<!-- 어제 출고 리스트 -->
+<h2>어제 출고 리스트</h2>
 <table border="1">
     <tr>
-        <th>입고 번호</th>
+        <th>출고 번호</th>
         <th>입고 출고</th>
-        <th>입고 일자</th>
-        <th>입고 상태</th>
+        <th>출고 일자</th>
+        <th>출고 상태</th>
         <th>제품 번호</th>
         <th>제품명</th>
         <th>옵션명</th>
-        <th>입고 수량</th>
+        <th>출고 수량</th>
         <th>수량 단위</th>
         <th>작업 메모</th>
     </tr>
-    <c:forEach var="vo" items="${YesterdayReceivingList}">
+    <c:forEach var="vo" items="${YesterdayShipmentList}">
         <tr>
-            <td>${vo.receivingShipmentNo}</td>
+            <td>${vo.shipmentShipmentNo}</td>
             <td>${vo.transactionType}</td>
             <td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
             <td>
@@ -217,24 +217,24 @@
     </c:forEach>
 </table>
 
-<!-- 그저께 입고 리스트 -->
-<h2>그저께 입고 리스트</h2>
+<!-- 그저께 출고 리스트 -->
+<h2>그저께 출고 리스트</h2>
 <table border="1">
     <tr>
-        <th>입고 번호</th>
+        <th>출고 번호</th>
         <th>입고 출고</th>
-        <th>입고 일자</th>
-        <th>입고 상태</th>
+        <th>출고 일자</th>
+        <th>출고 상태</th>
         <th>제품 번호</th>
         <th>제품명</th>
         <th>옵션명</th>
-        <th>입고 수량</th>
+        <th>출고 수량</th>
         <th>수량 단위</th>
         <th>작업 메모</th>
     </tr>
-    <c:forEach var="vo" items="${TDBYReceivingList}">
+    <c:forEach var="vo" items="${TDBYShipmentList}">
         <tr>
-            <td>${vo.receivingShipmentNo}</td>
+            <td>${vo.shipmentShipmentNo}</td>
             <td>${vo.transactionType}</td>
             <td><fmt:formatDate value="${vo.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
             <td>

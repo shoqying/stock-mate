@@ -206,7 +206,7 @@ td {
         <a href="/receiving/main">입고 메인</a>
         <a href="/receiving/history">입고 내역</a>
         <a href="/dashboard">대쉬보드</a>
-        <a href="/receiving/allScan">다중 스캔</a>
+        <a href="/receiving/allScan">스캔 다중 입력</a>
     </header>
     <main>
         <div>

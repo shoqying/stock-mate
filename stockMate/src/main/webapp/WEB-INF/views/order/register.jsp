@@ -14,6 +14,7 @@
         
         <div>
 		    <a class="btn btn-success" href="/dashboard" style="text-decoration: none;">대시 보드</a>
+		    <a class="btn btn-success" href="/order/orderList" style="text-decoration: none;">주문목록</a>
 		</div>
         <!-- 주문 폼 시작 -->
         <form id="orderForm" action="/order/register" method="post">
@@ -66,104 +67,103 @@
 
             <!-- 재고 정보 카드 템플릿 -->
             <div class="card stock-info-card" id="stockInfoTemplate">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>재고 정보</span>
-                        <button type="button" class="btn btn-danger delete-btn">삭제</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="button" class="btn btn-primary w-100 stock-select-btn">
-                                재고 선택
-                            </button>
-                        </div>
-                    </div>
-
-                    <input type="hidden" class="stock-id" name="orderItems[0].stockId">
-                    <input type="hidden" class="product-id" name="orderItems[0].productId">
-                    <input type="hidden" class="warehouse-id" name="orderItems[0].warehouseId"><div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">제품명</label>
-                                <input type="text" class="form-control product-name" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">창고명</label>
-                                <input type="text" class="form-control warehouse-name" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">바코드</label>
-                                <input type="text" class="form-control barcode" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">총 재고</label>
-                                <input type="number" class="form-control total-quantity" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">예약 수량</label>
-                                <input type="number" class="form-control reserved-quantity" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">가용 재고</label>
-                                <input type="number" class="form-control available-stock" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label required-label">주문수량</label>
-                                <input type="number" class="form-control order-quantity" 
-                                       name="orderItems[0].quantity" min="1" value="1" required>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">단위</label>
-                                <input type="text" class="form-control base-unit" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">단가</label>
-                                <input type="number" step="0.01" class="form-control unit-price" 
-                                       name="orderItems[0].unitPrice" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">소계</label>
-                                <input type="number" step="0.01" class="form-control subtotal-price" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label class="form-label">비고</label>
-                                <textarea class="form-control remarks" name="orderItems[0].remarks" rows="2"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+		    <div class="card-header">
+		        <div class="d-flex justify-content-between align-items-center">
+		            <span>재고 정보</span>
+		            <button type="button" class="btn btn-danger delete-btn">삭제</button>
+		        </div>
+		    </div>
+		    <div class="card-body">
+		        <div class="row">
+		            <div class="col-12">
+		                <button type="button" class="btn btn-primary w-100 stock-select-btn">
+		                    재고 선택
+		                </button>
+		            </div>
+		        </div>
+		
+		        <input type="hidden" class="stock-id" name="orderItems[0].stockId">
+		        <input type="hidden" class="product-id" name="orderItems[0].productId">
+		        <input type="hidden" class="warehouse-id" name="orderItems[0].warehouseId">
+		        
+		        <!-- 예약수량을 hidden으로 변경 -->
+		        <input type="hidden" class="form-control reserved-quantity" readonly>
+		
+		        <div class="row">
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">제품명</label>
+		                    <input type="text" class="form-control product-name" readonly>
+		                </div>
+		            </div>
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">창고명</label>
+		                    <input type="text" class="form-control warehouse-name" readonly>
+		                </div>
+		            </div>
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">바코드</label>
+		                    <input type="text" class="form-control barcode" readonly>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="row">
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">총 재고</label>
+		                    <input type="number" class="form-control total-quantity" readonly>
+		                </div>
+		            </div>
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">가용 재고</label>
+		                    <input type="number" class="form-control available-stock" readonly>
+		                </div>
+		            </div>
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label required-label">주문수량</label>
+		                    <input type="number" class="form-control order-quantity" 
+		                           name="orderItems[0].quantity" min="1" value="1" required>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="row">
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">단위</label>
+		                    <input type="text" class="form-control base-unit" readonly>
+		                </div>
+		            </div>
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">단가</label>
+		                    <input type="number" step="0.01" class="form-control unit-price" 
+		                           name="orderItems[0].unitPrice" readonly>
+		                </div>
+		            </div>
+		            <div class="col-md-4">
+		                <div class="form-group">
+		                    <label class="form-label">소계</label>
+		                    <input type="number" step="0.01" class="form-control subtotal-price" readonly>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="row mt-3">
+		            <div class="col-12">
+		                <div class="form-group">
+		                    <label class="form-label">비고</label>
+		                    <textarea class="form-control remarks" name="orderItems[0].remarks" rows="2"></textarea>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
 
             <!-- 총계 정보 카드 -->
             <div class="card">
@@ -512,7 +512,13 @@
 		    const subtotal = quantity * unitPrice; // 소계 계산 (수량 * 단가)
 		    
 		 	// 계산된 소계를 소수점 둘째 자리까지 표시하여 필드에 설정
-		    card.find('.subtotal-price').val(subtotal.toFixed(2));
+		    card.find('.subtotal-price')
+			    .val(subtotal)  // 실제 계산을 위한 숫자값 저장
+		        .prop('type', 'text')  // 추가: input type을 text로 변경
+		        .val(new Intl.NumberFormat('ko-KR').format(subtotal) + '원');  // 표시용 포맷팅
+		    
+		    
+		    updateGrandTotal();
 		    
 			// 전체 주문 금액 업데이트 (다른 함수에서 구현)
 		    updateGrandTotal();
@@ -521,10 +527,16 @@
 		// 총계 업데이트
 		function updateGrandTotal() {
 		    let total = 0;
-		    $('.subtotal-price:visible').each(function() {
-		        total += parseFloat($(this).val()) || 0;
+		    $('.stock-info-card:visible').each(function() {
+		        const card = $(this);
+		        const quantity = parseInt(card.find('.order-quantity').val()) || 0;
+		        const unitPrice = parseFloat(card.find('.unit-price').val()) || 0;
+		        total += quantity * unitPrice;
 		    });
-		    $('#grandTotal').val(total.toFixed(2));
+		    
+		    $('#grandTotal')
+		        .prop('type', 'text')  // 추가: input type을 text로 변경
+		        .val(new Intl.NumberFormat('ko-KR').format(total) + '원');
 		}
 		
 		// 삭제 버튼 상태 업데이트
@@ -543,7 +555,6 @@
 		    	alert('주문 유형을 선택 해주세요.');
 		    	return false;
 		    }
-		    
 		    
 		    $('.stock-info-card:visible').each(function() {
 		        const card = $(this);
