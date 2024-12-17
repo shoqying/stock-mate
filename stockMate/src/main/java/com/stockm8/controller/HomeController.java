@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -32,7 +34,7 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		return "user/main";
+		return "main";
 	}
 	//http://localhost:8088/dashboard
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
@@ -61,5 +63,45 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "qrScanner";
+	}
+	
+	// 대시보드사용법 - /howtouse (GET)
+	@RequestMapping(value = "/howtouse", method = RequestMethod.GET)
+	public String howtouseGET(Model model, HttpSession session) throws Exception {
+		Long userId = (Long) session.getAttribute("userId");
+//                if (id == null) {
+//                    // 세션에 id가 없으면 에러 처리
+//                    return "redirect:/user/main";
+//                }
+//               UserVO resultVO = userService.getUser(userId);
+//               model.addAttribute("resultVO", resultVO);
+		return "howtouse";
+	}
+	
+	// 상담하기 - /user/consultation (GET)
+	@RequestMapping(value = "/consultation", method = RequestMethod.GET)
+	public String consultationGET(Model model, HttpSession session) throws Exception {
+		Long userId = (Long) session.getAttribute("id");
+
+//                if (id == null) {
+//                    // 세션에 id가 없으면 에러 처리
+//                    return "redirect:/user/main";
+//                }
+//               UserVO resultVO = userService.getUser(userId, password );
+//               model.addAttribute("resultVO", resultVO);
+		return "consultation";
+	}
+	
+	// 회사소개 - /intro (GET)
+	@RequestMapping(value = "/intro", method = RequestMethod.GET)
+	public String introGET(Model model, HttpSession session) throws Exception {
+		Long userId = (Long) session.getAttribute("userId");
+//                if (id == null) {
+//                    // 세션에 id가 없으면 에러 처리
+//                    return "redirect:/user/main";
+//                }
+//               UserVO resultVO = userService.getUser(userId);
+//               model.addAttribute("resultVO", resultVO);
+		return "/intro";
 	}
 }

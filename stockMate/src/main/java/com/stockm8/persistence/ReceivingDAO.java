@@ -3,6 +3,7 @@ package com.stockm8.persistence;
 import java.util.List;
 
 import com.stockm8.domain.vo.Criteria;
+import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
 import com.stockm8.domain.vo.StockVO;
 
@@ -40,5 +41,14 @@ public interface ReceivingDAO {
  	
   	// 바코드로 재고 감소 실시간 조회
    	public int selectStockByBarcode(int businessId, String barcode) throws Exception;
+   	
+   	// 바코드 찍은 후 발주 수량 감소
+   	public int selectReservedQuantity(int businessId, String barcode) throws Exception;
+   	
+   	// 바코드 찍은 후 제품 이름 추출
+   	public ProductVO selectProductNameBarcode(int businessId, String barcode) throws Exception;
+   	
+   	// 수량 없을시 완료상태로 변경
+   	public void updateReceivingStatusToComplete(int businessId, String barcode) throws Exception;
 		
 } // ReceivingDAO end

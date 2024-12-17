@@ -23,5 +23,4 @@ public class StockVO {
     private CategoryVO category;    // 카테고리 정보
     private WarehouseVO warehouse;  // 창고 정보
     private String warehouseName;   // (JOIN)
-
 }

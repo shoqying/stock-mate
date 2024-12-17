@@ -6,11 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>카테고리 등록</title>
+<link rel="stylesheet" href="<c:url value='/resources/css/CategoryregistStyle.css' />">
+<link rel="stylesheet" href="<c:url value='/resources/css/modalStyle.css' />">
 </head>
 <body>
-	<h1> /views/category/register.jsp </h1>
 	
 	<form action="/category/register" method="post">
+		<h2>카테고리 등록 페이지</h2>
 	    <!-- 상위 카테고리 선택 -->
 	    <label for="parentCategoryId">상위 카테고리:</label>
 	    <select id="parentCategoryId" name="parentId">

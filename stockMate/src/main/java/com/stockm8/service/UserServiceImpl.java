@@ -41,10 +41,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO getUser(Long userId) throws Exception {
+	public UserVO getUser(Long userId, String password) throws Exception {
 		logger.info(" getuser(String user_id)호출 ");
 
-		return userDAO.getUser(userId);
+		return userDAO.getUser(userId, password);
 	}
 	
 	// 회원 정보 수정 
@@ -56,6 +56,17 @@ public class UserServiceImpl implements UserService {
 		userDAO.updateUser(user);
 	}
 	
+	@Override
+	public UserVO getUserInfoById(Long userId) throws Exception {
+	    return userDAO.getUserInfoById(userId);
+	}
+	
+	@Override
+	public void updatePassword(Long userId, String newPassword) throws Exception {
+	    userDAO.updatePassword(userId, newPassword);
+	}
+
+
 	@Override
 	public void updateUserBusinessId(Long userId, int businessId) throws Exception {
 		logger.info("updateUserBusinessId() 실행");
