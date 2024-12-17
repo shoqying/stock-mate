@@ -78,6 +78,20 @@ public class HomeController {
 		return "howtouse";
 	}
 	
+	// 창고위치 - /location (GET)
+		@RequestMapping(value = "/location", method = RequestMethod.GET)
+		public String locationGET(Model model, HttpSession session) throws Exception {
+			Long userId = (Long) session.getAttribute("userId");
+//	                if (id == null) {
+//	                    // 세션에 id가 없으면 에러 처리
+//	                    return "redirect:/user/main";
+//	                }
+//	               UserVO resultVO = userService.getUser(userId);
+//	               model.addAttribute("resultVO", resultVO);
+			return "location";
+		}
+	
+	
 	// 상담하기 - /user/consultation (GET)
 	@RequestMapping(value = "/consultation", method = RequestMethod.GET)
 	public String consultationGET(Model model, HttpSession session) throws Exception {
