@@ -29,6 +29,9 @@ public interface UserService {
    // 회원정보에서 비밀번호 수정
    public void updateUserBusinessId(Long userId, int businessId) throws Exception;
    
+   // 비밀번호 찾기
+   public String findPassword (String email, String name) throws Exception;
+	
    // 회원정보 삭제
    public int deleteUser(UserVO user) throws Exception;
    

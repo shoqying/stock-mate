@@ -195,12 +195,12 @@
             s.reserved_quantity, 
             s.available_stock,
             s.description as stock_description,
-            p.name, 
-            p.barcode, 
+            p.product_name, 
+            p.product_barcode, 
             p.base_unit, 
             p.set_size, 
-            p.price,
-            p.description as product_description,
+            p.product_price,
+            p.product_description,
             w.warehouse_name
         FROM 
             stocks s

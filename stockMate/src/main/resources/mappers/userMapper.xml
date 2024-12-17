@@ -107,6 +107,14 @@
 		AND business_id IS NULL
 	</update>
 
+ 	<!-- 이메일과 이름으로 비밀번호 찾기 -->
+	<select id="findPassword" resultType="java.lang.String">
+    	SELECT password
+    	FROM test_users
+    	WHERE email = #{email} AND name = #{name}
+	</select>
+
+
 	<!-- 회원정보 삭제 -->
 	<delete id="deleteUser">
 		DELETE FROM users
