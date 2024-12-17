@@ -8,12 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.stockm8.domain.dto.StockDTO;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.domain.vo.WarehouseVO;
@@ -79,39 +81,34 @@ public class StockController {
 	
 	// 재고 목록 조회
 	// http://localhost:8088/stock/list
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String getStockList(@SessionAttribute("userId") Long userId, Model model,
-            				   @RequestParam(required = false) Integer warehouseId,
-					           @RequestParam(required = false) String categoryName,
-					           @RequestParam(required = false) Integer minStock,
-					           @RequestParam(required = false) Integer maxStock,
-					           @RequestParam(required = false, defaultValue = "desc") String sortOrder) throws Exception {
-	    logger.info("getStockList 호출");
+    @GetMapping("/list")
+    public String getStockList(
+            @SessionAttribute("userId") Long userId,
+            @RequestParam(required = false, defaultValue = "updated_at") String sortColumn,
+            @RequestParam(required = false, defaultValue = "desc") String sortOrder,
+            Model model) throws Exception {
+        
+        logger.info(">>> 재고 리스트 요청 sortColumn: {}, sortOrder: {}", sortColumn, sortOrder);
 
-	    // 사용자 정보 조회
-	    UserVO user = userService.getUserById(userId);
-	    int businessId = user.getBusinessId();
+        // 사용자 정보 조회
+        UserVO user = userService.getUserById(userId);
+        int businessId = user.getBusinessId();
 
-	    // 창고 목록 조회
-	    List<WarehouseVO> warehouseList = warehouseService.getWarehousesByBusinessId(businessId);
-	    logger.info("조회된 창고 목록: {}", warehouseList.size());
+        // 창고 및 카테고리 리스트 추가
+        List<WarehouseVO> warehouseList = warehouseService.getWarehousesByBusinessId(businessId);
+        model.addAttribute("warehouseList", warehouseList);
+        model.addAttribute("categoryList", stockService.getCategoryList());
 
-	    // 창고명과 카테고리명 정보 제공
-	    model.addAttribute("warehouseList", warehouseList);
-	    model.addAttribute("categoryList", stockService.getCategoryList());
+        // 재고 리스트 조회
+        List<StockDTO> stockList = stockService.getStockList(businessId, sortColumn, sortOrder);
+        model.addAttribute("stockList", stockList);
 
-	    // 재고 리스트 조회
-	    FilterCriteria criteria = new FilterCriteria(warehouseId, categoryName, minStock, maxStock, sortOrder, businessId);
-	    List<StockVO> stockList = stockService.getStockList(criteria, sortOrder);
-	    model.addAttribute("stockList", stockList);
+        // 정렬 정보 추가
+        model.addAttribute("sortColumn", sortColumn);
+        model.addAttribute("sortOrder", sortOrder);
 
-	    // 필터링된 파라미터들을 모델에 추가
-	    model.addAttribute("warehouseId", warehouseId);
-	    model.addAttribute("categoryName", categoryName);
-	    model.addAttribute("minStock", minStock);
-	    model.addAttribute("maxStock", maxStock);
-	    model.addAttribute("sortOrder", sortOrder);
+        logger.info("조회된 재고 수: {}", stockList.size());
 
-	    return "/stock/list";
-	}
+        return "/stock/list";
+    }
 }

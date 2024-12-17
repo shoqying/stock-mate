@@ -20,5 +20,4 @@ public class WarehouseVO {
 	private String warehouseDescription; // 창고에 대한 상세 설명
 	private WarehouseStatus warehouseStatus;               // 창고 상태 ('active', 'inactive')
     private boolean isDeleted;     		 // 논리 삭제 여부 (true: 삭제됨, false: 활성)
-    
 }
