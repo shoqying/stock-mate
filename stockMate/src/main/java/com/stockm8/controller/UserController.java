@@ -392,23 +392,6 @@ public class UserController {
 	    }
 	}
 
-	
-	// 상담하기 - /user/consultation (GET)
-	@RequestMapping(value = "/consultation", method = RequestMethod.GET)
-	public String consultationGET(Model model, HttpSession session) throws Exception {
-		Long userId = (Long) session.getAttribute("id");
-
-//                if (id == null) {
-//                    // 세션에 id가 없으면 에러 처리
-//                    return "redirect:/user/main";
-//                }
-//               UserVO resultVO = userService.getUser(userId, password );
-//               model.addAttribute("resultVO", resultVO);
-		return "/user/consultation";
-	}
-
-	
-	
 
 	@RequestMapping(value = "/sendConsultation", method = RequestMethod.POST)
 	public String sendConsultation(
@@ -491,21 +474,6 @@ public class UserController {
 	}
 
 
-	
-	
-	// 대시보드사용법 - /howtouse (GET)
-	@RequestMapping(value = "/howtouse", method = RequestMethod.GET)
-	public String howtouseGET(Model model, HttpSession session) throws Exception {
-		Long userId = (Long) session.getAttribute("userId");
-//                if (id == null) {
-//                    // 세션에 id가 없으면 에러 처리
-//                    return "redirect:/user/main";
-//                }
-//               UserVO resultVO = userService.getUser(userId);
-//               model.addAttribute("resultVO", resultVO);
-		return "/user/howtouse";
-	}
-
 	// 대시보드사용법 - /howtouse2 (GET)
 	@RequestMapping(value = "/howtouse2", method = RequestMethod.GET)
 	public String howtouseGET2(Model model, HttpSession session) throws Exception {
@@ -519,18 +487,7 @@ public class UserController {
 		return "/user/howtouse2";
 	}
 
-	// 회사소개 - /intro (GET)
-	@RequestMapping(value = "/intro", method = RequestMethod.GET)
-	public String introGET(Model model, HttpSession session) throws Exception {
-		Long userId = (Long) session.getAttribute("userId");
-//                if (id == null) {
-//                    // 세션에 id가 없으면 에러 처리
-//                    return "redirect:/user/main";
-//                }
-//               UserVO resultVO = userService.getUser(userId);
-//               model.addAttribute("resultVO", resultVO);
-		return "/user/intro";
-	}
+
 
 	// 회원정보 삭제 - 비밀번호 입력 (GET)
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)

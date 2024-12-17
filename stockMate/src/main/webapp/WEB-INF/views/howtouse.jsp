@@ -142,7 +142,7 @@
             </div>
         </div>
         <div class="back-button">
-            <a href="/user/main">뒤로 돌아가기</a>
+            <a href="/">뒤로 돌아가기</a>
         </div>
     </div>
 </body>

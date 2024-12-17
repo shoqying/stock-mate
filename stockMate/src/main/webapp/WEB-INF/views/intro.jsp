@@ -110,7 +110,7 @@
             <p>완성된 기능이 무사히 업그레이드되었을 때의 뿌듯함을 느끼며, 고객 만족도를 위해 지속적으로 노력하고 있습니다.</p>
         </div>
         <div class="back-button">
-            <a href="/user/main">뒤로 돌아가기</a>
+            <a href="/">뒤로 돌아가기</a>
         </div>
     </div>
 </body>
