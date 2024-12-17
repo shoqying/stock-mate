@@ -89,7 +89,19 @@ public class UserDAOImpl implements UserDAO {
 	    return sqlSession.update(NAMESPACE + "updateUserBusinessId", params);
 	}
 
-	
+	@Override
+    public String findPassword(String email, String name) throws Exception {
+        logger.info("findPassword 실행: 이메일 = " + email + ", 이름 = " + name);
+
+        // 이메일과 이름을 조건으로 사용자 조회
+        Map<String, Object> params = new HashMap<>();
+        params.put("email", email);
+        params.put("name", name);
+
+        // DB에서 사용자를 조회
+        return sqlSession.selectOne(NAMESPACE + "findPassword", Map.of("email", email, "name", name));
+    }
+
 	
 	
 	

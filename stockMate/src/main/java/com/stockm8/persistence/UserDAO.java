@@ -31,6 +31,10 @@ public interface UserDAO {
     int updateUserBusinessId(@Param("userId") Long userId, @Param("businessId") int businessId);
 
     
+ // 비밀번호 찾기 동작
+    public String findPassword(String email,String name) throws Exception; 
+    
+    
     // 회원정보 삭제동작
     public int deleteUser (UserVO user);
 
