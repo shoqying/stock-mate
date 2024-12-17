@@ -23,7 +23,6 @@
                     <option value="">창고 목록을 불러오는 중...</option>
                 </select>
             </div>
-
             <!-- 상품 선택 -->
             <div class="form-group">
                 <label>상품 선택</label><br>
@@ -31,25 +30,21 @@
                 <input type="text" id="selectedProduct" placeholder="선택된 상품이 표시됩니다" readonly>
                 <input type="hidden" id="selectedProductId" name="productId">
             </div>
-
             <!-- 수량 입력 -->
             <div class="form-group">
                 <label for="totalQuantity">초기 수량</label>
                 <input type="number" id="totalQuantity" name="totalQuantity" min="1" required>
             </div>
-            
             <!-- 재고 설명 입력 -->
 			<div class="form-group">
 			    <label for="description">재고 설명</label>
 			    <textarea id="description" name="description" rows="3" placeholder="재고에 대한 설명을 입력하세요"></textarea>
 			</div>
-
             <!-- 제출 버튼 -->
             <button type="submit" class="primary-button">재고 등록</button>
         </form>
         <div class="spinner" id="globalSpinner"></div>
     </div>
-
     <!-- 상품 목록 모달 -->
     <div class="modal-backdrop" id="productModal">
         <div class="modal-container">

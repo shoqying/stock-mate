@@ -30,8 +30,6 @@ import javax.mail.Session;
 import java.util.Properties;
 import javax.mail.PasswordAuthentication;
 
-
-
 @Controller
 @RequestMapping(value = "/user/*")
 // *.me 처럼 /user/~ 시작하는 모든주소를 처리하겠다.
@@ -51,7 +49,6 @@ public class UserController {
 	// http://localhost:8088/user/main (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
-
 	// http://localhost:8088/dashboard (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
@@ -93,8 +90,7 @@ public class UserController {
 	// 로그인 - 정보입력 / GET
 	@RequestMapping(value = "/signin", method = RequestMethod.GET)
 	public String userSgininGET(HttpServletRequest request, Model model) {
-		logger.info("userSgininGET(HttpServletRequest request, Model model) 호출 ");
-		logger.info("!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		logger.info("userSgininGET() 호출 ");
 
 		// FlashMap에서 에러 메시지 확인
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);

@@ -126,30 +126,26 @@
         </choose>
     </select>
     
-    <!-- 사업자 ID에 해당하는 재고 목록 조회 -->
-    <select id="selectStockListByBusinessId" resultMap="stockResultMap">
-        SELECT 
-            s.stock_id AS stockId,
-            s.product_id AS productId,
-            s.warehouse_id AS warehouseId,
-            s.business_id AS businessId,
-            s.total_quantity AS totalQuantity,
-            s.reserved_quantity AS reservedQuantity,
-            s.available_stock AS availableStock,
-            s.updated_at AS updatedAt,
-            s.created_at AS createdAt,
-            s.description AS description,
-            p.product_name AS productName,
-            p.product_barcode AS productBarcode,
-            c.category_name AS categoryName,
-            w.warehouse_name AS warehouseName
-        FROM stocks s
-        JOIN products p ON s.product_id = p.product_id
-        JOIN categories c ON p.category_id = c.category_id
-        JOIN warehouses w ON s.warehouse_id = w.warehouse_id
-        WHERE s.business_id = #{businessId} AND s.is_deleted = 0
-        ORDER BY s.updated_at DESC;
-    </select>
+    <!-- 사업자 ID에 해당하는 재고 목록 조회 -->   
+    <select id="selectStockListByBusinessId" resultType="com.stockm8.domain.dto.StockDTO">
+	    SELECT 
+	    	p.product_id,
+	        p.product_name,
+	        p.product_barcode,
+	        c.category_name,
+	        w.warehouse_id,
+	        w.warehouse_name,
+	        s.total_quantity,
+	        s.available_stock,
+	        s.updated_at
+	    FROM stocks s
+	    JOIN products p ON s.product_id = p.product_id
+	    JOIN categories c ON p.category_id = c.category_id
+	    JOIN warehouses w ON s.warehouse_id = w.warehouse_id
+	    WHERE s.business_id = #{businessId} AND s.is_deleted = 0
+	    ORDER BY 
+	        ${sortColumn} ${sortOrder}
+	</select>
 
     <!-- 카테고리 목록 조회 -->
     <select id="selectCategoryList" resultMap="categoryResultMap">
