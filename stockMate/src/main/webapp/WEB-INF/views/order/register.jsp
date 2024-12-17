@@ -14,6 +14,7 @@
         
         <div>
 		    <a class="btn btn-success" href="/dashboard" style="text-decoration: none;">대시 보드</a>
+		    <a class="btn btn-success" href="/order/orderList" style="text-decoration: none;">주문목록</a>
 		</div>
         <!-- 주문 폼 시작 -->
         <form id="orderForm" action="/order/register" method="post">
@@ -512,7 +513,8 @@
 		    const subtotal = quantity * unitPrice; // 소계 계산 (수량 * 단가)
 		    
 		 	// 계산된 소계를 소수점 둘째 자리까지 표시하여 필드에 설정
-		    card.find('.subtotal-price').val(subtotal.toFixed(2));
+		    card.find('.subtotal-price').val(new Intl.NumberFormat('ko-KR').format(subtotal) + '원');
+		    updateGrandTotal();
 		    
 			// 전체 주문 금액 업데이트 (다른 함수에서 구현)
 		    updateGrandTotal();
@@ -522,9 +524,10 @@
 		function updateGrandTotal() {
 		    let total = 0;
 		    $('.subtotal-price:visible').each(function() {
-		        total += parseFloat($(this).val()) || 0;
+		    	const value = $(this).val().replace(/[₩,원]/g, '');
+		    	total += parseFloat(value) || 0;
 		    });
-		    $('#grandTotal').val(total.toFixed(2));
+		    $('#grandTotal').val(new Intl.NumberFormat('ko-KR').format(total) + '원');
 		}
 		
 		// 삭제 버튼 상태 업데이트
@@ -543,7 +546,6 @@
 		    	alert('주문 유형을 선택 해주세요.');
 		    	return false;
 		    }
-		    
 		    
 		    $('.stock-info-card:visible').each(function() {
 		        const card = $(this);

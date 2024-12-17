@@ -17,8 +17,14 @@ public class OrderItemVO {
     private Timestamp createdAt;   // 생성 시간
     private Timestamp updatedAt;   // 수정 시간
     
-    
+    //JOIN을 통해 가져올 연관 정보
     private int stockId; // 가용 재고 구분위해 필요
+    private ProductVO product;      // 상품 정보
+    private String productName;     // 상품명
+    private String productBarcode;  // 상품 바코드
+    private String warehouseName;   // 창고명
+    private String baseUnit;        // 기본 단위
+    
     
     
 } //OrderItemVO
