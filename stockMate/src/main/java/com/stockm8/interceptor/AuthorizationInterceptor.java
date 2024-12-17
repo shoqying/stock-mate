@@ -63,6 +63,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         
         // 2. DB에서 사용자 정보 조회
         UserVO user = userService.getUserById(userId);
+        request.setAttribute("currentUser", user); //검증 된 사용자 정보를 저장
         
         if (user == null) {
             logger.warn("해당 유저({}) 정보를 찾을 수 없습니다. 회원가입 페이지로 이동합니다.", userId);

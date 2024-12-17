@@ -2,6 +2,7 @@ package com.stockm8.service;
 
 import java.util.List;
 
+import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
 import com.stockm8.domain.vo.ProductVO;
@@ -21,15 +22,20 @@ public interface OrderService {
     // 재고 수량 업데이트
     public void updateStockQuantity(int stockId, int quantity) throws Exception;
     
-    // 주문목록
-    public List<OrderVO> getOrderList();
-
+    // 주문목록(페이징 추가)
+    public List<OrderVO> getOrderList(Criteria cri, int businessId);
+    
+    // 주문 단건 조회
+    public OrderVO getOrderById(int orderId) throws Exception;
+    
+    // 주문 상세 항목 목록 조회
+    public List<OrderItemVO> getOrderItemsByOrderId(int orderId) throws Exception;
+    
     // 가용 재고 체크 미사용
     public boolean checkAvailableStock(OrderItemVO item) throws Exception;
     
-    // 재고 이력 등록 미사용
-    public void insertStockHistory(StockVO stock, OrderVO order, int quantityChanged) throws Exception;
+    // 전체 주문 개수 조회 (페이징 계산)
+    public int getTotalOrderCount(int businessId);
     
-
     
 } //OrderService

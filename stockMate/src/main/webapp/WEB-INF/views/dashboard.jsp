@@ -181,7 +181,7 @@
             <a href="/receiving/main">입고</a>
             <a href="/shipment/main">출고</a>
             <a href="/stock/list">재고</a>
-            <a href="/user/admin">관리자 페이지</a>
+            <a href="/admin/adminMain">관리자 페이지</a>
         </div>
 
         <!-- Content Section -->

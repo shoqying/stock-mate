@@ -17,10 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
+import com.stockm8.domain.vo.PageVO;
 import com.stockm8.domain.vo.OrderVO.OrderType;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.UserVO;
@@ -30,6 +33,11 @@ import com.stockm8.service.UserService;
 @Controller
 @RequestMapping(value = "/order/*")
 public class OrderController {
+	
+	// 현재 로그인한 사용자 정보 가져오기(인터셉터에서 정의됨)
+	private UserVO getCurrentUser(HttpServletRequest request) {
+        return (UserVO) request.getAttribute("currentUser");
+    }
     
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     
@@ -49,29 +57,8 @@ public class OrderController {
     public String orderRegisterGET(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("orderRegisterGET() 호출");
         
-        
-	    // 세션에서 userId 가져오기
-	    HttpSession session = request.getSession(false);
-	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
-        
-	    // userId로 사용자 정보 조회
-	    UserVO user = userService.getUserById(userId);
-	    int businessId = user.getBusinessId();
-        
-//        HttpSession session = request.getSession(false);
-//        if (session != null) {
-//            Long userId = (Long) session.getAttribute("userId");
-//            if (userId != null) {
-//                UserVO user = userService.getUserById(userId);
-//                if (user != null) {
-//                    model.addAttribute("businessId", user.getBusinessId());
-//                    // 추가적인 권한 체크나 비즈니스 로직
-//                    return "order/register";
-//                }
-//            }
-//        }
-//        // 인증 실패 처리 => 음 메세지 ??? 어떻게 ??
-//        return "user/main";
+        UserVO currentUser = getCurrentUser(request);
+        int businessId = currentUser.getBusinessId();
 	    
 	    return "order/register";
     }
@@ -81,14 +68,13 @@ public class OrderController {
      * http://localhost:8088/order/register
      * @param order 클라이언트에서 전송된 주문 정보
      * @return 처리 결과를 담은 Map 객체
-     * @throws Exception 주문 처리 중 발생하는 예외
      * 
      */
     @RequestMapping(value = "/register", 
                    method = RequestMethod.POST,
                    produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, String> orderRegisterPOST(@RequestBody OrderVO order) throws Exception {
+    public Map<String, String> orderRegisterPOST(@RequestBody OrderVO order, HttpServletRequest request) throws Exception {
         logger.info("orderRegisterPOST() 호출");
         logger.info("주문 정보: " + order);
 
@@ -96,7 +82,6 @@ public class OrderController {
         if (order.getOrderType() == null) {
             throw new IllegalArgumentException("주문 유형이 누락되었습니다.");
         }
-        
         
         // 주문에 orderItems가 있는지 확인(유효성 검사) 
         if (order.getOrderItems() == null || order.getOrderItems().isEmpty()) {
@@ -146,13 +131,8 @@ public class OrderController {
     public List<StockVO> findAvailableStocks(HttpServletRequest request) throws Exception {
         logger.info("findAvailableStocks() 호출");
         
-        // 세션에서 userId 가져오기
-        HttpSession session = request.getSession(false);
-        Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
-        
-        // userId로 사용자 정보 조회
-        UserVO user = userService.getUserById(userId);
-        int businessId = user.getBusinessId();
+        UserVO currentUser = getCurrentUser(request);
+        int businessId = currentUser.getBusinessId();
         
         return orderService.findAvailableStocks(businessId);
     }
@@ -175,19 +155,55 @@ public class OrderController {
      * http://localhost:8088/order/orderList
      */
     @RequestMapping(value = "/orderList" , method = RequestMethod.GET)
-    public String orderListGET(Model model) {
+    public String orderListGET(Model model, Criteria cri, HttpServletRequest request) throws Exception {
     	logger.info("orderListGET() 호출");
     	
-    	// main에서 넘어올떄 정달정보 ?? 로그인???세션 ??
+    	// Criteria가 null인 경우 새로 생성
+        if (cri == null) {
+            cri = new Criteria();
+        }
     	
+        UserVO currentUser = getCurrentUser(request);
+        int businessId = currentUser.getBusinessId();
+        
     	//서비스 -> DAO(주문 목록)
-    	List<OrderVO> orderList = orderService.getOrderList();
+    	List<OrderVO> orderList = orderService.getOrderList(cri, businessId);
     	
+    	// 전체 데이터 개수 조회
+        int totalCount = orderService.getTotalOrderCount(businessId);
+    	
+        // 페이징 정보 계산
+        PageVO pageVO = new PageVO();
+        pageVO.setCri(cri);
+        pageVO.setTotalCount(totalCount);
+        
     	//뷰 페이지 정보 전달(model)
-    	
     	model.addAttribute("orderList",orderList);
+    	model.addAttribute("pageVO", pageVO);
     	
     	return "/order/orderList";
+    }
+    
+    /**
+     * 주문 상세 정보 조회
+     * http://localhost:8088/order/detail?orderId=1
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public String orderDetailGET(@RequestParam("orderId") int orderId, Model model, HttpServletRequest request) throws Exception {
+        logger.info("orderDetailGET() 호출 - orderId: " + orderId);
+        
+        UserVO currentUser = getCurrentUser(request);
+        
+        // 주문 기본 정보 조회
+        OrderVO order = orderService.getOrderById(orderId);
+        // 주문 상세 항목 목록 조회
+        List<OrderItemVO> orderItems = orderService.getOrderItemsByOrderId(orderId);
+        
+        // 모델에 데이터 추가
+        model.addAttribute("order", order);
+        model.addAttribute("orderItems", orderItems);
+        
+        return "order/orderDetail";
     }
     
 } //OrderController
