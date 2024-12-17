@@ -239,7 +239,7 @@ tr:hover {
 
 	<h1>입고 내역</h1>
 	<a href="/receiving/main">입고 메인</a>
-	<a href="/receiving/scan">실시간 입고</a>
+	<a href="/receiving/scan">입고 검수</a>
 	<form action="/receiving/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
