@@ -288,7 +288,7 @@ tr:hover {
 			</tr>
 			<c:forEach var="vo" items="${ShipmentList }">
 				<tr>
-					<td>${vo.shipmentShipmentNo }</td>
+					<td>${vo.receivingShipmentNo }</td>
 					<td>${vo.transactionType }</td>
 					<td><fmt:formatDate value="${vo.createdAt}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>

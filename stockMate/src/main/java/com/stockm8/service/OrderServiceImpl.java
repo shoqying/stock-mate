@@ -53,8 +53,10 @@ public class OrderServiceImpl implements OrderService {
     	odao.insertOrderItem(orderItems);
     	processOrderByType(order);
     	
+
     	rdao.insertReceiving(businessId);
     	sdao.insertShipment(businessId);
+
 	}
 
 

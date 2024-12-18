@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
         ProductVO product = productDAO.getProductById(productId);
         
         if (product != null) {
-            String qrContent = "http://localhost:8088/product/detail?productId=" + productId;
+            String qrContent = "http://c7d2408t1p1.itwillbs.com/product/detail?productId=" + productId;
             
             // 카테고리명을 ID를 참조하여 가져오기
             String categoryName = categoryDAO.selectCategoryNameById(product.getCategoryId());
