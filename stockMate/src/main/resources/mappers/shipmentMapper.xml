@@ -29,31 +29,46 @@
 
 <!-- 테이블에 입고 데이터 입력 -->
 <insert id="insertShipment">
-	INSERT INTO receiving_shipment (
-	transaction_type, 
-	status, 
-	product_id, 
-	change_quantity, 
-	transaction_unit,
-	order_item_id,
-	stock_id,
-	warehouse_id,
+INSERT INTO receiving_shipment (
+    transaction_type, 
+    status, 
+    product_id, 
+    change_quantity, 
+    order_item_id,
+    stock_id,
+    warehouse_id,
     created_by
-	)
-	SELECT 
-	'OUTBOUND', 
-	'PENDING',
-	p.product_id, 
-	o.quantity, 
-	p.base_unit,
-	o.order_item_id,
-	s.stock_id,
-	o.warehouse_id,
+)
+SELECT 
+    ord.order_type, 
+    'PENDING',
+    p.product_id, 
+    o.quantity, 
+    o.order_item_id,
+    s.stock_id,
+    o.warehouse_id,
     u.created_by
-	FROM products p
-	JOIN order_items o ON o.product_id = p.product_id
-	JOIN stocks s ON s.product_id = p.product_id
-    JOIN users u ON u.business_id = p.business_id;
+FROM products p
+JOIN order_items o ON o.product_id = p.product_id
+JOIN stocks s ON s.product_id = p.product_id
+JOIN users u ON u.business_id = p.business_id
+JOIN orders ord ON ord.order_id = o.order_id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM receiving_shipment rs
+    WHERE rs.transaction_type = ord.order_type
+    AND rs.status = 'PENDING'
+    AND rs.product_id = p.product_id
+    AND rs.order_item_id = o.order_item_id
+    AND rs.stock_id = s.stock_id
+)
+GROUP BY 
+    p.product_id, 
+    o.order_item_id, 
+    s.stock_id, 
+    o.warehouse_id, 
+    u.created_by, 
+    ord.order_type;
 </insert>
 	
 <!-- 오늘 입고 예정 리스트 -->
