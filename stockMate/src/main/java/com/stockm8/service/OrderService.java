@@ -11,7 +11,7 @@ import com.stockm8.domain.vo.StockVO;
 public interface OrderService {
 	
     // 주문항목을 한꺼번에 처리
-    public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems) throws Exception;
+    public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems, int businessId) throws Exception;
     
     //  재고 목록 조회
     public List<StockVO> findAvailableStocks(int businessId) throws Exception;
