@@ -58,7 +58,7 @@
         }
 
         .form-container input, .form-container textarea, .form-container button {
-            width: 95.3%;
+            width: 96%;
             margin-bottom: 8px;
             padding: 8px;
             border: none;
@@ -79,6 +79,30 @@
         .form-container button:hover {
             background-color: #ffaa00;
         }
+
+   .back-button {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    margin: 40px auto; /* 위아래 여백 추가 */
+}
+
+.back-button a {
+    text-decoration: none;
+    padding: 15px 30px;
+    background-color: #007BFF;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-button a:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
 
         .footer {
             text-align: center;
@@ -145,6 +169,9 @@
                 <strong>1588-2929</strong>
             </div>
         </div>
+          <div class="back-button">
+            <a href="/">뒤로 돌아가기</a>
+   			</div>
     </div>
 </body>
 </html>

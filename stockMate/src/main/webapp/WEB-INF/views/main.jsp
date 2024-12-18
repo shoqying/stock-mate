@@ -107,12 +107,7 @@ body {
     margin-bottom: 15px;
 }
 
-.content p {
-    font-size: 1.2rem;
-    color: #bbbbbb;
-    line-height: 1.8;
-    margin-bottom: 30px;
-}
+
 
 /* Row Layout */
 .content .row {
@@ -164,9 +159,28 @@ body {
     text-decoration: underline;
 }
 
-.map-section{
-margin: 0 auto;
+
+
+.map-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center;
+    text-align: center;
+    height: 60vh;
 }
+
+.map-section img {
+    max-width: 1050px; /* 이미지 최대 너비 설정 */
+    width: 100%; /* 반응형 이미지 크기 */
+    height: auto;
+    transition: transform 0.3s ease; /* 부드럽게 확대 효과 */
+}
+
+.map-section img:hover {
+    transform: scale(1.5); /* 이미지 안에서만 확대 */
+}
+
 </style>
 </head>
 <body>
@@ -181,28 +195,16 @@ margin: 0 auto;
         <a href="user/signup">회원가입</a>
         <a href="user/signin">로그인</a>
         <a href="/howtouse">대시보드 사용법</a>
-        <a href="/consultation">상담문의</a>
         <a href="/intro">회사소개</a>
         <a href="/location">창고소개</a>
+        <a href="/price">임대료</a>
+        <a href="/consultation">상담문의</a>
     </div>
 
     <!-- Main Content -->
     <div class="content">
-        <h2>20년 노하우의 지산그룹이 만든 안성창고</h2>
-        <p>긍정 마인드를 통해 끊임없이 새로운 변화를 추구하고 있습니다</p>
-
-
-<p> 걸림돌을 디딤돌로 긍정의 끝은 무한한 가능성!</p>
-<p>지산그룹은 지난 1999년 창립 이후 오늘에 이르기까지 물류센터 개발, 운영 등 물류분야와 국내 PC업계 최초의 스마트 팩토리 구현 등
-축적된 기술력과 차별화된 경영전략 및 인적구성으로 최고의 서비스를 제공해 왔습니다.
-특히 건설전문가 집단의 역량을 살려 폭 넓은 지식과 경험을 바탕으로 분야별 전문 인력으로 구성되어 설계, 생산, 조립, 건설사업관리,
-프로젝트관리 등 부동산 개발의 전 분양에 걸쳐 자부심을 가지며 국내 최고의 물류센터와 PC개발 전문기업으로 앞서 나아가고 있습니다.
-어떠한 난관도 불가능한 것이 없다는 긍정 마인드를 통해 끊임없이 새로운 변화를 추구하는 지산그룹은 고객 여러분과 함께 하겠습니다.</p>
-
-
-
-
-
+        <h1>20년 노하우의 Stock-mate</h1>
+      
         <div class="row">
             <div class="column">
                 <img src="resources/css/9950253.jpg" alt="Warehouse Exterior">
@@ -219,12 +221,20 @@ margin: 0 auto;
         <img src="resources/css/약도.png" alt="회사 약도">
     </div>
 
+<!-- Additional Contact Info -->
+<div class="contact-info" style="text-align: center; margin: 20px 0; color: #ffffff;">
+    <h3 style="color: #007BFF;">문의사항</h3>
+    <p>대표번호: <strong>031-532-0223</strong></p>
+    <p>영업문의: <strong>황성인 센터장 010-5555-6354</strong></p>
+    <p style="font-size: 0.9rem;">경기 용인시 처인구 양지면 주북로 105-5</p>
+</div>
+
+
+
     <!-- Back Button -->
     <div class="back-button">
         <a href="#">뒤로 돌아가기</a>
     </div>
-
-
 
 
     <!-- Footer -->

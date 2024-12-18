@@ -46,7 +46,7 @@ public class UserController {
 
 	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/signin (o)
-	// http://localhost:8088/user/main (o)
+	// http://localhost:8088/ (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
 	// http://localhost:8088/dashboard (o)

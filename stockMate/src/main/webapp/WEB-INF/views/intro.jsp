@@ -83,6 +83,34 @@
         .footer a:hover {
             text-decoration: underline;
         }
+                .back-button {
+            margin-top: 30px;
+        }
+        
+    .back-button {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    margin: 40px auto; /* 위아래 여백 추가 */
+}
+
+.back-button a {
+    text-decoration: none;
+    padding: 15px 30px;
+    background-color: #007BFF;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-button a:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+        
     </style>
 </head>
 <body>
@@ -121,15 +149,25 @@
     <!-- Development Team Section -->
     <div class="section">
         <h2>개발팀</h2>
-        <p>개발팀은 이카운트 ERP의 모든 기능을 구현합니다.</p>
+        <p>개발팀은 stock-mate ERP의 모든 기능을 구현합니다.</p>
         <p>고객사 제안과 전략적 개발 기능을 기반으로 개발 스케줄을 잡고 기능을 개발합니다.</p>
         <p>완성된 기능이 무사히 업그레이드되었을 때의 뿌듯함을 느끼며, 고객 만족도를 위해 지속적으로 노력하고 있습니다.</p>
     </div>
+
+	  <div class="back-button">
+         <a href="/">뒤로 돌아가기</a>
+     </div>
 
     <!-- Footer -->
     <div class="footer">
         회사 정보 - 사업자 번호, 연락처 등 유의 사항<br>
         <a href="#">개인정보 처리방침</a> | <a href="#">이용약관</a>
     </div>
+    
+
+   
+
+    
+    
 </body>
 </html>
