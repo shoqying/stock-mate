@@ -24,6 +24,7 @@ public class OrderItemVO {
     private String productBarcode;  // 상품 바코드
     private String warehouseName;   // 창고명
     private String baseUnit;        // 기본 단위
+    private String shipmentStatus;    // 입출고 상태
     
     
     

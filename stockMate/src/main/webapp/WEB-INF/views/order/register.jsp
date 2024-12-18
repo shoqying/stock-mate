@@ -208,7 +208,7 @@
                                     <th>창고명</th>
                                     <th>창고ID</th>
                                     <th>총 재고</th>
-                                    <th>예약수량</th>
+                                    <!-- <th>예약수량</th> -->
                                     <th>가용재고</th>
                                     <th>단가</th>
                                     <th>단위</th>
@@ -347,7 +347,7 @@
 		        stock.warehouseName,
 		        stock.warehouseId,
 		        stock.totalQuantity,
-		        stock.reservedQuantity,
+		        /* stock.reservedQuantity, */
 		        stock.availableStock,
 		        stock.product.productPrice,
 		        stock.product.baseUnit

@@ -34,58 +34,26 @@ public class OrderServiceImpl implements OrderService {
     @Inject
     private OrderDAO odao;
     
-    @Inject
-    private ReceivingDAO rdao;
     
-    @Inject
-    private ShipmentDAO sdao;
-    
-    
-    @Transactional(rollbackFor = Exception.class)
     @Override
 	public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems, int businessId) throws Exception {
     	
-    	
     	odao.insertOrder(order);
+    	
     	for(OrderItemVO item : orderItems) {
             item.setOrderId(order.getOrderId());
         }
     	odao.insertOrderItem(orderItems);
-    	processOrderByType(order);
-    	
-
-    	rdao.insertReceiving(businessId);
-    	sdao.insertShipment(businessId);
-
+    	//  수주(OUTBOUND)인 경우에만 재고 처리  ==> 발주는 process에서 처리
+        if (order.getOrderType() == OrderType.OUTBOUND) {
+            for (OrderItemVO item : order.getOrderItems()) {
+                updateStockQuantity(item.getStockId(), item.getQuantity());
+            }
+        }
 	}
 
 
-
-	// 주문 유형에 따라 처리
-    private void processOrderByType(OrderVO order) throws Exception {
-        if (order.getOrderType() == OrderType.OUTBOUND) {
-            // 수주(출고) 처리
-            for (OrderItemVO item : order.getOrderItems()) {
-                // 재고 감소
-            	if (!checkAvailableStock(item, OrderType.OUTBOUND)) {
-                    throw new Exception("수주 처리 중 오류: 가용 재고가 부족합니다.");
-                }
-                updateStockQuantity(item.getStockId(), item.getQuantity());
-                // 수주(출고)일 때는 예약수량을 양수로 처리해야 함 (+)
-            }
-        } else if (order.getOrderType() == OrderType.INBOUND) {
-            // 발주(입고) 처리
-            for (OrderItemVO item : order.getOrderItems()) {
-                // 재고 증가
-            	// 한수씨의 검수 값만 받아오고 OK 되면 
-                updateStockQuantity(item.getStockId(), -item.getQuantity());
-                // 발주(입)일 때는 예약수량을 음수로 처리해야 함 (-)
-            }
-        }
-    }
-    
-
-    // 재고 수량 업데이트   => 수정필요
+    // 재고 수량 업데이트
 	@Override
 	public void updateStockQuantity(int stockId, int quantity) throws Exception {
 		Map<String, Object> params = new HashMap<>();
