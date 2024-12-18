@@ -24,6 +24,7 @@ import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.persistence.OrderDAO;
 import com.stockm8.persistence.ReceivingDAO;
+import com.stockm8.persistence.ShipmentDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -36,10 +37,15 @@ public class OrderServiceImpl implements OrderService {
     @Inject
     private ReceivingDAO rdao;
     
+    @Inject
+    private ShipmentDAO sdao;
+    
     
     @Transactional
     @Override
-	public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems) throws Exception {
+	public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems, int businessId) throws Exception {
+    	
+    	
     	odao.insertOrder(order);
     	for(OrderItemVO item : orderItems) {
             item.setOrderId(order.getOrderId());
@@ -47,21 +53,24 @@ public class OrderServiceImpl implements OrderService {
     	odao.insertOrderItem(orderItems);
     	processOrderByType(order);
     	
-//    	rdao.insertReceiving(businessId);
+
+    	rdao.insertReceiving(businessId);
+    	sdao.insertShipment(businessId);
+
 	}
 
 
 
 	// 주문 유형에 따라 처리
     private void processOrderByType(OrderVO order) throws Exception {
-        if (order.getOrderType() == OrderType.INBOUND) {
+        if (order.getOrderType() == OrderType.OUTBOUND) {
             // 수주(출고) 처리
             for (OrderItemVO item : order.getOrderItems()) {
                 // 재고 감소
                 updateStockQuantity(item.getStockId(), item.getQuantity());
                 // 수주(출고)일 때는 예약수량을 양수로 처리해야 함 (+)
             }
-        } else if (order.getOrderType() == OrderType.OUTBOUND) {
+        } else if (order.getOrderType() == OrderType.INBOUND) {
             // 발주(입고) 처리
             for (OrderItemVO item : order.getOrderItems()) {
                 // 재고 증가

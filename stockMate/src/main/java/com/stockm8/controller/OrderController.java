@@ -77,6 +77,10 @@ public class OrderController {
     public Map<String, String> orderRegisterPOST(@RequestBody OrderVO order, HttpServletRequest request) throws Exception {
         logger.info("orderRegisterPOST() 호출");
         logger.info("주문 정보: " + order);
+        
+        UserVO currentUser = getCurrentUser(request);
+        int businessId = currentUser.getBusinessId();
+	    
 
         // orderType 유효성 검사 추가(수주인지 / 발주인지 주문유형)
         if (order.getOrderType() == null) {
@@ -109,7 +113,7 @@ public class OrderController {
         OrderItemVO orderItem = order.getOrderItems().get(0);
         
         // 주문 처리
-        orderService.insertOrderWithItems(order, order.getOrderItems());
+        orderService.insertOrderWithItems(order, order.getOrderItems(),businessId);
         
         // 응답 생성
         Map<String, String> response = new HashMap<>();
