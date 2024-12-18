@@ -27,6 +27,7 @@ import com.stockm8.domain.vo.PageVO;
 import com.stockm8.domain.vo.OrderVO.OrderType;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.UserVO;
+import com.stockm8.service.OrderProcessor;
 import com.stockm8.service.OrderService;
 import com.stockm8.service.UserService;
 
@@ -43,6 +44,8 @@ public class OrderController {
     
     @Inject
     private OrderService orderService;
+    @Inject
+    private OrderProcessor orderProcessor; 
     @Inject
     private UserService userService;
     
@@ -82,50 +85,7 @@ public class OrderController {
         int businessId = currentUser.getBusinessId();
 	    
 
-        // orderType 유효성 검사 추가(수주인지 / 발주인지 주문유형)
-        if (order.getOrderType() == null) {
-            throw new IllegalArgumentException("주문 유형이 누락되었습니다.");
-        }
-        
-        // 주문에 orderItems가 있는지 확인(유효성 검사) 
-        if (order.getOrderItems() == null || order.getOrderItems().isEmpty()) {
-            throw new IllegalArgumentException("주문 항목이 누락되었습니다.");
-        }
-        
-        // 주문 항목별 재고 검증 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        for (OrderItemVO item : order.getOrderItems()) {
-            if (order.getOrderType() == OrderType.OUTBOUND) {
-                // 수주의 경우 가용 재고 체크
-                if (!orderService.checkAvailableStock(item,order.getOrderType())) {
-                    throw new IllegalArgumentException(
-                        String.format("재고 부족 - StockId: %d, 요청수량: %d", 
-                            item.getStockId(), item.getQuantity())
-                    );
-                }
-            }
-            
-            
-            
-            
-        }
-        
-        // 주문번호 생성 및 설정
-        String orderNumber = orderService.generateOrderNumber();
-        order.setOrderNumber(orderNumber);
-        
-        // 첫 번째 주문 항목 가져오기
-        OrderItemVO orderItem = order.getOrderItems().get(0);
-        
-        // 주문 처리
-        orderService.insertOrderWithItems(order, order.getOrderItems(),businessId);
-        
-        // 응답 생성
-        Map<String, String> response = new HashMap<>();
-        response.put("status", "success");
-        response.put("message", "주문이 성공적으로 등록되었습니다.");
-        response.put("orderNumber", orderNumber);
-        
-        return response;
+        return orderProcessor.process(order, businessId);
     }
     
     /**

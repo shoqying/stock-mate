@@ -18,7 +18,6 @@
 			value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2408t1p1" />
 		<property name="username" value="c7d2408t1p1" />
 		<property name="password" value='1234' />
-		<property name="autoCommit" value="false" />
 	</bean>
 	<!-- 커넥션풀 설정 -->
 
