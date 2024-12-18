@@ -25,11 +25,6 @@ import com.stockm8.service.UserService;
 @RequestMapping(value = "/admin/*")
 public class AdminController {
 
-	// 현재 로그인한 사용자 정보 가져오기(인터셉터에서 정의됨)
-	private UserVO getCurrentUser(HttpServletRequest request) {
-		return (UserVO) request.getAttribute("currentUser");
-	}
-
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	@Inject
@@ -38,11 +33,11 @@ public class AdminController {
 	private UserService userService;
 
 	/**
-	 * 관리자 메인 페이지 표시(GET) http://localhost:8088/admin/main
-	 * 
+	 * 관리자 메인 페이지 표시(GET) 
 	 * @throws Exception
 	 * 
 	 */
+	// http://localhost:8088/admin/main
 	@GetMapping("/main")
 	public String adminMainGET(@SessionAttribute("userId") Long userId, Model model) throws Exception {
 		logger.info("adminMainGET() 호출 - 페이지 접근 (userId: {})", userId);
@@ -72,15 +67,14 @@ public class AdminController {
     }
 
 	/**
-	 * 관리자 회원목록표시(GET) http://localhost:8088/admin/userList
+	 * 관리자 회원목록표시(GET) 
 	 * 
 	 */
+	// http://localhost:8088/admin/userList
 	@RequestMapping(value = "/adminList", method = RequestMethod.GET)
 	public String adminListGET(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info("adminListGET() 호출");
 
-		UserVO currentUser = getCurrentUser(request);
-		int businessId = currentUser.getBusinessId();
 
 		return "admin/userList";
 	}
