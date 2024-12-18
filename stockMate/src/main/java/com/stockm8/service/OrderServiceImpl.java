@@ -67,6 +67,9 @@ public class OrderServiceImpl implements OrderService {
             // 수주(출고) 처리
             for (OrderItemVO item : order.getOrderItems()) {
                 // 재고 감소
+            	if (!checkAvailableStock(item, OrderType.OUTBOUND)) {
+                    throw new Exception("수주 처리 중 오류: 가용 재고가 부족합니다.");
+                }
                 updateStockQuantity(item.getStockId(), item.getQuantity());
                 // 수주(출고)일 때는 예약수량을 양수로 처리해야 함 (+)
             }
@@ -134,9 +137,14 @@ public class OrderServiceImpl implements OrderService {
 
 	// 가용재고 체크
 	@Override
-	public boolean checkAvailableStock(OrderItemVO item) throws Exception {
-		StockVO stock = odao.getStockById(item.getStockId());
-		return stock != null && stock.getAvailableStock() >= item.getQuantity();
+	public boolean checkAvailableStock(OrderItemVO item, OrderType orderType) throws Exception {
+	    // 발주(INBOUND)인 경우 체크하지 않음
+	    if (orderType == OrderType.INBOUND) {
+	        return true;
+	    }
+	    // 수주(OUTBOUND)인 경우만 재고 체크
+	    StockVO stock = odao.getStockById(item.getStockId());
+	    return stock != null && stock.getAvailableStock() >= item.getQuantity();
 	}
 
 	// 전체 주문 개수 조회 (페이징 계산)

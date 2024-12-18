@@ -96,7 +96,7 @@ public class OrderController {
         for (OrderItemVO item : order.getOrderItems()) {
             if (order.getOrderType() == OrderType.INBOUND) {
                 // 수주의 경우 가용 재고 체크
-                if (!orderService.checkAvailableStock(item)) {
+                if (!orderService.checkAvailableStock(item,order.getOrderType())) {
                     throw new IllegalArgumentException(
                         String.format("재고 부족 - StockId: %d, 요청수량: %d", 
                             item.getStockId(), item.getQuantity())

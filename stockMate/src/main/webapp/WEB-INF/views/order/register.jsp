@@ -28,12 +28,12 @@
 			                    <label class="form-label required-label">주문 유형</label>
 			                    <div class="form-check">
 			                    	수주
-			                        <input class="form-check-input" type="radio" name="orderType" id="inbound" value="INBOUND" required>
-			                        <label class="form-check-label" for="inbound">
+			                        <input class="form-check-input" type="radio" name="orderType" id="outbound" value="OUTBOUND" required>
+			                        <label class="form-check-label" for="outbound">
 			                        </label>
 			                        발주
-			                        <label class="form-check-label" for="outbound">
-			                            <input class="form-check-input" type="radio" name="orderType" id="outbound" value="OUTBOUND" required>
+			                        <label class="form-check-label" for="inbound">
+			                            <input class="form-check-input" type="radio" name="orderType" id="inbound" value="INBOUND" required>
 			                        </label>
 			                    </div>
 			                </div>
@@ -479,7 +479,7 @@
 		    // 주문 수량 최대값 설정(가용 재고량으로 설정)
 		    const quantityInput = card.find('.order-quantity'); 
 		    quantityInput.attr('max', stock.availableStock);  // HTML input의 max 속성 설정
-		    validateQuantity(quantityInput); // 현재 입력된 수량의 유효성 검사 실행
+		    (quantityInput); // 현재 입력된 수량의 유효성 검사 실행
 		    
 		    closeModal();
 		}
@@ -488,6 +488,8 @@
 		function validateQuantity(input) {
 			// 현재 수량 입력이 속한 카드 요소 찾기
 		    const card = input.closest('.stock-info-card');
+		 	// 주문 유형 가져오기
+		    const orderType = $('input[name="orderType"]:checked').val();
 			 // 입력된 수량과 가용 재고를 정수로 변환 (값이 없으면 0으로 설정)
 		    const quantity = parseInt(input.val()) || 0; // 입력된 주문 수량   반환실패 시  null 대신 0 값 들어감
 		    const available = parseInt(card.find('.available-stock').val()) || 0; // 가용 재고량
@@ -496,7 +498,7 @@
 		    if (quantity < 1) { // 최소 주문 수량(1개) 미만인 경우
 		        alert('주문 수량은 1 이상이어야 합니다.');
 		        input.val(1); // 수량을 1로 재설정
-		    } else if (quantity > available) { // 가용 재고보다 많은 경우
+		    } else if (orderType === 'OUTBOUND' && quantity > available) { // 가용 재고보다 많은 경우 수주의 경우에만 실행
 		        alert('주문 수량이 가용 재고를 초과할 수 없습니다.');
 		        input.val(available); // 수량을 가용 재고량으로 재설정
 		    }
@@ -545,29 +547,42 @@
 		    buttons.prop('disabled', buttons.length <= 1);
 		}
 		
-		// 폼 유효성 검사
 		function validateForm() {
 		    let isValid = true;
 		    let hasUnselectedItems = false;
 		    
-		    // 주문 유형 체크(수주/ 발주)
-		    if (!$('input[name="orderType"]:checked').val()){
-		    	alert('주문 유형을 선택 해주세요.');
-		    	return false;
+		    // 주문 유형 체크(수주/발주)
+		    const orderType = $('input[name="orderType"]:checked').val();
+		    if (!orderType) {
+		        alert('주문 유형을 선택해주세요.');
+		        return false;
 		    }
 		    
+		    // 각 주문 항목 검증
 		    $('.stock-info-card:visible').each(function() {
 		        const card = $(this);
+		        
+		        // 재고 선택 여부 체크
 		        if (!card.find('.stock-id').val()) {
 		            hasUnselectedItems = true;
-		            return false;
+		            return false; // each 루프 중단
 		        }
 		        
+		        // 수량 유효성 체크
 		        const quantity = parseInt(card.find('.order-quantity').val());
+		        const available = parseInt(card.find('.available-stock').val());
+		        
 		        if (!quantity || quantity < 1) {
 		            alert('모든 주문의 수량은 1 이상이어야 합니다.');
 		            isValid = false;
-		            return false;
+		            return false; // each 루프 중단
+		        }
+		        
+		        // 수주(OUTBOUND)인 경우에만 가용 재고 체크
+		        if (orderType === 'OUTBOUND' && quantity > available) {
+		            alert('수주 수량이 가용 재고를 초과할 수 없습니다.');
+		            isValid = false;
+		            return false; // each 루프 중단
 		        }
 		    });
 		    
