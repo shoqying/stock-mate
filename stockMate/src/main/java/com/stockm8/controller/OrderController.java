@@ -94,7 +94,7 @@ public class OrderController {
         
         // 주문 항목별 재고 검증 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         for (OrderItemVO item : order.getOrderItems()) {
-            if (order.getOrderType() == OrderType.INBOUND) {
+            if (order.getOrderType() == OrderType.OUTBOUND) {
                 // 수주의 경우 가용 재고 체크
                 if (!orderService.checkAvailableStock(item)) {
                     throw new IllegalArgumentException(
@@ -103,6 +103,10 @@ public class OrderController {
                     );
                 }
             }
+            
+            
+            
+            
         }
         
         // 주문번호 생성 및 설정
