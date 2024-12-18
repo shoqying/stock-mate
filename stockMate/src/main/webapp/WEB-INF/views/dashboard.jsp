@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>대시보드</title>
     <style>
         /* Reset and Global Styles */
@@ -88,6 +88,76 @@
             background-color: #003f8c;
             transform: translateY(-5px);
         }
+		
+		/* Dropdown Menu - Horizontal Styling */
+		.menu-dropdown {
+		    position: relative;
+		    display: inline-block;
+		}
+		
+		.dropdown-btn {
+		    display: block;
+		    padding: 10px 20px;
+		    font-size: 16px;
+		    font-weight: bold;
+		    color: #fff;
+		    background-color: #007BFF;
+		    border-radius: 5px;
+		    text-decoration: none;
+		    cursor: pointer;
+		    text-align: center;
+		    transition: background-color 0.3s, transform 0.2s;
+		}
+		
+		.dropdown-btn:hover {
+		    background-color: #0056b3;
+		    transform: translateY(-3px);
+		}
+		
+		/* Horizontal Dropdown Content */
+		.dropdown-content {
+		    display: none;
+		    position: absolute;
+		    top: 0;
+		    left: 100%; /* 옆으로 펼쳐지도록 설정 */
+		    background-color: #ffffff;
+		    border: 1px solid #ddd;
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		    white-space: nowrap; /* 글자가 줄바꿈되지 않도록 설정 */
+		    border-radius: 5px;
+		    z-index: 1000;
+		}
+		
+		.dropdown-content a {
+		    display: block;
+		    padding: 10px 15px;
+		    font-size: 14px;
+		    font-weight: 500;
+		    color: #333;
+		    text-decoration: none;
+		    transition: background-color 0.3s, color 0.3s;
+		}
+		
+		.dropdown-content a:hover {
+		    background-color: #f0f0f0;
+		    color: #007BFF;
+		}
+		
+		/* Show the Dropdown */
+		.menu-dropdown:hover .dropdown-content {
+		    display: block;
+		}
+		
+		@keyframes fadeIn {
+		    from {
+		        opacity: 0;
+		        transform: translateY(-10px);
+		    }
+		    to {
+		        opacity: 1;
+		        transform: translateY(0);
+		    }
+		}
 
         /* Sidebar */
         .sidebar {
@@ -181,22 +251,29 @@
             <a href="/receiving/main">입고</a>
             <a href="/shipment/main">출고</a>
             <a href="/stock/list">재고</a>
-            <a href="/admin/adminMain">관리자 페이지</a>
+            <a href="/admin/main">관리자 페이지</a>
         </div>
 
         <!-- Content Section -->
         <div class="content">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="disabled">Dashboard</div>
-				<a href="warehouse/register">창고 등록</a>
-				<a href="stock/register">재고 등록</a>
-                <a href="product/register">상품 등록</a>
-                <a href="user/editinfo1">내정보 조회/수정</a>
-                <a href="user/changepassword1">비밀번호 변경</a>
-                <a href="user/howtouse2">대시보드 사용법</a>
-                <a href="user/signout" style="color: red;">Sign out</a>
-                <a href="user/main" onclick="return confirmLogout();" style="color: red;">Sign out</a>
+			<!-- Sidebar -->
+			<div class="sidebar fade-in">
+			    <!-- 등록페이지 드롭다운 메뉴 -->
+			    <div class="menu-dropdown">
+			        <a href="#" class="dropdown-btn">등록페이지</a>
+			        <ul class="dropdown-content">
+			            <li><a href="warehouse/register">창고 등록</a></li>
+			            <li><a href="category/register">카테고리 등록</a></li>
+			            <li><a href="product/register">상품 등록</a></li>
+			            <li><a href="stock/register">재고 등록</a></li>
+			        </ul>
+			    </div>
+				    <!-- 기타 메뉴 -->
+				    <a href="user/editinfo1">내정보 조회/수정</a>
+				    <a href="user/changepassword1">비밀번호 변경</a>
+				    <a href="user/howtouse2">대시보드 사용법</a>
+				    <a href="user/signout" class="signout" style="color: red;">Sign out</a>
+				</div>
 			<script>
 			function confirmLogout() {
 			    alert("로그아웃 되었습니다");
@@ -253,6 +330,31 @@
                     backgroundColor: '#36A2EB'
                 }]
             }
+        });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownBtn = document.querySelector('.dropdown-btn');
+            const dropdownContent = document.querySelector('.dropdown-content');
+            let isDropdownVisible = false;
+
+            dropdownBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                isDropdownVisible = !isDropdownVisible;
+
+                if (isDropdownVisible) {
+                    dropdownContent.style.display = 'block';
+                } else {
+                    dropdownContent.style.display = 'none';
+                }
+            });
+
+            // 다른 영역 클릭 시 드롭다운 닫기
+            document.addEventListener('click', (e) => {
+                if (!dropdownBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                    dropdownContent.style.display = 'none';
+                    isDropdownVisible = false;
+                }
+            });
         });
     </script>
 </body>

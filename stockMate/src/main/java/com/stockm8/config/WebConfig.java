@@ -40,6 +40,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import com.stockm8.interceptor.AdminInterceptor;
 import com.stockm8.interceptor.AuthorizationInterceptor;
 import com.stockm8.interceptor.FlashMessageInterceptor;
 import com.zaxxer.hikari.HikariConfig;
@@ -61,12 +62,25 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private FlashMessageInterceptor flashMessageInterceptor;
     
+    @Autowired
+    private AdminInterceptor adminInterceptor;
+    
     /**
      * 인터셉터 설정
      * 특정 URL 패턴에 대해 AuthorizationInterceptor를 적용하며, 일부 URL은 제외합니다.
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(adminInterceptor)
+        		.addPathPatterns("/admin/**") // /admin/** 경로에만 적용
+        		.excludePathPatterns( // 인터셉터를 제외할 경로
+                "/",               // HomeController 경로
+                "/favicon.ico",    // 브라우저 기본 요청
+                "/resources/**",   // 정적 리소스
+                "/user/**",	       // 로그인 및 회원가입 관련 요청
+                "/static/**",
+        		"/api/**"    	    // API 요청에 대해서는 세션 체크를 제외
+        		);
     	// Intercepter 적용
         registry.addInterceptor(authorizationInterceptor)
                 .addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**", "/stock/**", "/order/**","/admin/**" ) // 인터셉터를 적용할 경로

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.stockm8.domain.dto.PendingUserDTO;
 import com.stockm8.domain.vo.BusinessVO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.persistence.BusinessDAO;
@@ -47,6 +48,11 @@ public class UserServiceImpl implements UserService {
 		return userDAO.getUser(userId, password);
 	}
 	
+	@Override
+	public List<PendingUserDTO> getPendingUsersWithBusiness() throws Exception {		// TODO Auto-generated method stub
+        return userDAO.selectPendingUsersWithBusiness();
+	}
+
 	// 회원 정보 수정 
 	@Override
 	public void updateUser(UserVO user) throws Exception {

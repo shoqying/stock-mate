@@ -43,6 +43,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	// http://localhost:8088 (o)
 
 	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/signin (o)
@@ -138,16 +140,6 @@ public class UserController {
 		return "redirect:/user/signin"; // 로그인 페이지 이동
 	}
 
-
-	// 대시보드 페이지 - GET
-	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public void dashGET() {
-
-		logger.info(" dashGET() 호출 ");
-
-		logger.info(" /user/main -> /user/dash.jsp 연결 ");
-	}
-
 	// 로그아웃 - GET
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public String userLogoutGET(HttpSession session) throws Exception {
@@ -158,7 +150,7 @@ public class UserController {
 
 		// 로그아웃 처리 후 페이지 이동
 
-		return "redirect:/user/main";
+		return "redirect:/user/signin";
 	}
 
 
@@ -261,7 +253,7 @@ public class UserController {
 		return "/user/changepassword1"; // 비밀번호 입력 페이지로 이동
 	}
 	
-	
+	// 회원정보 수정 
 	@RequestMapping(value = "/changepassword1", method = RequestMethod.POST)
 	public String changepassword2POST(@RequestParam("password") String password, RedirectAttributes rttr, HttpSession session) {
 	    Long userId = (Long) session.getAttribute("userId");
@@ -291,7 +283,7 @@ public class UserController {
 	    }
 	}
 	
-	
+	//  - GET
 	@RequestMapping(value = "/changepassword2", method = RequestMethod.GET)
 	public String changepassword2GET(@ModelAttribute("currentPassword") String currentPassword, Model model) {
 	    if (currentPassword == null || currentPassword.isEmpty()) {
@@ -302,6 +294,7 @@ public class UserController {
 	    return "/user/changepassword2"; // JSP 페이지 반환
 	}
 	
+	//  - POST
 	@RequestMapping(value = "/changepassword2", method = RequestMethod.POST)
 	public void changePasswordPOST(
 	        @RequestParam("newPassword") String newPassword,
@@ -430,13 +423,13 @@ public class UserController {
 
 
 	// 비밀번호 찾기 - GET
-    @RequestMapping(value = "/findPassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/findpassword", method = RequestMethod.GET)
     public String findPasswordGet() {
-        return "/user/findPassword";  // 비밀번호 찾기 페이지로 이동
+        return "/user/findpassword";  // 비밀번호 찾기 페이지로 이동
     }
 
     // 비밀번호 찾기 - POST 
-    @RequestMapping(value = "/findPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/findpassword", method = RequestMethod.POST)
     public String findPasswordPost(@RequestParam("email") String email,
                                     @RequestParam("name") String name,
                                     Model model) {
@@ -453,13 +446,13 @@ public class UserController {
     	            // 비밀번호가 일치하지 않으면 오류 메시지 추가
     	            logger.info("비밀번호 찾기 실패: 이메일 또는 이름이 일치하지 않음"); // 실패 로그
     	            model.addAttribute("errorMessage", "이메일 또는 이름이 일치하지 않습니다.");
-    	            return "/user/findPassword";  // 비밀번호 찾기 페이지로 다시 이동
+    	            return "/user/findpassword";  // 비밀번호 찾기 페이지로 다시 이동
     	        }
     	    } catch (Exception e) {
     	        e.printStackTrace();
     	        logger.error("비밀번호 찾기 처리 중 오류 발생", e);  // 예외 로그 추가
     	        model.addAttribute("errorMessage", "비밀번호 찾기 처리 중 오류가 발생했습니다.");
-    	        return "/user/findPassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
+    	        return "/user/findpassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
     	    }
     	}
 
