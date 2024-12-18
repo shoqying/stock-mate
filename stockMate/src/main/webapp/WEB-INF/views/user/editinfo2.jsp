@@ -129,8 +129,8 @@
     </div>
     <div class="form-group">
         <label for="name">이름</label>
-        <input type="text" id="name" name="name" 
-               value="${userVO.name}" placeholder="이름을 입력하세요" required>
+        <input type="text" id="userName" name="userName" 
+               value="${userVO.userName}" placeholder="이름을 입력하세요" required>
     </div>
     <div class="form-group">
         <label for="telNumber">전화번호</label>
