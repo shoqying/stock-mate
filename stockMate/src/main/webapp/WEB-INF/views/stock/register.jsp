@@ -6,12 +6,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>재고 등록</title>
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-<link rel="stylesheet" href="<c:url value='/resources/css/registerStyle.css' />">
+<link rel="stylesheet" href="<c:url value='/resources/css/registerStyle2.css' />">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<c:url value='/resources/css/modalStyle.css' />">
 </head>
 <body>
-    <div class="container">
+    <div class="container fade-in">
         <button class="dashboard-btn" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
         <button class="dashboard-btn" onclick="location.href='/stock/list';">재고 리스트</button>
         <h1>재고 등록</h1>
@@ -45,36 +47,49 @@
         </form>
         <div class="spinner" id="globalSpinner"></div>
     </div>
-    <!-- 상품 목록 모달 -->
-    <div class="modal-backdrop" id="productModal">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h5 class="modal-title">상품 선택</h5>
-                <button class="close" id="closeProductModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="search-field">
-                    <input type="text" id="productSearch" placeholder="상품명 검색...">
-                    <i class="fa fa-search"></i>
-                </div>
-                <div class="spinner" id="productSpinner"></div>
-                <table class="table hidden" id="productTable">
-                    <thead>
-                        <tr>
-                            <th>바코드</th>
-                            <th>상품명</th>
-                            <th>단위</th>
-                            <th>세트크기</th>
-                            <th>단가</th>
-                            <th>선택</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productListBody"></tbody>
-                </table>
-                <div id="noProductMsg" class="hidden" style="text-align:center; margin-top:20px; color:#666;">상품이 없습니다.</div>
-            </div>
-        </div>
-    </div>
+	<!-- 상품 목록 모달 -->
+	<div class="modal-backdrop" id="productModal">
+	    <div class="modal-container">
+	        <!-- 모달 헤더 -->
+	        <div class="modal-header">
+	            <h5 class="modal-title">상품 선택</h5>
+	            <!-- X 버튼: 오른쪽 상단에 배치 -->
+	            <button class="close" id="closeProductModal">&times;</button>
+	        </div>
+	
+	        <!-- 모달 바디 -->
+	        <div class="modal-body">
+	            <!-- 검색 필드: 테이블 우측 상단에 배치 -->
+            	<div class="search-container">
+	                <input type="text" id="productSearch" placeholder="상품명 검색..." class="search-input">
+	                <i class="fa fa-search search-icon"></i>
+	            </div>
+	
+	            <!-- 로딩 스피너 -->
+	            <div class="spinner hidden" id="productSpinner"></div>
+	
+	            <!-- 상품 목록 테이블 -->
+	            <div class="table-container">
+	                <table class="table" id="productTable">
+	                    <thead>
+	                        <tr>
+	                            <th>바코드</th>
+	                            <th>상품명</th>
+	                            <th>단위</th>
+	                            <th>세트크기</th>
+	                            <th>단가</th>
+	                            <th>선택</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody id="productListBody"></tbody>
+	                </table>
+	            </div>
+	
+	            <!-- 상품이 없을 때 메시지 -->
+	            <div id="noProductMsg" class="hidden">상품이 없습니다.</div>
+	        </div>
+	    </div>
+	</div>
 
 	<script>
 	document.addEventListener('DOMContentLoaded', () => {

@@ -47,14 +47,14 @@
 	
 	<!-- 버튼 영역 -->
     <div class="container">
-        <form action="adminMemberEdit.jsp" method="post">
+        <form action="admin/approve" method="get">
+            <button type="submit">가입 승인</button>
+        </form>
+        <form action="admin/userList" method="get">
+            <button type="submit">회원 목록 조회</button>
+        </form>
+		<form action="admin/edit" method="get">
             <button type="submit">회원 수정 및 삭제</button>
-        </form>
-        <form action="adminMemberList.jsp" method="get">
-            <button type="submit">회원 전체 목록 조회</button>
-        </form>
-        <form action="adminRegistrationApproval.jsp" method="post">
-            <button type="submit">회원가입 승인</button>
         </form>
     </div>
 

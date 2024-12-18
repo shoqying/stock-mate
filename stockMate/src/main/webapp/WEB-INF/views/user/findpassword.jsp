@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -108,10 +109,10 @@
     <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="/user/main">&larr; 뒤로 가기</a>
+            <a href="/">&larr; 뒤로 가기</a>
         </div>
         <h1>비밀번호 찾기</h1>
-        <form action="findPassword" method="post">
+        <form action="findpassword" method="post">
             <input type="email" id="email" name="email" placeholder="이메일" required>
             <input type="text" id="name" name="name" placeholder="이름" required>
             <button type="submit">비밀번호 찾기</button>
@@ -120,9 +121,13 @@
     </div>
     
      <!-- 실패 시 errorMessage를 알림창으로 표시 -->
-    <script>
-            alert("${errorMessage}");
-    </script>
+     <script type="text/javascript">
+     
+	    <c:if test="${not empty errorMessage}">
+	        alert("${errorMessage}");
+	    </c:if>
+	    
+	   </script>
     
     
     <!-- Footer -->
