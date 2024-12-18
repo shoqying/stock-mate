@@ -281,15 +281,24 @@ tr:hover {
 				<th>제품명</th>
 				<th>옵션명</th>
 				<th>입고 수량</th>
-				<th>수량 단위</th>
 				<th>제품 단가</th>
 				<th>창고 위치</th>
 				<th>작업 메모</th>
 			</tr>
 			<c:forEach var="vo" items="${ReceivingList }">
 				<tr>
-					<td>${vo.receivingShipmentNo }</td>
-					<td>${vo.transactionType }</td>
+					<td>
+			            <a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}">
+			                ${vo.receivingShipmentNo}
+			            </a>
+			        </td>
+					<td>     
+		                 <c:choose>
+		                    <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>
+		                    <c:when test="${vo.transactionType == 'OUTBOUND'}">출고</c:when>
+		                    <c:otherwise>${vo.transactionType}</c:otherwise>
+		                </c:choose>
+		            </td>
 					<td><fmt:formatDate value="${vo.createdAt}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>
@@ -309,7 +318,6 @@ tr:hover {
 					<td>${vo.productName }</td>
 					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
-					<td>${vo.transactionUnit }</td>
 					<td>${vo.productPrice }</td>
 					<td>${vo.warehouseId }</td>
 					<td>${vo.memo }</td>

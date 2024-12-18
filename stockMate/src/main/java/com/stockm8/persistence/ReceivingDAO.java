@@ -50,5 +50,8 @@ public interface ReceivingDAO {
    	
    	// 수량 없을시 완료상태로 변경
    	public void updateReceivingStatusToComplete(int businessId, String barcode) throws Exception;
+   	
+   	// 입출고 번호를 누를시 스캔으로가서 특정 리스트 보여주기
+ 	public List<ReceivingShipmentVO> selectReceivingShipmentNo(int businessId, Integer receivingShipmentNo) throws Exception;
 		
 } // ReceivingDAO end
