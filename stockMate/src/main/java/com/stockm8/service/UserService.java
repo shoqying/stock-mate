@@ -2,7 +2,7 @@ package com.stockm8.service;
 
 import java.util.List;
 
-import com.stockm8.domain.vo.BusinessVO;
+import com.stockm8.domain.dto.PendingUserDTO;
 import com.stockm8.domain.vo.UserVO;
 
 public interface UserService {
@@ -17,6 +17,9 @@ public interface UserService {
    
    // 회원정보 조회
    public UserVO getUser(Long userId,String password) throws Exception;
+   
+   // 조건에 맞는 pending 회원 리스트와 사업자 정보 가져오기
+   public List<PendingUserDTO> getPendingUsersWithBusiness() throws Exception;
    
    // 회원정보 수정
    public void updateUser(UserVO user) throws Exception;

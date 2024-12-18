@@ -83,7 +83,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         
         logger.info("유효한 사용자 확인 (유저 ID: {}, 회사 ID: {})", userId, user.getBusinessId());
         return true; // 유효성 검사 통과
-        
 	}
 	
 	// 원래 요청 URL 저장 메서드

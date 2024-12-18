@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.stockm8.domain.dto.PendingUserDTO;
 import com.stockm8.domain.vo.UserVO;
 
 @Repository
@@ -50,6 +51,16 @@ public class UserDAOImpl implements UserDAO {
 	    // 비밀번호와 사용자 ID를 사용하여 조회
 	    return sqlSession.selectOne(NAMESPACE + "getUser", params);
 	}
+	
+	@Override
+	public UserVO getUserInfoById(Long userId) throws Exception {
+	    return sqlSession.selectOne("UserMapper.getUserInfoById", userId);
+	}
+
+	@Override
+	public List<PendingUserDTO> selectPendingUsersWithBusiness() {
+		return sqlSession.selectList(NAMESPACE + "selectPendingUsersWithBusiness");
+	}
 
 	@Override
 	public void updateUser(UserVO user) {
@@ -61,10 +72,7 @@ public class UserDAOImpl implements UserDAO {
 		   
 	}
 	
-	@Override
-	public UserVO getUserInfoById(Long userId) throws Exception {
-	    return sqlSession.selectOne("UserMapper.getUserInfoById", userId);
-	}
+
 
 	@Override
 	public void updatePassword(Long userId, String newPassword) {

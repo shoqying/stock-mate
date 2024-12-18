@@ -138,16 +138,6 @@ public class UserController {
 		return "redirect:/user/signin"; // 로그인 페이지 이동
 	}
 
-
-	// 대시보드 페이지 - GET
-	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public void dashGET() {
-
-		logger.info(" dashGET() 호출 ");
-
-		logger.info(" /user/main -> /user/dash.jsp 연결 ");
-	}
-
 	// 로그아웃 - GET
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public String userLogoutGET(HttpSession session) throws Exception {
@@ -158,7 +148,7 @@ public class UserController {
 
 		// 로그아웃 처리 후 페이지 이동
 
-		return "redirect:/user/main";
+		return "redirect:/user/signin";
 	}
 
 
