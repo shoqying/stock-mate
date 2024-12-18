@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     private ShipmentDAO sdao;
     
     
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
 	public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems, int businessId) throws Exception {
     	
@@ -77,6 +77,7 @@ public class OrderServiceImpl implements OrderService {
             // 발주(입고) 처리
             for (OrderItemVO item : order.getOrderItems()) {
                 // 재고 증가
+            	// 한수씨의 검수 값만 받아오고 OK 되면 
                 updateStockQuantity(item.getStockId(), -item.getQuantity());
                 // 발주(입)일 때는 예약수량을 음수로 처리해야 함 (-)
             }

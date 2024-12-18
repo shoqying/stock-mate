@@ -448,6 +448,10 @@
 			// 현재 표시된 재고 정보 카드 중 현재 인덱스에 해당하는 카드를 선택
 		    const card = $('.stock-info-card:visible').eq(currentItemIndex);
 			
+			 // 주문 유형 가져오기 
+		    const orderType = $('input[name="orderType"]:checked').val();
+
+			
 			 // stockId 설정이 제대로 되는지 확인 디버깅
 		    card.find('.stock-id').val(stock.stockId);
 		    console.log('Selected Stock ID:', stock.stockId); // 디버깅용
@@ -476,20 +480,29 @@
 		    card.find('.base-unit').val(stock.product.baseUnit);
 		    card.find('.unit-price').val(stock.product.productPrice);
 		    
-		    // 주문 수량 최대값 설정(가용 재고량으로 설정)
-		    const quantityInput = card.find('.order-quantity'); 
-		    quantityInput.attr('max', stock.availableStock);  // HTML input의 max 속성 설정
-		    (quantityInput); // 현재 입력된 수량의 유효성 검사 실행
+
+		    // 주문 수량 입력 필드
+		    const quantityInput = card.find('.order-quantity');
+    
+		    // 수주(OUTBOUND)인 경우에만 최대 수량 제한 설정
+		    if (orderType === 'OUTBOUND') {
+		        quantityInput.attr('max', stock.availableStock);  // 가용 재고로 최대값 설정
+		    } else {
+		        // 발주(INBOUND)인 경우 최대값 제한 없음
+		        quantityInput.removeAttr('max');  // max 속성 제거
+		    }
 		    
-		    closeModal();
+		    validateQuantity(quantityInput);
+		    closeModal();;
 		}
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 수정
 		// 수량 유효성 검사(입력된 수량이 유효한지 확인)
 		function validateQuantity(input) {
 			// 현재 수량 입력이 속한 카드 요소 찾기
 		    const card = input.closest('.stock-info-card');
-		 	// 주문 유형 가져오기
+		    // 주문 유형 가져오기
 		    const orderType = $('input[name="orderType"]:checked').val();
+
 			 // 입력된 수량과 가용 재고를 정수로 변환 (값이 없으면 0으로 설정)
 		    const quantity = parseInt(input.val()) || 0; // 입력된 주문 수량   반환실패 시  null 대신 0 값 들어감
 		    const available = parseInt(card.find('.available-stock').val()) || 0; // 가용 재고량
@@ -498,11 +511,11 @@
 		    if (quantity < 1) { // 최소 주문 수량(1개) 미만인 경우
 		        alert('주문 수량은 1 이상이어야 합니다.');
 		        input.val(1); // 수량을 1로 재설정
-		    } else if (orderType === 'OUTBOUND' && quantity > available) { // 가용 재고보다 많은 경우 수주의 경우에만 실행
-		        alert('주문 수량이 가용 재고를 초과할 수 없습니다.');
-		        input.val(available); // 수량을 가용 재고량으로 재설정
+
+		    }else if (orderType === 'OUTBOUND' && quantity > available) { // 수주의 경우 가용재고 체크
+		        alert('수주 수량이 가용 재고를 초과할 수 없습니다.');
+		        input.val(available);
 		    }
-		    
 		    calculateSubtotal(card); // 수량 변경에 따른 소계 재계산
 		}
 		
