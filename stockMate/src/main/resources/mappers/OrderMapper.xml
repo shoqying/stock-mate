@@ -31,6 +31,7 @@
 	    <result property="productId" column="product_id"/>
 	    <result property="warehouseId" column="warehouse_id"/>
 	    <result property="quantity" column="quantity"/>
+	    <result property="ChangeQuantity" column="change_quantity"/>
 	    <result property="unitPrice" column="unit_price"/>
 	    <result property="remarks" column="remarks"/>
 	    <result property="stotalPrice" column="subtotal_price"/>  
@@ -110,6 +111,7 @@
             product_id,
             warehouse_id,
             quantity,
+            change_quantity,
             unit_price,
             remarks,
             created_at
@@ -118,6 +120,7 @@
             #{productId},
             #{warehouseId},
             #{quantity},
+            #{quantity}
             #{unitPrice},
             #{remarks},
             NOW()

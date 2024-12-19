@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stockm8.domain.vo.Criteria;
+import com.stockm8.domain.vo.OrderVO;
 import com.stockm8.domain.vo.PageVO;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.ReceivingShipmentVO;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.UserVO;
+import com.stockm8.service.OrderProcessor;
+import com.stockm8.service.OrderService;
 import com.stockm8.service.ReceivingService;
 import com.stockm8.service.UserService;
 
@@ -205,7 +209,8 @@ public class ReceivingController {
 	// http://localhost:8088/receiving/scan
 	@RequestMapping(value = "/scan", method = RequestMethod.GET)
 	public void scanGET(HttpServletRequest request, Model model, 
-			@RequestParam(value = "receivingShipmentNo", required = false) Integer receivingShipmentNo) throws Exception {
+			@RequestParam(value = "receivingShipmentNo", required = false) Integer receivingShipmentNo,
+			@RequestParam(value = "orderItemId", required = false) Integer orderItemId) throws Exception {
 		logger.info("scanGET() 호출");
 		
 		// 세션에서 userId 가져오기
@@ -216,57 +221,65 @@ public class ReceivingController {
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
 	    
-	    List<ReceivingShipmentVO> rsn = rService.getReceivingShipmentNo(businessId, receivingShipmentNo);
+	    List<ReceivingShipmentVO> rsn = rService.getReceivingShipmentNo(businessId, receivingShipmentNo, orderItemId);
 	    
 	    model.addAttribute("rsn", rsn);
+	    model.addAttribute("receivingShipmentNo", receivingShipmentNo);
+	    model.addAttribute("orderItemId", orderItemId);
 	}
 	
-	// http://localhost:8088/receiving/scan
 	@RequestMapping(value = "/scan", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> scanPOST(@RequestBody Map<String, String> bar, Model model, 
-											HttpServletRequest request) throws Exception {
-		logger.info("scanPOST() 호출");
-        
-        // 세션에서 userId 가져오기
+	public Map<String, Object> scanPOST(@RequestBody Map<String, Object> payload, 
+	                                    Model model, HttpServletRequest request) throws Exception {
+	    logger.info("scanPOST() 호출");
+
+	    // 세션에서 userId 가져오기
 	    HttpSession session = request.getSession(false);
 	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
-	    
+
 	    // userId로 사용자 정보 조회
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
+
+	    // JSON 본문에서 값 추출
+	    String barcode = (String) payload.get("barcode");
+	    Integer receivingShipmentNo = (Integer) payload.get("receivingShipmentNo");
+	    Integer orderItemId = (Integer) payload.get("orderItemId");
+	    model.addAttribute("receivingShipmentNo", receivingShipmentNo);
+	    model.addAttribute("orderItemId", orderItemId);
 	    
-	    // QR 코드 데이터 처리 로직 (예: 데이터 저장, 검증 등)
- 		String barcode = bar.get("barcode");
-        Map<String, Object> response = new HashMap();
-	    
+
+	    Map<String, Object> response = new HashMap<>();
 	    if (userId == null) {
 	        response.put("success", false);
 	        response.put("message", "로그인 정보가 없습니다.");
 	        return response;
 	    }
-
+	    	
 	    try {
-	    	rService.ReceivingStatusToComplete(businessId, barcode);
-            int remainingStock = rService.increseStockByBarcode(businessId, barcode);
-            int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode);
-            ProductVO product = rService.productNameBarcode(businessId, barcode);
-            if (remainingStock >= 0) {
-                response.put("success", true);
-                response.put("remainingStock", remainingStock);
-                response.put("reservedQuantity", reservedQuantity);
-                response.put("productName", product.getProductName());
-                response.put("productPrice", product.getProductPrice());
-            } else {
-                response.put("success", false);
-                response.put("message", "유효하지 않은 바코드입니다.");
-            }
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", e.getMessage());
-        }
-        return response;
-    }
+	    	rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo);
+	        int remainingStock = rService.increseStockByBarcode(businessId, barcode, receivingShipmentNo, orderItemId);
+	        int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId);
+	        ProductVO product = rService.productNameBarcode(businessId, barcode, receivingShipmentNo);
+
+	        if (reservedQuantity >= 0) {
+	            response.put("success", true);
+	            response.put("remainingStock", remainingStock);
+	            response.put("reservedQuantity", reservedQuantity);
+	            response.put("productName", product.getProductName());
+	            response.put("productPrice", product.getProductPrice());
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "유효하지 않은 바코드입니다.");
+	        }
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", e.getMessage());
+	        logger.info("예외 발생" + e);
+	    }
+	    return response;
+	}
 	
 	// http://localhost:8088/receiving/allScan
 	@RequestMapping(value = "/allScan", method = RequestMethod.GET)

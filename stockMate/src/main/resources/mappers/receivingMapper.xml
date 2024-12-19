@@ -134,6 +134,7 @@ WHERE NOT EXISTS (
 <select id="getReceivingHistoryList" resultMap="receivingShipmentMap">
 	select DISTINCT 
 	r.receiving_shipment_no, 
+	r.order_item_id,
 	r.transaction_type, 
 	r.created_at, 
 	r.status, 
@@ -216,42 +217,60 @@ SELECT COUNT(DISTINCT r.receiving_shipment_no)
 FROM receiving_shipment r
 JOIN users u ON u.created_by = r.created_by
 WHERE r.transaction_type = 'INBOUND'
-  AND u.business_id = 1;
+  AND u.business_id = #{business_id};
 </select>
 
    <!-- receiving scan을 위한 매퍼 -->
    <!-- 바코드로 제품 조회 -->
 <select id="selectQuantityCheckByBarcode" resultType="com.stockm8.domain.vo.StockVO">
-	SELECT s.product_id, p.product_name, s.total_quantity, s.warehouse_id
+	SELECT s.product_id, p.product_name, s.total_quantity
 	FROM stocks s
 	JOIN products p ON p.product_id = s.product_id
+	JOIN receiving_shipment r on r.stock_id = s.stock_id
 	WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+	AND r.receiving_shipment_no = #{receivingShipmentNo}  
 </select>
 
 <!-- 바코드로 재고 1 감소 -->
 <update id="updateIncreseStock">
-    UPDATE stocks s
-    JOIN products p on p.product_id = s.product_id
+    UPDATE order_items o
+    JOIN products p on p.product_id = o.product_id
+    JOIN stocks s on o.product_id = s.product_id
+    JOIN receiving_shipment r on r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
     SET s.total_quantity = s.total_quantity + 1,
-    s.reserved_quantity = s.reserved_quantity -1
-    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
-    AND s.reserved_quantity > 0
+    s.reserved_quantity = s.reserved_quantity -1,
+    o.change_quantity = o.change_quantity -1
+    WHERE p.product_barcode = #{barcode}
+    AND s.business_id = #{businessId}
+    AND o.change_quantity > 0
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
+    AND r.order_item_id = #{orderItemId}
 </update>
 
 <!-- 바코드로 남은 재고 조회 -->
 <select id="selectStockByBarcode" resultType="int">
     SELECT s.total_quantity
-    FROM stocks s
-    JOIN products p on p.product_id = s.product_id
+    FROM order_items o
+    JOIN products p on p.product_id = o.product_id
+    JOIN stocks s on o.product_id = s.product_id
+    JOIN receiving_shipment r on r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
     WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
+    AND r.order_item_id = #{orderItemId}
+    limit 1;
 </select>
 
 <!-- 바코드로 남은 발주 수량 조회 -->
 <select id="selectReservedQuantity" resultType="int">
-    SELECT s.reserved_quantity
-    FROM stocks s
-    JOIN products p on p.product_id = s.product_id
-    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+SELECT o.change_quantity
+FROM order_items o
+JOIN stocks s ON s.product_id = o.product_id
+JOIN products p ON p.product_id = s.product_id
+JOIN receiving_shipment r ON r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
+WHERE p.product_barcode = #{barcode}
+AND s.business_id = #{businessId}
+AND r.receiving_shipment_no = #{receivingShipmentNo}
+AND r.order_item_id = #{orderItemId}
 </select>
 
 <!-- 바코드로 제품 이름 조회 -->
@@ -259,18 +278,22 @@ WHERE r.transaction_type = 'INBOUND'
     SELECT p.product_name, p.product_price
     FROM stocks s
     JOIN products p on p.product_id = s.product_id
+    JOIN receiving_shipment r on r.stock_id = s.stock_id
     WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
 </select>
 
 <update id="updateReceivingStatusToComplete">
     UPDATE receiving_shipment r
     JOIN products p ON r.product_id = p.product_id
     JOIN stocks s ON s.product_id = p.product_id
+    JOIN order_items o ON s.product_id = o.product_id
     SET r.status = 'COMPLETED'
     WHERE p.product_barcode = #{barcode}
-    AND s.reserved_quantity = 1
+    AND o.change_quantity = 0
     AND r.status = 'PENDING'
-    AND s.business_id = #{businessId};
+    AND s.business_id = #{businessId}
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
 </update>
 <!-- receiving scan을 위한 매퍼 -->
 

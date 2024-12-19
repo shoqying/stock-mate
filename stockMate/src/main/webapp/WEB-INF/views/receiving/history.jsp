@@ -239,7 +239,6 @@ tr:hover {
 
 	<h1>입고 내역</h1>
 	<a href="/receiving/main">입고 메인</a>
-	<a href="/receiving/scan">입고 검수</a>
 	<form action="/receiving/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
@@ -274,6 +273,7 @@ tr:hover {
 		<table border="1">
 			<tr>
 				<th>입고 번호</th>
+				<th>주문 번호</th>
 				<th>입고 출고</th>
 				<th>입고 일자</th>
 				<th>입고 상태</th>
@@ -288,10 +288,11 @@ tr:hover {
 			<c:forEach var="vo" items="${ReceivingList }">
 				<tr>
 					<td>
-			            <a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}">
+			            <a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}">
 			                ${vo.receivingShipmentNo}
 			            </a>
 			        </td>
+			        <td>${vo.orderItemId}</td>
 					<td>     
 		                 <c:choose>
 		                    <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>

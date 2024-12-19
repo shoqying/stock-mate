@@ -116,6 +116,12 @@ public class ShipmentServiceImpl implements ShipmentService {
 	    }
 	}
 	
+	@Override
+	public List<ReceivingShipmentVO> getReceivingShipmentNo(int businessId, Integer receivingShipmentNo) throws Exception {
+		logger.info("getReceivingShipmentNo() 호출");
+		
+		return sdao.selectReceivingShipmentNo(businessId, receivingShipmentNo);
+	}
 	
 	
 	
