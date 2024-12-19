@@ -34,24 +34,24 @@ public interface ReceivingDAO {
 	public void insertReceiving(int businessId) throws Exception;
 	
     // 바코드로 재고 조회
-  	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception;
+  	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode, Integer receivingShipmentNo) throws Exception;
  	
    	// 바코드로 재고 감소
-  	public int updateIncreseStock(int businessId, String barcode) throws Exception;
+  	public int updateIncreseStock(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception;
  	
   	// 바코드로 재고 감소 실시간 조회
-   	public int selectStockByBarcode(int businessId, String barcode) throws Exception;
+   	public int selectStockByBarcode(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemIdS) throws Exception;
    	
    	// 바코드 찍은 후 발주 수량 감소
-   	public int selectReservedQuantity(int businessId, String barcode) throws Exception;
+   	public int selectReservedQuantity(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception;
    	
    	// 바코드 찍은 후 제품 이름 추출
-   	public ProductVO selectProductNameBarcode(int businessId, String barcode) throws Exception;
+   	public ProductVO selectProductNameBarcode(int businessId, String barcode, Integer receivingShipmentNo) throws Exception;
    	
    	// 수량 없을시 완료상태로 변경
-   	public void updateReceivingStatusToComplete(int businessId, String barcode) throws Exception;
+   	public void updateReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo) throws Exception;
    	
    	// 입출고 번호를 누를시 스캔으로가서 특정 리스트 보여주기
- 	public List<ReceivingShipmentVO> selectReceivingShipmentNo(int businessId, Integer receivingShipmentNo) throws Exception;
+ 	public List<ReceivingShipmentVO> selectReceivingShipmentNo(int businessId, Integer receivingShipmentNo, int orderItemId) throws Exception;
 		
 } // ReceivingDAO end

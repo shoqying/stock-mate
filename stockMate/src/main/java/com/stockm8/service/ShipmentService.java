@@ -36,10 +36,10 @@ public interface ShipmentService {
 	// rs 테이블 insert
 	public void insertShipment(int businessId) throws Exception;
 	
-	// 바코드 찍은 후 재고수량 증가
+	// 바코드 찍은 후 재고수량 감소
 	public int increseStockByBarcode(int businessId, String barcode) throws Exception;
 	
-	// 바코드 찍은 후 발주 수량 감소
+	// 바코드 찍은 후 수주 수량 증가
 	public int decreaseReservedQuantity(int businessId, String barcode) throws Exception;
 	
 	// 바코드 찍은 후 제품 이름 추출
@@ -47,6 +47,9 @@ public interface ShipmentService {
 	
 	// 수량 없을시 완료상태로 변경
 	public void ShipmentStatusToComplete(int businessId, String barcode) throws Exception;
+	
+	// 입출고 번호를 누를시 스캔으로가서 특정 리스트 보여주기
+	public List<ReceivingShipmentVO> getReceivingShipmentNo(int businessId, Integer receivingShipmentNo) throws Exception;
 
 
 } // ShipmentService end

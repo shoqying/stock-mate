@@ -11,6 +11,7 @@ public class OrderItemVO {
     private int productId;         // 주문 상품 ID
     private int warehouseId;       // 창고 ID
     private int quantity;          // 주문 수량
+    private int changeQuantity;     // 바뀐 주문 수량
     private double unitPrice;      // 제품 단가
     private String remarks;        // 특정 상품에 대한 비고 사항
     private double stotalPrice;     // 주문 1건의 전체 총 금액

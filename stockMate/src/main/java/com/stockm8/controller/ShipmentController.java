@@ -39,7 +39,7 @@ public class ShipmentController {
 	
 	@Inject
 	private UserService uService;
-	
+		
 	// http://localhost:8088/shipment/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void mainGET(Model model, HttpServletRequest request) throws Exception {
@@ -205,7 +205,8 @@ public class ShipmentController {
 	
 	// http://localhost:8088/shipment/scan
 	@RequestMapping(value = "/scan", method = RequestMethod.GET)
-	public String scanGET(HttpServletRequest request) throws Exception {
+	public void scanGET(HttpServletRequest request, Model model,
+			@RequestParam(value = "receivingShipmentNo", required = false) Integer receivingShipmentNo) throws Exception {
 		logger.info("scanGET() 호출");
 		
 		// 세션에서 userId 가져오기
@@ -216,7 +217,9 @@ public class ShipmentController {
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
         
-        return "/shipment/scan";
+	    List<ReceivingShipmentVO> rsn = sService.getReceivingShipmentNo(businessId, receivingShipmentNo);
+	    
+	    model.addAttribute("rsn", rsn);
 	}
 	
 	// http://localhost:8088/shipment/scan

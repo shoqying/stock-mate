@@ -15,7 +15,6 @@
 <h1>출고 메인</h1>
 
 <a href="/shipment/history">출고 내역</a>
-<a href="/shipment/scan">출고 검수</a>
 <a href="/dashboard">대쉬보드</a>
 <form action="/shipment/insert1" method="POST">
     <input type="submit" value="새로고침">
