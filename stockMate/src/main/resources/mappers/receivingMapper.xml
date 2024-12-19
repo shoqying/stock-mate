@@ -47,7 +47,7 @@ SELECT DISTINCT
     o.order_item_id,
     s.stock_id,
     o.warehouse_id,
-    u.created_by
+    #{createdBy}
 FROM products p
 JOIN order_items o ON o.product_id = p.product_id
 JOIN stocks s ON s.product_id = p.product_id
@@ -290,12 +290,11 @@ AND r.order_item_id = #{orderItemId}
     SET r.status = 'COMPLETED',
         s.reserved_quantity = s.reserved_quantity - o.quantity
     WHERE p.product_barcode = #{barcode}
-    AND o.change_quantity = 0
+    AND o.change_quantity = 1
     AND r.status = 'PENDING'
     AND s.business_id = #{businessId}
     AND r.receiving_shipment_no = #{receivingShipmentNo}
     AND r.order_item_id = #{orderItemId}
-    AND o.order_item_id = r.order_item_id;
 </update>
 <!-- receiving scan을 위한 매퍼 -->
 
