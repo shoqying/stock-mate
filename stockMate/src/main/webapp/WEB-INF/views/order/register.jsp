@@ -533,8 +533,6 @@
 		        .val(new Intl.NumberFormat('ko-KR').format(subtotal) + '원');  // 표시용 포맷팅
 		    
 		    
-		    updateGrandTotal();
-		    
 			// 전체 주문 금액 업데이트 (다른 함수에서 구현)
 		    updateGrandTotal();
 		}
