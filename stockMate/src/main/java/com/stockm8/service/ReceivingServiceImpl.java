@@ -108,9 +108,9 @@ public class ReceivingServiceImpl implements ReceivingService {
 	}
 
 	@Override
-	public int decreaseReservedQuantity(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception {
+	public int decreaseReservedQuantity(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId, int orderId, List<OrderItemVO> completedItems) throws Exception {
 		logger.info("decreaseReservedQuantity() 호출");
-		
+		opService.processInboundAfterInspection(orderId, completedItems);
 		return rdao.selectReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId);
 	}
 
@@ -122,12 +122,11 @@ public class ReceivingServiceImpl implements ReceivingService {
 	}
 	
 	@Override
-	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo,int orderId, List<OrderItemVO> completedItems) {
+	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo, int orderId) {
 	    try {
 	        // MyBatis 매퍼 호출
-	        rdao.updateReceivingStatusToComplete(businessId, barcode, receivingShipmentNo);
-	        opService.processInboundAfterInspection(orderId, completedItems);
-
+	        rdao.updateReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderId);
+	        
 	    } catch (Exception e) {
 	        // 예외 처리
 	        logger.error("입고 상태 업데이트 오류: " + e.getMessage());

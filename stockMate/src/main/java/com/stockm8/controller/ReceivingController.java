@@ -274,11 +274,11 @@ public class ReceivingController {
 	        // OrderService에 해당 메소드 추가 필요
 	        int orderId = orderService.getOrderIdByOrderItemId(orderItemId);
 
-	        rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderId, completedItems);
+	        rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderItemId);
 
 
 	        int remainingStock = rService.increseStockByBarcode(businessId, barcode, receivingShipmentNo, orderItemId);
-	        int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId);
+	        int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId, orderId, completedItems);
 	        ProductVO product = rService.productNameBarcode(businessId, barcode, receivingShipmentNo);
 
 	        if (reservedQuantity >= 0) {

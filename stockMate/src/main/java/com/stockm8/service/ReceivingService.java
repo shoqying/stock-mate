@@ -41,18 +41,14 @@ public interface ReceivingService {
 	public int increseStockByBarcode(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception;
 	
 	// 바코드 찍은 후 발주 수량 감소
-	public int decreaseReservedQuantity(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception;
+	public int decreaseReservedQuantity(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemIdint, int orderId, List<OrderItemVO> completedItems) throws Exception;
 	
 	// 바코드 찍은 후 제품 이름 추출
 	public ProductVO productNameBarcode(int businessId, String barcode, Integer receivingShipmentNo) throws Exception;
 	
 	// 수량 없을시 완료상태로 변경
-  
-	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo,int orderId, List<OrderItemVO> completedItems) throws Exception;
+	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo, int orderId) throws Exception;
 
-
-
-	
 	// 입출고 번호를 누를시 스캔으로가서 특정 리스트 보여주기
 	public List<ReceivingShipmentVO> getReceivingShipmentNo(int businessId, Integer receivingShipmentNo, int rderItemId) throws Exception;
 
