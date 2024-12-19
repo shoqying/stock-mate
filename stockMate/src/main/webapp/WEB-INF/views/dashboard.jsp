@@ -7,38 +7,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>대시보드</title>
+    <link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
     <style>
-        /* Reset and Global Styles */
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            height: 100%;
-        }
-
         /* Flex Container */
         .container {
             display: flex;
             flex-direction: column;
             min-height: 100vh; /* 화면 전체 높이를 채우기 */
-        }
-        
-        .error-banner {
-            width: 100%;
-            background-color: #FCE4E4;
-            color: #D32F2F;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 14px;
-            font-weight: 500;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #F5C6C6;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Content Section */
@@ -88,76 +63,6 @@
             background-color: #003f8c;
             transform: translateY(-5px);
         }
-		
-		/* Dropdown Menu - Horizontal Styling */
-		.menu-dropdown {
-		    position: relative;
-		    display: inline-block;
-		}
-		
-		.dropdown-btn {
-		    display: block;
-		    padding: 10px 20px;
-		    font-size: 16px;
-		    font-weight: bold;
-		    color: #fff;
-		    background-color: #007BFF;
-		    border-radius: 5px;
-		    text-decoration: none;
-		    cursor: pointer;
-		    text-align: center;
-		    transition: background-color 0.3s, transform 0.2s;
-		}
-		
-		.dropdown-btn:hover {
-		    background-color: #0056b3;
-		    transform: translateY(-3px);
-		}
-		
-		/* Horizontal Dropdown Content */
-		.dropdown-content {
-		    display: none;
-		    position: absolute;
-		    top: 0;
-		    left: 100%; /* 옆으로 펼쳐지도록 설정 */
-		    background-color: #ffffff;
-		    border: 1px solid #ddd;
-		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		    white-space: nowrap; /* 글자가 줄바꿈되지 않도록 설정 */
-		    border-radius: 5px;
-		    z-index: 1000;
-		}
-		
-		.dropdown-content a {
-		    display: block;
-		    padding: 10px 15px;
-		    font-size: 14px;
-		    font-weight: 500;
-		    color: #333;
-		    text-decoration: none;
-		    transition: background-color 0.3s, color 0.3s;
-		}
-		
-		.dropdown-content a:hover {
-		    background-color: #f0f0f0;
-		    color: #007BFF;
-		}
-		
-		/* Show the Dropdown */
-		.menu-dropdown:hover .dropdown-content {
-		    display: block;
-		}
-		
-		@keyframes fadeIn {
-		    from {
-		        opacity: 0;
-		        transform: translateY(-10px);
-		    }
-		    to {
-		        opacity: 1;
-		        transform: translateY(0);
-		    }
-		}
 
         /* Sidebar */
         .sidebar {
@@ -238,10 +143,15 @@
 </head>
 <body>
     <div class="container">
-   	   <!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
-       <c:if test="${not empty errorMessage}">
-           <div class="error-banner">${errorMessage}</div>
-       </c:if>
+		<%-- 에러 메시지 표시 --%>
+		<c:if test="${not empty errorMessage}">
+		    <div class="error-banner">${errorMessage}</div>
+		</c:if>
+		
+		<%-- 성공 메시지 표시 --%>
+		<c:if test="${not empty successMessage}">
+			<div class="success-banner">${successMessage}</div>
+		</c:if>
         <!-- Header Section -->
         <div class="header">
             대시보드
@@ -259,7 +169,6 @@
 			<!-- Sidebar -->
 			<div class="sidebar fade-in">
 			    <!-- 등록페이지 드롭다운 메뉴 -->
-			    <div class="menu-dropdown">
 			        <a href="#" class="dropdown-btn">등록페이지</a>
 			        <ul class="dropdown-content">
 			            <li><a href="warehouse/register">창고 등록</a></li>
@@ -267,13 +176,11 @@
 			            <li><a href="product/register">상품 등록</a></li>
 			            <li><a href="stock/register">재고 등록</a></li>
 			        </ul>
-			    </div>
 				    <!-- 기타 메뉴 -->
 				    <a href="user/editinfo1">내정보 조회/수정</a>
 				    <a href="user/changepassword1">비밀번호 변경</a>
 				    <a href="user/howtouse2">대시보드 사용법</a>
 				    <a href="user/signout" class="signout" style="color: red;">Sign out</a>
-				</div>
 			<script>
 			function confirmLogout() {
 			    alert("로그아웃 되었습니다");

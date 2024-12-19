@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.stockm8.domain.dto.PendingUserDTO;
+import com.stockm8.domain.dto.UpdateUserStatusDTO;
 import com.stockm8.domain.vo.BusinessVO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.persistence.BusinessDAO;
@@ -52,6 +53,11 @@ public class UserServiceImpl implements UserService {
 	public List<PendingUserDTO> getPendingUsersWithBusiness() throws Exception {		// TODO Auto-generated method stub
         return userDAO.selectPendingUsersWithBusiness();
 	}
+	
+	@Override
+	public List<PendingUserDTO> getStaffByBusinessId(int businessId) throws Exception {
+        return userDAO.selectStaffByBusinessId(businessId);
+	}
 
 	// 회원 정보 수정 
 	@Override
@@ -72,6 +78,10 @@ public class UserServiceImpl implements UserService {
 	    userDAO.updatePassword(userId, newPassword);
 	}
 
+	@Override
+	public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) {
+		userDAO.updateUserStatus(updateUserStatusDTO);
+	}
 
 	@Override
 	public void updateUserBusinessId(Long userId, int businessId) throws Exception {
@@ -87,7 +97,6 @@ public class UserServiceImpl implements UserService {
 		    // userDAO에서 비밀번호를 찾아 반환
 		   return userDAO.findPassword(email, name);
 	}
-
 	
 	@Override
 	public int deleteUser(UserVO user) throws Exception {

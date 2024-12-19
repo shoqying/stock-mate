@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
+    <link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
     <style>
         body {
             margin: 0;
@@ -21,21 +22,6 @@
             align-items: center;
             justify-content: center;
             position: relative;
-        }
-        .error-banner {
-            width: 100%;
-            background-color: #FCE4E4;
-            color: #D32F2F;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 14px;
-            font-weight: 500;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #F5C6C6;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .login-box {
             width: 400px;
@@ -88,19 +74,18 @@
             text-decoration: underline;
         }
     </style>
-    <script>
-        function redirectToDashboard(event) {
-//             event.preventDefault(); // Form submission 막기
-//             window.location.href = 'dashboard';
-        }
-    </script>
 </head>
 <body>
     <div class="container">
-        <!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
-        <c:if test="${not empty errorMessage}">
-            <div class="error-banner">${errorMessage}</div>
-        </c:if>
+		<%-- 에러 메시지 표시 --%>
+		<c:if test="${not empty errorMessage}">
+		    <div class="error-banner">${errorMessage}</div>
+		</c:if>
+		
+		<%-- 성공 메시지 표시 --%>
+		<c:if test="${not empty successMessage}">
+			<div class="success-banner">${successMessage}</div>
+		</c:if>
 
         <div class="login-box">
             <form id="loginForm" method="post">

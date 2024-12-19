@@ -188,47 +188,13 @@ button:hover {
     color: #d32f2f;
 }
 
-/* 검색창 스타일 */
-.search-container {
-    display: flex;
-    align-items: center;
-    position: absolute; /* 테이블 상단 우측에 배치 */
-    top: 10px;
-    right: 20px;
-    width: 250px; /* 검색창 너비 */
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 20px; /* 둥근 형태 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 5px 10px;
-    z-index: 10;
-}
-
-/* 검색 필드 우측 상단 배치 */
-/* .search-field { */
-/*     position: absolute; 부모를 기준으로 절대 위치 */
-/*     top: 20px; 위에서 20px 여백 */
-/*     right: 30px; 우측 정렬 */
-/*     background-color: #fff; */
-/*     border: 1px solid #ddd; */
-/*     border-radius: 20px; */
-/*     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-/*     display: flex; */
-/*     align-items: center; */
-/*     padding: 5px 10px; */
-/*     width: 250px; */
-/*     z-index: 10; 다른 요소 위에 표시 */
-/* } */
-
 /* 검색 입력 필드 */
 .search-input {
-    border: none;
-    outline: none;
+	width: 230px;
     font-size: 14px;
-    flex: 1; /* 너비를 가득 채우도록 설정 */
-    padding: 5px 10px;
     border-radius: 20px;
    	background-color: transparent;
+   	float: right;
 }
 
 /* 검색 필드에 아이콘 추가 스타일 */
@@ -294,4 +260,3 @@ td button:hover {
 .hidden {
     display: none;
 }
-

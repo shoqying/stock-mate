@@ -7,24 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회사 등록</title>
-<style>
-
-.error-banner {
-	width: 100%;
-	background-color: #FCE4E4;
-	color: #D32F2F;
-	text-align: center;
-	padding: 10px 0;
-	font-size: 14px;
-	font-weight: 500;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1000;
-	border-bottom: 1px solid #F5C6C6;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-</style>
+<link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
 </head>
 <body>
 	<h1>비즈니스 등록</h1>
@@ -32,6 +15,11 @@
 	<%-- 에러 메시지 표시 --%>
 	<c:if test="${not empty errorMessage}">
 	    <div class="error-banner">${errorMessage}</div>
+	</c:if>
+	
+	<%-- 성공 메시지 표시 --%>
+	<c:if test="${not empty successMessage}">
+		<div class="success-banner">${successMessage}</div>
 	</c:if>
 
     <!-- 비즈니스 등록 폼 -->
@@ -54,8 +42,8 @@
 
         <!-- 회사 이름 -->
         <div>
-            <label for="CompanyName">회사 이름:</label>
-            <input type="text" id="CompanyName" name="CompanyName" placeholder="회사 이름" required>
+            <label for="businessName">회사 이름:</label>
+            <input type="text" id="businessName" name="businessName" placeholder="회사 이름" required>
         </div>
         <br>
 
