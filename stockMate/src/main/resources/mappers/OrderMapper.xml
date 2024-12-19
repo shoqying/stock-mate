@@ -120,7 +120,7 @@
             #{productId},
             #{warehouseId},
             #{quantity},
-            #{quantity}
+            #{quantity},
             #{unitPrice},
             #{remarks},
             NOW()

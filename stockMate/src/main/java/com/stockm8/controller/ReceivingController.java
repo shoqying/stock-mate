@@ -258,7 +258,7 @@ public class ReceivingController {
 	    }
 	    	
 	    try {
-	    	rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo);
+	    	rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderItemId);
 	        int remainingStock = rService.increseStockByBarcode(businessId, barcode, receivingShipmentNo, orderItemId);
 	        int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId);
 	        ProductVO product = rService.productNameBarcode(businessId, barcode, receivingShipmentNo);
