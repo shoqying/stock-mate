@@ -9,6 +9,18 @@
     <title>대시보드</title>
     <link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
     <style>
+<<<<<<< HEAD
+    
+        /* Reset and Global Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            height: 100%;
+        }
+
         /* Flex Container */
         .container {
             display: flex;

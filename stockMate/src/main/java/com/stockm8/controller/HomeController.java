@@ -12,6 +12,7 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -224,4 +225,19 @@ public class HomeController {
 		return "/price";
 	}
 	
+	
+	// 약도 - /minimap (GET)
+		@RequestMapping(value = "/minimap", method = RequestMethod.GET)
+		public String minimapGET(Model model, HttpSession session) throws Exception {
+			Long userId = (Long) session.getAttribute("userId");
+//	                if (id == null) {
+//	                    // 세션에 id가 없으면 에러 처리
+//	                    return "redirect:/user/main";
+//	                }
+//	               UserVO resultVO = userService.getUser(userId);
+//	               model.addAttribute("resultVO", resultVO);
+			return "/minimap";
+		}
+		
 }
+	
