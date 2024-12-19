@@ -239,7 +239,7 @@ tr:hover {
 
 	<h1>출고 내역</h1>
 	<a href="/shipment/main">출고 메인</a>
-	<a href="/shipment/scan">실시간 출고</a>
+	<a href="/shipment/scan">출고 검수</a>
 	<form action="/shipment/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
@@ -281,7 +281,6 @@ tr:hover {
 				<th>제품명</th>
 				<th>옵션명</th>
 				<th>출고 수량</th>
-				<th>수량 단위</th>
 				<th>제품 단가</th>
 				<th>창고 위치</th>
 				<th>작업 메모</th>
@@ -289,7 +288,13 @@ tr:hover {
 			<c:forEach var="vo" items="${ShipmentList }">
 				<tr>
 					<td>${vo.receivingShipmentNo }</td>
-					<td>${vo.transactionType }</td>
+					<td>     
+                 <c:choose>
+                    <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>
+                    <c:when test="${vo.transactionType == 'OUTBOUND'}">출고</c:when>
+                    <c:otherwise>${vo.transactionType}</c:otherwise>
+                </c:choose>
+            </td>
 					<td><fmt:formatDate value="${vo.createdAt}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>
@@ -309,7 +314,6 @@ tr:hover {
 					<td>${vo.productName }</td>
 					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
-					<td>${vo.transactionUnit }</td>
 					<td>${vo.productPrice }</td>
 					<td>${vo.warehouseId }</td>
 					<td>${vo.memo }</td>

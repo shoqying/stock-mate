@@ -53,6 +53,7 @@
             <th>단위</th>
             <th>단가(원)</th>
             <th>소계(원)</th>
+            <th>상태</th>
             <th>비고</th>
         </tr>
         <c:forEach var="item" items="${orderItems}" varStatus="status">
@@ -65,6 +66,7 @@
                 <td>${item.baseUnit}</td>
                 <td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
                 <td><fmt:formatNumber value="${item.stotalPrice}" pattern="#,###" />원</td>
+                <td>${item.shipmentStatus}</td>
                 <td>${item.remarks}</td>
             </tr>
         </c:forEach>

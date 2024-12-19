@@ -206,7 +206,7 @@ td {
         <a href="/shipment/main">출고 메인</a>
         <a href="/shipment/history">출고 내역</a>
         <a href="/dashboard">대쉬보드</a>
-        <a href="/shipment/allScan">스캔 다중 입력</a>
+        <a href="/shipment/allScan">다중 출고 검수</a>
     </header>
     <main>
         <div>

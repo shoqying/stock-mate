@@ -160,6 +160,15 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		sqlSession.update(NAMESPACE + "updateReceivingStatusToComplete", params);
 		
 	}
+
+	@Override
+	public List<ReceivingShipmentVO> selectReceivingShipmentNo(int businessId, Integer receivingShipmentNo) throws Exception {
+		logger.info("selecttReceivingShipmentNo() 호출");
+		Map<String, Object> params = new HashMap<>();
+		params.put("businessId", businessId);
+		params.put("receivingShipmentNo", receivingShipmentNo);
+		return sqlSession.selectList(NAMESPACE + "getReceivingShipmentNo", params);
+	}
 	
 	
 	

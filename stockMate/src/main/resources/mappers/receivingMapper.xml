@@ -39,7 +39,7 @@ INSERT INTO receiving_shipment (
     warehouse_id,
     created_by
 )
-SELECT 
+SELECT DISTINCT 
     ord.order_type, 
     'PENDING',
     p.product_id, 
@@ -61,19 +61,12 @@ WHERE NOT EXISTS (
     AND rs.product_id = p.product_id
     AND rs.order_item_id = o.order_item_id
     AND rs.stock_id = s.stock_id
-)
-GROUP BY 
-    p.product_id, 
-    o.order_item_id, 
-    s.stock_id, 
-    o.warehouse_id, 
-    u.created_by, 
-    ord.order_type;
+);
 </insert>
 	
 <!-- 오늘 입고 예정 리스트 -->
 <select id="getReceivingList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
 	r.transaction_type, 
 	r.created_at, 
@@ -95,7 +88,7 @@ GROUP BY
 
 <!-- 어제 입고 리스트 -->
 <select id="getYesterdayReceivingList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
 	r.transaction_type, 
 	r.created_at, 
@@ -117,7 +110,7 @@ GROUP BY
 
 <!-- 그저께 입고 리스트 -->
 <select id="getTDBYReceivingList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
 	r.transaction_type, 
 	r.created_at, 
@@ -139,7 +132,7 @@ GROUP BY
 
 <!-- 입고 내역 히스토리 -->
 <select id="getReceivingHistoryList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
 	r.transaction_type, 
 	r.created_at, 
@@ -162,7 +155,7 @@ GROUP BY
 
 <!-- 입고 내역 검색 -->
 <select id="getHistoryByDateRange" parameterType="map" resultMap="receivingShipmentMap">
-    SELECT 
+    SELECT DISTINCT 
     r.receiving_shipment_no, 
     r.transaction_type, 
     r.created_at, 
@@ -219,11 +212,11 @@ GROUP BY
 
 <!-- 입출고 모든 개수 카운트 -->
 <select id="getTotalCount" resultType="int">
-	select count(*)
-	from receiving_shipment r
-	JOIN users u on u.created_by = r.created_by
-	where transaction_type = 'INBOUND'
-	AND u.business_id = #{businessId}
+SELECT COUNT(DISTINCT r.receiving_shipment_no)
+FROM receiving_shipment r
+JOIN users u ON u.created_by = r.created_by
+WHERE r.transaction_type = 'INBOUND'
+  AND u.business_id = 1;
 </select>
 
    <!-- receiving scan을 위한 매퍼 -->
@@ -280,5 +273,27 @@ GROUP BY
     AND s.business_id = #{businessId};
 </update>
 <!-- receiving scan을 위한 매퍼 -->
+
+<!-- 입고 내역 히스토리 -->
+<select id="getReceivingShipmentNo" resultMap="receivingShipmentMap">
+	select DISTINCT 
+	r.receiving_shipment_no, 
+	r.transaction_type, 
+	r.created_at, 
+	r.status, 
+	r.product_id, 
+	p.product_name, 
+	p.product_description, 
+	r.change_quantity, 
+	p.product_price,
+	r.warehouse_id,
+	r.memo
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
+	JOIN users u on u.created_by = r.created_by
+	where transaction_type = 'INBOUND' AND u.business_id = #{businessId} 
+	AND r.receiving_shipment_no = #{receivingShipmentNo}
+</select>
 
 </mapper>

@@ -41,6 +41,7 @@
 	    <result property="productBarcode" column="product_barcode"/>
 	    <result property="warehouseName" column="warehouse_name"/>
 	    <result property="baseUnit" column="base_unit"/>
+	    <result property="shipmentStatus" column="shipment_status"/>
 	    <association property="product" javaType="com.stockm8.domain.vo.ProductVO">
 	        <id property="productId" column="product_id"/>
 	        <result property="productName" column="product_name"/>
@@ -174,13 +175,20 @@
 	        p.product_barcode,
 	        p.base_unit,
 	        p.product_price,
-	        w.warehouse_name
+	        w.warehouse_name,
+	        rs.status as shipment_status
 	    FROM 
 	        order_items oi   
-	        LEFT JOIN products p ON oi.product_id = p.product_id
-	        LEFT JOIN warehouses w ON oi.warehouse_id = w.warehouse_id
+	        INNER JOIN products p ON oi.product_id = p.product_id
+	        INNER JOIN warehouses w ON oi.warehouse_id = w.warehouse_id
+	        INNER JOIN receiving_shipment rs ON oi.order_item_id = rs.order_item_id
 	    WHERE 
 	        oi.order_id = #{orderId}
+	        AND rs.receiving_shipment_no = (
+	            SELECT MAX(receiving_shipment_no) 
+	            FROM receiving_shipment 
+	            WHERE order_item_id = oi.order_item_id
+	        )
 	    ORDER BY 
 	        oi.order_item_id ASC
 	</select>
