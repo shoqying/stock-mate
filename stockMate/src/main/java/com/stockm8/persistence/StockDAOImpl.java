@@ -57,6 +57,7 @@ public class StockDAOImpl implements StockDAO {
     public List<StockVO> selectOnlyStockByBusinessId(int businessId) throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectOnlyStockByBusinessId", businessId);
 	}
+    
     // 카테고리 목록 조회
     @Override
     public List<CategoryVO> selectAllCategories() throws Exception {

@@ -70,9 +70,9 @@
     </style>
 </head>
 <body>
-    <h1>/views/category/list.jsp</h1>
+    <h1>카테고리 목록</h1>
 
-    <h2>카테고리 목록 정보 출력</h2>
+<!--     <h2>카테고리 목록 정보 출력</h2> -->
 
 	<table border="1">
 	    <thead>

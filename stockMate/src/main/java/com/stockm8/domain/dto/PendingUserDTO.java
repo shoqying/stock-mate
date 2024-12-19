@@ -2,18 +2,22 @@ package com.stockm8.domain.dto;
 
 import java.sql.Timestamp;
 
+import com.stockm8.domain.enums.UserRole;
+import com.stockm8.domain.enums.UserStatus;
+
 import lombok.Data;
 
 @Data
 public class PendingUserDTO {
 
     // 사용자 정보
-    private Long userId;
+    private Long approvedUserId;
     private String email;
     private String userName;
-    private String userRole;
+    private UserRole userRole;
     private String telNumber;
     private Timestamp createdAt;
+    private UserStatus userStatus;
 
     // 사업자 정보
     private Integer businessId;

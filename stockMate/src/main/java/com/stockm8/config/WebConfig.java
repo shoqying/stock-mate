@@ -1,5 +1,6 @@
 package com.stockm8.config;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,30 +71,30 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+    	
+        registry.addInterceptor(flashMessageInterceptor).addPathPatterns("/**");
+    	
+    	List<String> excludedPaths = Arrays.asList(
+    		    "/", "/favicon.ico", "/resources/**", "/user/**", "/static/**",
+    		    "/api/**", "/dashboard", "/business", "/category/**", "/product/**",
+    		    "/warehouse/**", "/stock/**", "/order/**"
+    		);
+    	
         registry.addInterceptor(adminInterceptor)
         		.addPathPatterns("/admin/**") // /admin/** 경로에만 적용
-        		.excludePathPatterns( // 인터셉터를 제외할 경로
-                "/",               // HomeController 경로
-                "/favicon.ico",    // 브라우저 기본 요청
-                "/resources/**",   // 정적 리소스
-                "/user/**",	       // 로그인 및 회원가입 관련 요청
-                "/static/**",
-        		"/api/**"    	    // API 요청에 대해서는 세션 체크를 제외
-        		);
+        		.excludePathPatterns(excludedPaths.toArray(new String[0]));
+        		
     	// Intercepter 적용
         registry.addInterceptor(authorizationInterceptor)
-                .addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**", "/stock/**", "/order/**","/admin/**" ) // 인터셉터를 적용할 경로
-                .excludePathPatterns( // 인터셉터를 제외할 경로
-                        "/",               // HomeController 경로
-                        "/favicon.ico",    // 브라우저 기본 요청
-                        "/resources/**",   // 정적 리소스
-                        "/user/**",	       // 로그인 및 회원가입 관련 요청
-                        "/static/**",
-                		"/api/**"    	    // API 요청에 대해서는 세션 체크를 제외
-                );   
-        // Flash 메시지 처리 인터셉터
-        registry.addInterceptor(new FlashMessageInterceptor());
-        
+                .addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**", "/stock/**", "/order/**") // 인터셉터를 적용할 경로
+                .excludePathPatterns(                  // 제외할 경로들
+                        "/",                           // 홈 경로 제외
+                        "/favicon.ico",                // 브라우저 기본 요청 제외
+                        "/resources/**",               // 정적 리소스 제외
+                        "/user/**",                    // 로그인, 회원가입 관련 제외
+                        "/static/**",                  // 정적 리소스 제외
+                        "/api/**");
+  
         // LocaleChangeInterceptor를 추가하면, 요청 파라미터 (예: ?lang=ko)로 Locale을 변경할 수 있음
         LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
         localeInterceptor.setParamName("lang");
