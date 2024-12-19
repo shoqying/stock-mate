@@ -1,5 +1,6 @@
 package com.stockm8.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stockm8.domain.vo.Criteria;
+import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
 import com.stockm8.domain.vo.PageVO;
 import com.stockm8.domain.vo.ProductVO;
@@ -30,6 +32,7 @@ import com.stockm8.service.OrderProcessor;
 import com.stockm8.service.OrderService;
 import com.stockm8.service.ReceivingService;
 import com.stockm8.service.UserService;
+import com.stockm8.domain.vo.OrderItemVO;
 
 @Controller
 @RequestMapping(value = "/receiving/*")
@@ -42,6 +45,9 @@ public class ReceivingController {
 	
 	@Inject
 	private UserService uService;
+	
+	@Inject
+	private OrderService orderService;
 	
 	// http://localhost:8088/receiving/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
@@ -249,7 +255,6 @@ public class ReceivingController {
 	    model.addAttribute("receivingShipmentNo", receivingShipmentNo);
 	    model.addAttribute("orderItemId", orderItemId);
 	    
-
 	    Map<String, Object> response = new HashMap<>();
 	    if (userId == null) {
 	        response.put("success", false);
@@ -258,7 +263,20 @@ public class ReceivingController {
 	    }
 	    	
 	    try {
-	    	rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderItemId);
+         
+	        // OrderItemVO 리스트 생성
+	        List<OrderItemVO> completedItems = new ArrayList<>();
+	        OrderItemVO item = new OrderItemVO();
+	        item.setOrderItemId(orderItemId);
+	        completedItems.add(item);
+	        
+	        // OrderService를 통해 orderId 가져오기
+	        // OrderService에 해당 메소드 추가 필요
+	        int orderId = orderService.getOrderIdByOrderItemId(orderItemId);
+
+	        rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderId, completedItems);
+
+
 	        int remainingStock = rService.increseStockByBarcode(businessId, barcode, receivingShipmentNo, orderItemId);
 	        int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId);
 	        ProductVO product = rService.productNameBarcode(businessId, barcode, receivingShipmentNo);

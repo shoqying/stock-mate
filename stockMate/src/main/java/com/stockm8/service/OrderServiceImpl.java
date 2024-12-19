@@ -123,7 +123,10 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 
-
+	@Override
+	public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception {
+	    return odao.getOrderIdByOrderItemId(orderItemId);
+	}
 	
 
 } //OrderServiceImpl
