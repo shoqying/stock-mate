@@ -118,4 +118,18 @@ public class HomeController {
 //               model.addAttribute("resultVO", resultVO);
 		return "/intro";
 	}
+	
+	// 회사소개 - /price (GET)
+	@RequestMapping(value = "/price", method = RequestMethod.GET)
+	public String priceGET(Model model, HttpSession session) throws Exception {
+		Long userId = (Long) session.getAttribute("userId");
+//                if (id == null) {
+//                    // 세션에 id가 없으면 에러 처리
+//                    return "redirect:/user/main";
+//                }
+//               UserVO resultVO = userService.getUser(userId);
+//               model.addAttribute("resultVO", resultVO);
+		return "/price";
+	}
+	
 }
