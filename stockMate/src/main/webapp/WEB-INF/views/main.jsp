@@ -91,58 +91,6 @@ body {
     box-shadow: 0 0 15px #007BFF, 0 0 30px #0056b3;
 }
 
-/* Content Section */
-.content {
-    text-align: center;
-    padding: 50px 20px;
-    background: #1e1e1e;
-    border-top: 4px solid #007BFF;
-    border-radius: 10px 10px 0 0;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
-}
-
-.content h2 {
-    color: #007BFF;
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
-
-.content p {
-    font-size: 1.2rem;
-    color: #bbbbbb;
-    line-height: 1.8;
-    margin-bottom: 30px;
-}
-
-/* Row Layout */
-.content .row {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-}
-
-.content .column {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 500px;
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.content .column img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.content .column img:hover {
-    transform: scale(1.1);
-}
-
 /* Footer */
 .footer {
     background: #333333;
@@ -164,8 +112,54 @@ body {
     text-decoration: underline;
 }
 
-.map-section{
-margin: 0 auto;
+/* 모달 기본 스타일 */
+.modal {
+    display: none; /* 숨김 처리 */
+    position: fixed;
+    top: 60%; /* 화면 상단에서 20% 아래에 표시 */
+    left: 50%;
+    transform: translate(-50%, -20%);
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    z-index: 999; /* 모달 뒤 배경 */
+    box-shadow: 0 8px 20px 8px rgba(0, 0, 0, 0.4); /* 전체적으로 그림자 효과 추가 */
+     
+}
+
+/* 모달 내용 */
+.modal-content {
+    background-color: #f9f9f9; /* 밝고 부드러운 배경색 */
+    color: #1a1a1a; /* 어두운 텍스트 색상 */
+     border: 4px solid #007BFF; /* 파란색 테두리 */
+    margin: auto;
+    padding: 30px; /* 더 넉넉한 내부 여백 */
+    border-radius: 16px; /* 더 둥근 모서리 */
+    width: 40%; /* 적절한 크기 */
+    max-width: 600px; /* 최대 너비 제한 */
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* 부드러운 그림자 효과 */
+    modal-overlay: rgba(0, 0, 0, 0.6)
+    animation: fadeIn 0.3s ease; /* 팝업 열리는 애니메이션 */
+    transition: all 0.3s ease; /* 부드러운 상태 전환 */
+}
+
+
+
+/* 닫기 버튼 */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red;
 }
 </style>
 </head>
@@ -181,56 +175,74 @@ margin: 0 auto;
         <a href="user/signup">회원가입</a>
         <a href="user/signin">로그인</a>
         <a href="/howtouse">대시보드 사용법</a>
-        <a href="/consultation">상담문의</a>
         <a href="/intro">회사소개</a>
         <a href="/location">창고소개</a>
+        <a href="/price">임대료</a>
+        <a href="/consultation">상담문의</a>
+        <a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%9A%A9%EC%9D%B8%EC%8B%9C%20%EC%B2%98%EC%9D%B8%EA%B5%AC%20%EC%96%91%EC%A7%80%EB%A9%B4%20%EC%A3%BC%EB%B6%81%EB%A1%9C%20103-1/address/14164717.7610606,4473895.3924035,%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%9A%A9%EC%9D%B8%EC%8B%9C%20%EC%B2%98%EC%9D%B8%EA%B5%AC%20%EC%96%91%EC%A7%80%EB%A9%B4%20%EC%A3%BC%EB%B6%81%EB%A1%9C%20103-1,new?searchType=address&isCorrectAnswer=true&c=15.00,0,0,0,dh" target="_blank">오시는 길</a>
     </div>
-
-    <!-- Main Content -->
-    <div class="content">
-        <h2>20년 노하우의 지산그룹이 만든 안성창고</h2>
-        <p>긍정 마인드를 통해 끊임없이 새로운 변화를 추구하고 있습니다</p>
-
-
-<p> 걸림돌을 디딤돌로 긍정의 끝은 무한한 가능성!</p>
-<p>지산그룹은 지난 1999년 창립 이후 오늘에 이르기까지 물류센터 개발, 운영 등 물류분야와 국내 PC업계 최초의 스마트 팩토리 구현 등
-축적된 기술력과 차별화된 경영전략 및 인적구성으로 최고의 서비스를 제공해 왔습니다.
-특히 건설전문가 집단의 역량을 살려 폭 넓은 지식과 경험을 바탕으로 분야별 전문 인력으로 구성되어 설계, 생산, 조립, 건설사업관리,
-프로젝트관리 등 부동산 개발의 전 분양에 걸쳐 자부심을 가지며 국내 최고의 물류센터와 PC개발 전문기업으로 앞서 나아가고 있습니다.
-어떠한 난관도 불가능한 것이 없다는 긍정 마인드를 통해 끊임없이 새로운 변화를 추구하는 지산그룹은 고객 여러분과 함께 하겠습니다.</p>
-
-
-
-
-
-        <div class="row">
-            <div class="column">
-                <img src="resources/css/9950253.jpg" alt="Warehouse Exterior">
-            </div>
-            <div class="column">
-                <img src="resources/css/36140.jpg" alt="Warehouse Interior">
-            </div>
-        </div>
-    </div>
-
-   <!-- Map Section -->
-    <div class="map-section">
-        <h3>회사 약도</h3>
-        <img src="resources/css/약도.png" alt="회사 약도">
-    </div>
-
-    <!-- Back Button -->
-    <div class="back-button">
-        <a href="#">뒤로 돌아가기</a>
-    </div>
-
-
-
 
     <!-- Footer -->
     <div class="footer">
-        회사 정보 - 사업자 번호, 연락처 등 유의 사항<br>
-        <a href="#">개인정보 처리방침</a> | <a href="#">이용약관</a>
+        <a href="javascript:void(0);" onclick="showTerms();">이용약관</a> | 
+        <a href="javascript:void(0);" onclick="showPrivacyPolicy();">개인정보취급방침</a>
     </div>
+
+    <!-- '이용약관' 모달 -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal();">&times;</span>
+            <h2>용인창고 이용약관</h2>
+            <p>
+                제 1조 총칙<br>
+                이 약관은 stock-mate(이하 "회사")가 제공하는 모든 서비스의 이용조건 및 절차, 기타 필요한 사항을 규정함을 목적으로 합니다.
+            </p>
+            <p>
+                제 2조 약관의 효력과 변경<br>
+                (1) 이 약관은 본 사이트에 공지함으로써 효력을 발휘합니다.<br>
+                (2) 회사는 필요 시 약관을 변경할 수 있으며, 변경된 약관은 사이트에 게시하거나 기타 방법으로 공지합니다.
+            </p>
+        </div>
+    </div>
+
+    <!-- '개인정보취급방침' 모달 -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePrivacyModal();">&times;</span>
+            <h2>개인정보취급방침</h2>
+            <p>
+                안성창고 회원의 개인 정보 보호를 매우 중요시하며, <br>
+                <strong>[정보통신망 이용 촉진 등에 관한 법률]</strong>을 준수하고 있습니다.<br>
+                고객님의 개인 정보 보호를 위해 최선을 다하겠습니다.
+            </p>
+            <p>
+                1. 개인정보의 수집 및 이용 목적<br>
+                (주)안성물류터미널(http://www.namsa.kr)은 고객의 정보보호에 대한 <br>
+                이용자의 개별적인 요구를 존중하며 관련법을 준수하기 위해 노력합니다.
+            </p>
+            <p>
+                - 본 방침은 2020년 10월 19일부터 시행됩니다.
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function showTerms() {
+            document.getElementById("termsModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("termsModal").style.display = "none";
+        }
+
+        function showPrivacyPolicy() {
+            document.getElementById("privacyModal").style.display = "block";
+        }
+
+        function closePrivacyModal() {
+            document.getElementById("privacyModal").style.display = "none";
+        }
+    </script>
 </body>
 </html>
