@@ -204,7 +204,8 @@ public class ReceivingController {
 	
 	// http://localhost:8088/receiving/scan
 	@RequestMapping(value = "/scan", method = RequestMethod.GET)
-	public String scanGET(HttpServletRequest request) throws Exception {
+	public void scanGET(HttpServletRequest request, Model model, 
+			@RequestParam(value = "receivingShipmentNo", required = false) Integer receivingShipmentNo) throws Exception {
 		logger.info("scanGET() 호출");
 		
 		// 세션에서 userId 가져오기
@@ -214,8 +215,10 @@ public class ReceivingController {
 	    // userId로 사용자 정보 조회
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
-        
-        return "/receiving/scan";
+	    
+	    List<ReceivingShipmentVO> rsn = rService.getReceivingShipmentNo(businessId, receivingShipmentNo);
+	    
+	    model.addAttribute("rsn", rsn);
 	}
 	
 	// http://localhost:8088/receiving/scan
