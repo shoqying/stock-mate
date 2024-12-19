@@ -238,7 +238,6 @@ WHERE r.transaction_type = 'INBOUND'
     JOIN stocks s on o.product_id = s.product_id
     JOIN receiving_shipment r on r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
     SET s.total_quantity = s.total_quantity + 1,
-    s.reserved_quantity = s.reserved_quantity -1,
     o.change_quantity = o.change_quantity -1
     WHERE p.product_barcode = #{barcode}
     AND s.business_id = #{businessId}
@@ -288,12 +287,15 @@ AND r.order_item_id = #{orderItemId}
     JOIN products p ON r.product_id = p.product_id
     JOIN stocks s ON s.product_id = p.product_id
     JOIN order_items o ON s.product_id = o.product_id
-    SET r.status = 'COMPLETED'
+    SET r.status = 'COMPLETED',
+        s.reserved_quantity = s.reserved_quantity - o.quantity
     WHERE p.product_barcode = #{barcode}
     AND o.change_quantity = 0
     AND r.status = 'PENDING'
     AND s.business_id = #{businessId}
     AND r.receiving_shipment_no = #{receivingShipmentNo}
+    AND r.order_item_id = #{orderItemId}
+    AND o.order_item_id = r.order_item_id;
 </update>
 <!-- receiving scan을 위한 매퍼 -->
 
