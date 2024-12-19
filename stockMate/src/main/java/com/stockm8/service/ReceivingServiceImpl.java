@@ -127,6 +127,7 @@ public class ReceivingServiceImpl implements ReceivingService {
 	        // MyBatis 매퍼 호출
 	        rdao.updateReceivingStatusToComplete(businessId, barcode, receivingShipmentNo);
 	        opService.processInboundAfterInspection(orderId, completedItems);
+
 	    } catch (Exception e) {
 	        // 예외 처리
 	        logger.error("입고 상태 업데이트 오류: " + e.getMessage());

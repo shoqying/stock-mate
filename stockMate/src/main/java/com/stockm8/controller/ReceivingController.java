@@ -263,6 +263,7 @@ public class ReceivingController {
 	    }
 	    	
 	    try {
+         
 	        // OrderItemVO 리스트 생성
 	        List<OrderItemVO> completedItems = new ArrayList<>();
 	        OrderItemVO item = new OrderItemVO();
@@ -274,6 +275,8 @@ public class ReceivingController {
 	        int orderId = orderService.getOrderIdByOrderItemId(orderItemId);
 
 	        rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderId, completedItems);
+
+
 	        int remainingStock = rService.increseStockByBarcode(businessId, barcode, receivingShipmentNo, orderItemId);
 	        int reservedQuantity = rService.decreaseReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId);
 	        ProductVO product = rService.productNameBarcode(businessId, barcode, receivingShipmentNo);
