@@ -41,6 +41,8 @@ public interface OrderDAO {
     // 전체 주문 개수 조회 (페이징 계산)
     public int getTotalOrderCount(int businessId);
     
+    // 오더아이디 
+    public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception;
     
     
 } // OrderDAO

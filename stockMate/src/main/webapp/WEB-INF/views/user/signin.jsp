@@ -95,6 +95,7 @@ body {
 <body>
     <div class="login-container">
         <h2>로그인</h2>
+
         <%-- 에러 메시지 표시 --%>
 		<c:if test="${not empty errorMessage}">
 		    <div class="error-banner">${errorMessage}</div>
@@ -104,6 +105,7 @@ body {
 		<c:if test="${not empty successMessage}">
 			<div class="success-banner">${successMessage}</div>
 		</c:if>
+
         <form action="/user/signin" method="post">
             <input type="email" name="email" placeholder="이메일" required>
             <input type="password" name="password" placeholder="비밀번호" required>
