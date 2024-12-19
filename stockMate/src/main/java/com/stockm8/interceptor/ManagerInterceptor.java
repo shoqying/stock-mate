@@ -18,9 +18,9 @@ import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
 
 @Component
-public class AdminInterceptor implements HandlerInterceptor {
+public class ManagerInterceptor implements HandlerInterceptor {
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminInterceptor.class);
+	private static final Logger logger = LoggerFactory.getLogger(ManagerInterceptor.class);
 	
 	@Autowired
 	private UserService userService; // 유저 정보를 가져오기 위한 서비스 클래스
@@ -51,13 +51,13 @@ public class AdminInterceptor implements HandlerInterceptor {
 	    }
 
 	    // 4. 관리자 권한 확인
-	    if (user.getUserRole() != UserRole.ADMIN) {
+	    if (user.getUserRole() != UserRole.MANAGER) {
 	        logger.warn("권한 없는 접근 시도 (유저 ID: {}, 역할: {}).", userId, user.getUserRole());
-	        return sendErrorMessage(request, response, "관리자 전용 페이지입니다. 접근 권한이 없습니다.", "/user/signin");
+	        return sendErrorMessage(request, response, "매니저 전용 페이지입니다. 접근 권한이 없습니다.", "/user/signin");
 	    }
 
 	    // 검증 성공: 사용자 정보 저장
-	    logger.info("관리자 확인 완료 (유저 ID: {}, 이름: {}).", userId, user.getUserName());
+	    logger.info("매니저 확인 완료 (유저 ID: {}, 이름: {}).", userId, user.getUserName());
 	    request.setAttribute("currentUser", user);
 	    return true;
 	}

@@ -9,7 +9,6 @@
     <title>대시보드</title>
     <link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
     <style>
-<<<<<<< HEAD
     
         /* Reset and Global Styles */
         body, html {
@@ -173,7 +172,15 @@
             <a href="/receiving/main">입고</a>
             <a href="/shipment/main">출고</a>
             <a href="/stock/list">재고</a>
-            <a href="/admin/main">관리자 페이지</a>
+            
+        <c:choose>
+	        <c:when test="${userRole == 'ADMIN'}">
+	            <a href="/admin/main">관리자 페이지</a>
+	        </c:when>
+	        <c:when test="${userRole == 'MANAGER'}">
+	            <a href="/manager/main">매니저 페이지</a>
+	        </c:when>
+    	</c:choose>
         </div>
 
         <!-- Content Section -->

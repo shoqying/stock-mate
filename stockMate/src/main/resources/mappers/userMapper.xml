@@ -92,7 +92,7 @@
 	    ORDER BY u.created_at DESC
 	</select>
 	
-	<select id="selectStaffByBusinessId" parameterType="long" resultType="com.stockm8.domain.dto.PendingUserDTO">
+	<select id="selectStaffByBusinessId" parameterType="int" resultType="com.stockm8.domain.dto.PendingUserDTO">
 	    SELECT u.user_id AS approvedUserId, 
 	           u.email, 
 	           u.user_name, 

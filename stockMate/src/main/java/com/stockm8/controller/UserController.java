@@ -86,7 +86,7 @@ public class UserController {
 		return "redirect:/user/signin";
 	}
 
-	// http://localhost:8088/user/login (GET)
+	// http://localhost:8088/user/signin (GET)
 	// 로그인 - 정보입력 / GET
 	@RequestMapping(value = "/signin", method = RequestMethod.GET)
 	public String userSgininGET(HttpServletRequest request, Model model) {
@@ -100,7 +100,6 @@ public class UserController {
 				model.addAttribute("errorMessage", errorMessage);
 			}
 		}
-
 		return "/user/signin";
 	}
 
@@ -121,6 +120,7 @@ public class UserController {
 
 		// 세션에 사용자 ID 저장
 		session.setAttribute("userId", resultVO.getUserId());
+        logger.debug("세션 저장 완료 - Session ID: {}, User ID: {}", session.getId(), session.getAttribute("userId"));
 
 		// 원래 요청 URL로 리다이렉트
         String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
@@ -131,7 +131,6 @@ public class UserController {
         }
 			return "redirect:/dashboard";
 		}
-
 		// 로그인 실패 처리
 		logger.warn("로그인 실패, 사용자 정보를 찾을 수 없습니다.");
 		rttr.addFlashAttribute("errorMessage", "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
@@ -341,14 +340,14 @@ public class UserController {
 
 
 	// 비밀번호 찾기 - GET
-    @RequestMapping(value = "/findPassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/findpassword", method = RequestMethod.GET)
     public String findPasswordGet() {
-        return "/user/findPassword";  // 비밀번호 찾기 페이지로 이동
+        return "/user/findpassword";  // 비밀번호 찾기 페이지로 이동
     }
 
     // 비밀번호 찾기 - POST 
-    @RequestMapping(value = "/findPassword", method = RequestMethod.POST)
-    public String findPasswordPost(@RequestParam("email") String email,
+    @RequestMapping(value = "/findpassword", method = RequestMethod.POST)
+    public String findpasswordPost(@RequestParam("email") String email,
                                     @RequestParam("name") String name,
                                     Model model) {
     	 try {
@@ -364,13 +363,13 @@ public class UserController {
     	            // 비밀번호가 일치하지 않으면 오류 메시지 추가
     	            logger.info("비밀번호 찾기 실패: 이메일 또는 이름이 일치하지 않음"); // 실패 로그
     	            model.addAttribute("errorMessage", "이메일 또는 이름이 일치하지 않습니다.");
-    	            return "/user/findPassword";  // 비밀번호 찾기 페이지로 다시 이동
+    	            return "/user/findpassword";  // 비밀번호 찾기 페이지로 다시 이동
     	        }
     	    } catch (Exception e) {
     	        e.printStackTrace();
     	        logger.error("비밀번호 찾기 처리 중 오류 발생", e);  // 예외 로그 추가
     	        model.addAttribute("errorMessage", "비밀번호 찾기 처리 중 오류가 발생했습니다.");
-    	        return "/user/findPassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
+    	        return "/user/findpassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
     	    }
     	}
 
