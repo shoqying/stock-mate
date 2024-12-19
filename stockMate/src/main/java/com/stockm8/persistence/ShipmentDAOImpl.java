@@ -121,7 +121,7 @@ public class ShipmentDAOImpl implements ShipmentDAO {
 	    params.put("barcode", barcode);
 
 	    // SQL 실행
-	    return sqlSession.update(NAMESPACE + "updateIncreseStock", params);
+	    return sqlSession.update(NAMESPACE + "updateDecreaseStock", params);
 	}
 
 	@Override
@@ -159,6 +159,15 @@ public class ShipmentDAOImpl implements ShipmentDAO {
 		params.put("barcode", barcode);
 		sqlSession.update(NAMESPACE + "updateShipmentStatusToComplete", params);
 		
+	}
+	
+	@Override
+	public List<ReceivingShipmentVO> selectReceivingShipmentNo(int businessId, Integer receivingShipmentNo) throws Exception {
+		logger.info("selecttReceivingShipmentNo() 호출");
+		Map<String, Object> params = new HashMap<>();
+		params.put("businessId", businessId);
+		params.put("receivingShipmentNo", receivingShipmentNo);
+		return sqlSession.selectList(NAMESPACE + "getReceivingShipmentNo", params);
 	}
 	
 	

@@ -239,7 +239,6 @@ tr:hover {
 
 	<h1>출고 내역</h1>
 	<a href="/shipment/main">출고 메인</a>
-	<a href="/shipment/scan">출고 검수</a>
 	<form action="/shipment/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
@@ -287,7 +286,11 @@ tr:hover {
 			</tr>
 			<c:forEach var="vo" items="${ShipmentList }">
 				<tr>
-					<td>${vo.receivingShipmentNo }</td>
+					<td>
+			            <a href="/shipment/scan?receivingShipmentNo=${vo.receivingShipmentNo}">
+			                ${vo.receivingShipmentNo}
+			            </a>
+			        </td>
 					<td>     
                  <c:choose>
                     <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>

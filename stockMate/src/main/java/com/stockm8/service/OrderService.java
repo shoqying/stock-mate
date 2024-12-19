@@ -38,5 +38,8 @@ public interface OrderService {
     // 전체 주문 개수 조회 (페이징 계산)
     public int getTotalOrderCount(int businessId);
     
+    // 오더 아이디 가져가는 메소드
+    
+    public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception;
     
 } //OrderService

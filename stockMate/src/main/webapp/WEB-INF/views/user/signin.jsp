@@ -107,8 +107,13 @@
 		    opacity: 0.1;
 		    z-index: 0;
 		}
-		
-		
+		            
+    .footer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #777777;
+        text-align: center;
+    }
 		
 		.logo img{
 			width : 90%;
@@ -118,9 +123,10 @@
     </style>
 </head>
 <body>
+      <div class="login-container">
+        <h2>로그인</h2>
 
-
-    <%-- 에러 메시지 표시 --%>
+        <%-- 에러 메시지 표시 --%>
 		<c:if test="${not empty errorMessage}">
 		    <div class="error-banner">${errorMessage}</div>
 		</c:if>
@@ -129,8 +135,6 @@
 		<c:if test="${not empty successMessage}">
 			<div class="success-banner">${successMessage}</div>
 		</c:if>
-		
-   
 
     <div class="container">
 		
@@ -139,8 +143,6 @@
 				<img alt="" src="../resources/css/stockmate-removebg-preview.png">
 			</a>
 		</div>
-		
-	
 
         <div class="login-box">
             <form id="loginForm" method="post">
@@ -157,7 +159,6 @@
                 <a href="/user/signup">회원가입</a>
                 <a href="/user/findpassword">비밀번호 찾기</a>
             </div>
-            
         </div>
     </div>
 </body>

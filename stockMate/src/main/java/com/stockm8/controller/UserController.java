@@ -86,7 +86,7 @@ public class UserController {
 		return "redirect:/user/signin";
 	}
 
-	// http://localhost:8088/user/login (GET)
+	// http://localhost:8088/user/signin (GET)
 	// 로그인 - 정보입력 / GET
 	@RequestMapping(value = "/signin", method = RequestMethod.GET)
 	public String userSgininGET(HttpServletRequest request, Model model) {
@@ -100,7 +100,6 @@ public class UserController {
 				model.addAttribute("errorMessage", errorMessage);
 			}
 		}
-
 		return "/user/signin";
 	}
 
@@ -121,6 +120,7 @@ public class UserController {
 
 		// 세션에 사용자 ID 저장
 		session.setAttribute("userId", resultVO.getUserId());
+        logger.debug("세션 저장 완료 - Session ID: {}, User ID: {}", session.getId(), session.getAttribute("userId"));
 
 		// 원래 요청 URL로 리다이렉트
         String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
@@ -131,7 +131,6 @@ public class UserController {
         }
 			return "redirect:/dashboard";
 		}
-
 		// 로그인 실패 처리
 		logger.warn("로그인 실패, 사용자 정보를 찾을 수 없습니다.");
 		rttr.addFlashAttribute("errorMessage", "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");

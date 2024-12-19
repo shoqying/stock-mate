@@ -15,12 +15,18 @@ $(document).ready(function () {
     $("#barcodeInput").on("keyup", function (e) {
         if (e.key === "Enter") {
             let barcode = $(this).val().trim();
-            if (barcode) {
+            let receivingShipmentNo = $("#receivingShipmentNo").val().trim();
+            let orderItemId = $("#orderItemId").val().trim();
+            if ((barcode && receivingShipmentNo && orderItemId)) {
                 $.ajax({
                     url: "/receiving/scan",
                     method: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify({ barcode: barcode }),
+                    data: JSON.stringify({
+                        barcode: barcode,
+                        receivingShipmentNo: parseInt(receivingShipmentNo),
+                        orderItemId: parseInt(orderItemId)
+                    }),
                     success: function (response) {
                         if (response.success) {
                             $("#stockInfo").html(
@@ -28,7 +34,7 @@ $(document).ready(function () {
                                     "<thead>" +
                                         "<tr>" +
                                             "<th>제품명</th>" +
-                                            "<th>남은 재고</th>" +
+                                            "<th>총 재고량</th>" +
                                             "<th>입고처리할 남은 수량</th>" +
                                             "<th>단가</th>" +
                                         "</tr>" +
@@ -211,6 +217,14 @@ td {
         <a href="/receiving/allScan">다중 입고 검수</a>
     </header>
     <main>
+		<div>
+		    <label for="receivingShipmentNo">입고 번호:</label>
+		    <input type="number" id="receivingShipmentNo" value="${receivingShipmentNo }">
+		</div>
+		<div>
+            <label for="orderItemId">주문 항목 ID:</label>
+            <input type="number" id="orderItemId" value="${orderItemId }" />
+        </div>
         <div>
             <label for="barcodeInput">바코드 입력:</label>
             <input type="text" id="barcodeInput" placeholder="바코드를 입력하세요" autofocus />

@@ -18,8 +18,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -44,6 +42,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import com.stockm8.interceptor.AdminInterceptor;
 import com.stockm8.interceptor.AuthorizationInterceptor;
 import com.stockm8.interceptor.FlashMessageInterceptor;
+import com.stockm8.interceptor.ManagerInterceptor;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -65,6 +64,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private AdminInterceptor adminInterceptor;
     
+    @Autowired
+    private ManagerInterceptor managerInterceptor;
+    
     /**
      * 인터셉터 설정
      * 특정 URL 패턴에 대해 AuthorizationInterceptor를 적용하며, 일부 URL은 제외합니다.
@@ -83,10 +85,14 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(adminInterceptor)
         		.addPathPatterns("/admin/**") // /admin/** 경로에만 적용
         		.excludePathPatterns(excludedPaths.toArray(new String[0]));
+        
+        registry.addInterceptor(managerInterceptor)
+		.addPathPatterns("/manager/**") // /admin/** 경로에만 적용
+		.excludePathPatterns(excludedPaths.toArray(new String[0]));
         		
     	// Intercepter 적용
         registry.addInterceptor(authorizationInterceptor)
-                .addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**", "/stock/**", "/order/**") // 인터셉터를 적용할 경로
+				.addPathPatterns("/dashboard", "/business", "/category/**", "/product/**", "/warehouse/**", "/stock/**", "/order/**") // 인터셉터를 적용할 경로
                 .excludePathPatterns(                  // 제외할 경로들
                         "/",                           // 홈 경로 제외
                         "/favicon.ico",                // 브라우저 기본 요청 제외

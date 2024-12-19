@@ -12,15 +12,19 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.stockm8.domain.enums.UserRole;
+import com.stockm8.domain.vo.UserVO;
+import com.stockm8.service.UserService;
 
 /**
  * Handles requests for the application home page.
@@ -29,6 +33,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	private UserService userService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -45,20 +52,31 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		return "main";
 	}
+	
 	//http://localhost:8088/dashboard
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String dash(Locale locale, Model model) {
+	public String dash(HttpSession session, Locale locale, Model model) throws Exception {
 		logger.info("😁Welcome dashboad😁! The client locale is {}.", locale);
 		
+        // 세션에서 userId 가져오기
+		Long userId = (session != null) ? (Long) session.getAttribute("userId") : null;
+
+        // userId로 사용자 정보 조회
+        UserVO user = userService.getUserById(userId);
+        logger.info("세션으로 들고온 유저정보: " + user);
+        UserRole userRole = user.getUserRole();
+        
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		
+	    model.addAttribute("userRole", userRole);
+
 		return "dashboard";
 	}
+	
     // http://localhost:8088/qrScanner
 	@RequestMapping(value = "/qrScanner", method = RequestMethod.GET)
 	public String qrScanner(Locale locale, Model model) {

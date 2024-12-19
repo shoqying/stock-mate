@@ -233,7 +233,7 @@ WHERE r.transaction_type = 'OUTBOUND'
     UPDATE stocks s
     JOIN products p on p.product_id = s.product_id
     SET s.total_quantity = s.total_quantity - 1,
-    s.reserved_quantity = s.reserved_quantity -1
+    s.reserved_quantity = s.reserved_quantity - 1
     WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
     AND s.reserved_quantity > 0
 </update>
@@ -273,5 +273,27 @@ WHERE r.transaction_type = 'OUTBOUND'
     AND s.business_id = #{businessId};
 </update>
 <!-- Shipment scan을 위한 매퍼 -->
+
+<!-- 입고 내역 히스토리 -->
+<select id="getReceivingShipmentNo" resultMap="receivingShipmentMap">
+	select DISTINCT 
+	r.receiving_shipment_no, 
+	r.transaction_type, 
+	r.created_at, 
+	r.status, 
+	r.product_id, 
+	p.product_name, 
+	p.product_description, 
+	r.change_quantity, 
+	p.product_price,
+	r.warehouse_id,
+	r.memo
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
+	JOIN users u on u.created_by = r.created_by
+	where transaction_type = 'OUTBOUND' AND u.business_id = #{businessId} 
+	AND r.receiving_shipment_no = #{receivingShipmentNo}
+</select>
 
 </mapper>

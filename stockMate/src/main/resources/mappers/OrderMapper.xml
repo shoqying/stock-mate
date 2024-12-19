@@ -31,6 +31,7 @@
 	    <result property="productId" column="product_id"/>
 	    <result property="warehouseId" column="warehouse_id"/>
 	    <result property="quantity" column="quantity"/>
+	    <result property="ChangeQuantity" column="change_quantity"/>
 	    <result property="unitPrice" column="unit_price"/>
 	    <result property="remarks" column="remarks"/>
 	    <result property="stotalPrice" column="subtotal_price"/>  
@@ -110,6 +111,7 @@
             product_id,
             warehouse_id,
             quantity,
+            change_quantity,
             unit_price,
             remarks,
             created_at
@@ -117,6 +119,7 @@
             #{orderId},
             #{productId},
             #{warehouseId},
+            #{quantity},
             #{quantity},
             #{unitPrice},
             #{remarks},
@@ -228,5 +231,11 @@
 	    JOIN users u ON o.created_by = u.user_id
 	    WHERE u.business_id = #{businessId}
 	</select>
-    
+	
+	
+	<select id="getOrderIdByOrderItemId" parameterType="int" resultType="int">
+	    SELECT order_id 
+	    FROM order_items   
+	    WHERE order_item_id = #{orderItemId}
+	</select>
 </mapper>
