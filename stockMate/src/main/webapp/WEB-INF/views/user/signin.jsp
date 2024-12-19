@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로그인</title>
+<link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
 <style>
 /* Reset */
 * {
@@ -93,7 +95,16 @@ body {
 <body>
     <div class="login-container">
         <h2>로그인</h2>
-        <form action="/user/login" method="post">
+        <%-- 에러 메시지 표시 --%>
+		<c:if test="${not empty errorMessage}">
+		    <div class="error-banner">${errorMessage}</div>
+		</c:if>
+		
+		<%-- 성공 메시지 표시 --%>
+		<c:if test="${not empty successMessage}">
+			<div class="success-banner">${successMessage}</div>
+		</c:if>
+        <form action="/user/signin" method="post">
             <input type="email" name="email" placeholder="이메일" required>
             <input type="password" name="password" placeholder="비밀번호" required>
             <button type="submit">로그인</button>
