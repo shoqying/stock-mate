@@ -20,7 +20,7 @@
 
         .signup-container {
             width: 600px; /* 컨테이너 폭 */
-            padding: 40px 30px; /* 위아래 40px, 좌우 30px 패딩 */
+            padding: 40px 30px;
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
@@ -39,13 +39,14 @@
             gap: 20px; /* 입력 필드 간 거리 */
         }
 
-        .signup-container input {
-            width: 100%; /* 입력 필드가 컨테이너 너비에 맞게 */
-            padding: 15px; /* 필드 안쪽 여백 */
+        .signup-container input,
+        .signup-container select {
+            width: 100%;
+            padding: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
-            box-sizing: border-box; /* 패딩 포함 크기 계산 */
+            box-sizing: border-box;
         }
 
         .signup-container input::placeholder {
@@ -59,8 +60,8 @@
         }
 
         .btn {
-            flex: 1; /* 버튼이 균등한 폭을 가지도록 설정 */
-            padding: 15px 0; /* 버튼 높이 */
+            flex: 1;
+            padding: 15px 0;
             font-size: 16px;
             font-weight: bold;
             border-radius: 5px;
@@ -99,11 +100,18 @@
         <h2>회원가입</h2>
 
         <form action="/user/signup" method="post">
-            <input type="email" placeholder="이메일" name="email">
-            <input type="password" placeholder="비밀번호" name="password">
-            <input type="text" placeholder="이름" name="name">
-            <input type="tel" placeholder="전화번호" name="phone">
-            <input type="text" placeholder="역할 (ADMIN, MANAGER, STAFF)" name="role">
+            <input type="email" placeholder="이메일" name="email" required>
+            <input type="password" placeholder="비밀번호" name="password" required>
+            <input type="text" placeholder="이름" name="userName" required>
+            <input type="tel" placeholder="전화번호" name="telNumber" required>
+
+            <!-- 역할 드롭다운 메뉴 -->
+            <select name="userRole" required>
+                <option value="" disabled selected>역할 선택</option>
+                <option value="ADMIN">관리자</option>
+                <option value="MANAGER">매니저</option>
+                <option value="STAFF">직원</option>
+            </select>
 
             <div class="buttons">
                 <!-- 가입하기 버튼 -->
@@ -120,4 +128,3 @@
     </div>
 </body>
 </html>
-

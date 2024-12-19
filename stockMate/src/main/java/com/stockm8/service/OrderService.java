@@ -6,7 +6,8 @@ import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
 import com.stockm8.domain.vo.ProductVO;
-import com.stockm8.domain.vo.StockVO;  
+import com.stockm8.domain.vo.StockVO;
+import com.stockm8.domain.vo.OrderVO.OrderType;  
 
 public interface OrderService {
 	
@@ -31,8 +32,8 @@ public interface OrderService {
     // 주문 상세 항목 목록 조회
     public List<OrderItemVO> getOrderItemsByOrderId(int orderId) throws Exception;
     
-    // 가용 재고 체크 미사용
-    public boolean checkAvailableStock(OrderItemVO item) throws Exception;
+    // 가용 재고 체크
+    public boolean checkAvailableStock(OrderItemVO item, OrderType orderType) throws Exception;
     
     // 전체 주문 개수 조회 (페이징 계산)
     public int getTotalOrderCount(int businessId);

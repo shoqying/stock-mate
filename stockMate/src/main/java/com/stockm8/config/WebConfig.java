@@ -51,7 +51,6 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.stockm8")
 @MapperScan(basePackages = "com.stockm8.mapper") // 지정된 패키지에서 MyBatis Mapper 인터페이스를 스캔하여 등록합니다.
-@EnableTransactionManagement // 트랜잭션 관리 활성화
 public class WebConfig implements WebMvcConfigurer {
 
     /**
@@ -169,10 +168,6 @@ public class WebConfig implements WebMvcConfigurer {
      * 트랜잭션 관리자 빈 생성
      * Spring의 트랜잭션 관리 기능을 사용하기 위해 DataSourceTransactionManager를 빈으로 등록합니다.
      */
-    @Bean
-    public DataSourceTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(dataSource());
-    }
     
     @Bean
     public org.apache.ibatis.session.Configuration myBatisConfiguration() {

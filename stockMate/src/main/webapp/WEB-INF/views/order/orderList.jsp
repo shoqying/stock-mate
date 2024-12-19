@@ -31,7 +31,7 @@
                <td>
                    <c:choose>
                        <c:when test="${not empty order.createdAt}">
-                           <!-- [신규] 날짜 포맷팅 - yyyy-MM-dd HH:mm:ss 형식으로 통일 -->
+                           <!-- 날짜 포맷팅 - yyyy-MM-dd HH:mm:ss 형식으로 통일 -->
                            <fmt:formatDate value="${order.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                        </c:when>
                        <c:otherwise>값이 없습니다</c:otherwise>
@@ -40,8 +40,8 @@
                <td>
                    <c:choose>
                        <c:when test="${not empty order.totalPrice}">
-                           <!-- [신규] 금액 포맷팅 - 천단위 구분자와 원화 표시 추가 -->
-                           <fmt:formatNumber value="${order.totalPrice}" pattern="#,###" />원
+                           <!-- 금액 포맷팅 - 천단위 구분자와 원화 표시 추가 pattern="#,###" 하면... 되는데.. 문제가... -->
+                           <fmt:formatNumber value="${order.totalPrice}"  />원  
                        </c:when>
                        <c:otherwise>값이 없습니다</c:otherwise>
                    </c:choose>
@@ -93,6 +93,5 @@
        location.href = '/order/orderList?page=1&pageSize=' + size;
    }
    </script>
-</body>
 </body>
 </html>
