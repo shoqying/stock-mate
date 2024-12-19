@@ -22,7 +22,7 @@ body {
 
 /* Fullscreen Header Section */
 .header {
-    height: 100vh;
+    height: 87vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -40,7 +40,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('resources/css/stockmate.png') no-repeat center center/contain;
+    background: url('resources/css/stockmate-removebg-preview.png') no-repeat center center/contain;
     opacity: 0.1;
     z-index: 0;
 }
@@ -63,7 +63,7 @@ body {
 .nav {
     display: flex;
     justify-content: center;
-    padding: 15px 0;
+    padding: 10px 0;
     background: #333333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -71,13 +71,14 @@ body {
 .nav a {
     color: #ffffff;
     text-decoration: none;
-    margin: 0 15px;
-    padding: 10px 20px;
+    margin: 10px 15px;
+    padding: 15px 25px;
     font-weight: bold;
     border: 2px solid #007BFF;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: all 0.3s ease;
     box-shadow: 0 0 10px #007BFF, 0 0 20px #0056b3;
+    font-size: 16px;
 }
 
 .nav a:hover {
@@ -90,7 +91,6 @@ body {
 /* Footer */
 .footer {
     background: #333333;
-    color: #ffffff;
     padding: 20px 10px;
     text-align: center;
     font-size: 0.9rem;
@@ -98,14 +98,15 @@ body {
 }
 
 .footer a {
-    color: #007BFF;
+    color: #fff;
     text-decoration: none;
     transition: color 0.3s;
+    margin: 5px 5px;
 }
 
 .footer a:hover {
-    color: #0056b3;
-    text-decoration: underline;
+    color: #007BFF;
+/*     text-decoration: underline; */
 }
 
 /* 모달 기본 스타일 */
@@ -153,6 +154,8 @@ body {
     color: red;
 }
 
+
+
 @keyframes fadeIn {
     from {
         background-color: rgba(0, 0, 0, 0);
@@ -175,13 +178,8 @@ body {
 </style>
 </head>
 <body>
-    <!-- Fullscreen Header -->
-    <div class="header">
-        <h1>Warehouse Management Solutions</h1>
-        <p>스마트한 재고 관리와 최적화된 물류 시스템을 제공합니다.</p>
-    </div>
 
-    <!-- Navigation -->
+ <!-- Navigation -->
     <div class="nav">
         <a href="user/signup">회원가입</a>
         <a href="/dashboard">대시보드</a>
@@ -192,12 +190,23 @@ body {
         <a href="/consultation">상담문의</a>
         <a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%9A%A9%EC%9D%B8%EC%8B%9C%20%EC%B2%98%EC%9D%B8%EA%B5%AC%20%EC%96%91%EC%A7%80%EB%A9%B4%20%EC%A3%BC%EB%B6%81%EB%A1%9C%20103-1/address/14164717.7610606,4473895.3924035,%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%9A%A9%EC%9D%B8%EC%8B%9C%20%EC%B2%98%EC%9D%B8%EA%B5%AC%20%EC%96%91%EC%A7%80%EB%A9%B4%20%EC%A3%BC%EB%B6%81%EB%A1%9C%20103-1,new?searchType=address&isCorrectAnswer=true&c=15.00,0,0,0,dh" target="_blank">오시는 길</a>
     </div>
+    
+    
+    <!-- Fullscreen Header -->
+    <div class="header">
+        <h1>Warehouse Management Solutions</h1>
+        <p>스마트한 재고 관리와 최적화된 물류 시스템을 제공합니다.</p>
+    </div>
+
+   
 
     <!-- Footer -->
     <div class="footer">
-        <a href="javascript:void(0);" onclick="showTerms();">이용약관</a> | 
-        <a href="javascript:void(0);" onclick="showPrivacyPolicy();">개인정보취급방침</a> | 
-        <a href="javascript:void(0);" onclick="showEmailPolicy();">이메일주소무단수집거부</a>
+   		 <div class="footera">
+	        <a href="javascript:void(0);" onclick="showTerms();">이용약관</a> | 
+	        <a href="javascript:void(0);" onclick="showPrivacyPolicy();">개인정보 취급방침</a> | 
+	        <a href="javascript:void(0);" onclick="showEmailPolicy();">이메일주소무단수집거부</a>
+        </div>
     </div>
 
     <!-- '이용약관' 모달 -->
