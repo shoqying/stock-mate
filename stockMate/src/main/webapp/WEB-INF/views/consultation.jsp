@@ -148,7 +148,7 @@
         <!-- 상담 신청 폼 -->
         <div class="form-container">
             <h2>상담문의</h2>
-            <form action="/user/sendConsultation" method="post">
+            <form action="/" method="post">
                 <input type="text" name="company" placeholder="회사명" required>
                 <input type="text" name="name" placeholder="이름" required>
                 <input type="text" name="contact" placeholder="연락처" required>
