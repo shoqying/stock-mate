@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.stockm8.domain.dto.PendingUserDTO;
+import com.stockm8.domain.dto.UpdateUserStatusDTO;
 import com.stockm8.domain.vo.UserVO;
 
 @Repository
@@ -61,6 +62,11 @@ public class UserDAOImpl implements UserDAO {
 	public List<PendingUserDTO> selectPendingUsersWithBusiness() {
 		return sqlSession.selectList(NAMESPACE + "selectPendingUsersWithBusiness");
 	}
+	
+	@Override
+	public List<PendingUserDTO> selectStaffByBusinessId(int businessId) {
+		return sqlSession.selectList(NAMESPACE + "selectStaffByBusinessId", businessId);
+	}
 
 	@Override
 	public void updateUser(UserVO user) {
@@ -68,11 +74,20 @@ public class UserDAOImpl implements UserDAO {
 		   sqlSession.update(NAMESPACE + "updateUser", user);
 		
 		   logger.info("회원정보 수정 완료!");
-		   
-		   
 	}
 	
+    // 회원 승인 여부 수정 
+	@Override
+	public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) {
+	    // DTO에서 데이터를 Map으로 변환
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("approvedUserId", updateUserStatusDTO.getApprovedUserId());
+	    params.put("userStatus", updateUserStatusDTO.getUserStatus()); // 'status' -> 'userStatus'로 변경
+	    params.put("userId", updateUserStatusDTO.getUserId());
 
+	    // MyBatis 쿼리 호출
+	    sqlSession.update(NAMESPACE + "updateUserStatus", params);
+	}
 
 	@Override
 	public void updatePassword(Long userId, String newPassword) {
@@ -110,9 +125,6 @@ public class UserDAOImpl implements UserDAO {
         return sqlSession.selectOne(NAMESPACE + "findPassword", Map.of("email", email, "name", name));
     }
 
-	
-	
-	
 	@Override
 	public int deleteUser(UserVO user) {
 		logger.info("deleteUser 실행: " + user);

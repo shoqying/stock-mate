@@ -43,12 +43,10 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
-	// http://localhost:8088 (o)
 
 	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/signin (o)
-	// http://localhost:8088/user/main (o)
+	// http://localhost:8088/ (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
 	// http://localhost:8088/dashboard (o)
@@ -121,16 +119,16 @@ public class UserController {
 		if (resultVO != null) {
 			logger.info("로그인 성공, 사용자 ID: {}", resultVO.getUserId());
 
-			// 세션에 사용자 ID 저장
-			session.setAttribute("userId", resultVO.getUserId());
+		// 세션에 사용자 ID 저장
+		session.setAttribute("userId", resultVO.getUserId());
 
-			// 원래 요청 URL로 리다이렉트
-//	        String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
-//	        
-//	        if (redirectUrl != null) {
-//	            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
-//	            return "redirect:" + redirectUrl;
-//	        }
+		// 원래 요청 URL로 리다이렉트
+        String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+        
+        if (redirectUrl != null) {
+            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
+            return "redirect:" + redirectUrl;
+        }
 			return "redirect:/dashboard";
 		}
 
@@ -253,7 +251,7 @@ public class UserController {
 		return "/user/changepassword1"; // 비밀번호 입력 페이지로 이동
 	}
 	
-	// 회원정보 수정 
+	
 	@RequestMapping(value = "/changepassword1", method = RequestMethod.POST)
 	public String changepassword2POST(@RequestParam("password") String password, RedirectAttributes rttr, HttpSession session) {
 	    Long userId = (Long) session.getAttribute("userId");
@@ -283,7 +281,7 @@ public class UserController {
 	    }
 	}
 	
-	//  - GET
+	
 	@RequestMapping(value = "/changepassword2", method = RequestMethod.GET)
 	public String changepassword2GET(@ModelAttribute("currentPassword") String currentPassword, Model model) {
 	    if (currentPassword == null || currentPassword.isEmpty()) {
@@ -294,7 +292,6 @@ public class UserController {
 	    return "/user/changepassword2"; // JSP 페이지 반환
 	}
 	
-	//  - POST
 	@RequestMapping(value = "/changepassword2", method = RequestMethod.POST)
 	public void changePasswordPOST(
 	        @RequestParam("newPassword") String newPassword,
@@ -340,96 +337,17 @@ public class UserController {
 	    }
 	}
 
-	// 상담하기 email - GET
-	@RequestMapping(value = "/sendConsultation", method = RequestMethod.POST)
-	public String sendConsultation(
-	        @RequestParam("company") String company,
-	        @RequestParam("name") String name,
-	        @RequestParam("contact") String contact,
-	        @RequestParam("email") String email,
-	        @RequestParam("inquiry") String inquiry,
-	        RedirectAttributes rttr) {
 
-	    final String fromEmail = "zzangmait@naver.com"; // 네이버 이메일 계정
-	    final String password = "571TT3J3UMVY"; // 네이버 이메일 비밀번호
-
-	    String toEmail = "zzangmait@naver.com"; // 수신 이메일 주소
-
-	    // SMTP 설정
-	    Properties props = new Properties();
-	    props.put("mail.smtp.host", "smtp.naver.com");
-	    props.put("mail.smtp.port", "465");
-	    props.put("mail.smtp.auth", "true");
-	    props.put("mail.smtp.ssl.enable", "true"); // SSL 활성화
-	    props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
-	    Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-	        protected PasswordAuthentication getPasswordAuthentication() {
-	            return new PasswordAuthentication(fromEmail, password);
-	        }
-	    });
-
-	    try {
-	        // 이메일 내용 설정
-	        MimeMessage message = new MimeMessage(session);
-	        message.setFrom(new javax.mail.internet.InternetAddress(fromEmail));
-	        message.addRecipient(Message.RecipientType.TO, new javax.mail.internet.InternetAddress(toEmail));
-	        message.setSubject("상담 신청 정보");
-
-	        // HTML 형식 이메일 본문
-	        String content = "<html>"
-	                + "<body style='font-family: Arial, sans-serif; margin: 0; padding: 0;'>"
-	                + "<div style='width: 100%; max-width: 600px; margin: 20px auto; border: 2px solid #005bac; border-radius: 10px; padding: 15px;'>"
-	                + "<h2 style='color: #005bac; text-align: center;'>상담 신청 정보</h2>"
-	                + "<table style='width: 100%; border-collapse: collapse;'>"
-	                + "  <tr style='background-color: #f2f9ff;'>"
-	                + "    <th style='text-align: left; padding: 8px; border: 1px solid #005bac; color: #005bac;'>회사명</th>"
-	                + "    <td style='padding: 8px; border: 1px solid #005bac;'>" + company + "</td>"
-	                + "  </tr>"
-	                + "  <tr>"
-	                + "    <th style='text-align: left; padding: 8px; border: 1px solid #005bac; color: #005bac;'>이름</th>"
-	                + "    <td style='padding: 8px; border: 1px solid #005bac;'>" + name + "</td>"
-	                + "  </tr>"
-	                + "  <tr style='background-color: #f2f9ff;'>"
-	                + "    <th style='text-align: left; padding: 8px; border: 1px solid #005bac; color: #005bac;'>연락처</th>"
-	                + "    <td style='padding: 8px; border: 1px solid #005bac;'>" + contact + "</td>"
-	                + "  </tr>"
-	                + "  <tr>"
-	                + "    <th style='text-align: left; padding: 8px; border: 1px solid #005bac; color: #005bac;'>이메일</th>"
-	                + "    <td style='padding: 8px; border: 1px solid #005bac;'>" + email + "</td>"
-	                + "  </tr>"
-	                + "  <tr style='background-color: #f2f9ff;'>"
-	                + "    <th style='text-align: left; padding: 8px; border: 1px solid #005bac; color: #005bac;'>문의 내용</th>"
-	                + "    <td style='padding: 8px; border: 1px solid #005bac;'>" + inquiry + "</td>"
-	                + "  </tr>"
-	                + "</table>"
-	                + "<p style='text-align: center; margin-top: 16px; color: #555;'>상담 신청해주셔서 감사합니다.</p>"
-	                + "</div>"
-	                + "</body></html>";
-
-	        // 이메일 본문을 HTML로 설정
-	        message.setContent(content, "text/html; charset=UTF-8");
-
-	        // 메일 전송
-	        Transport.send(message);
-	        rttr.addFlashAttribute("message", "상담 신청이 성공적으로 전송되었습니다.");
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        rttr.addFlashAttribute("error", "이메일 전송에 실패했습니다. 다시 시도해주세요.");
-	    }
-
-	    return "redirect:/user/consultation";
-	}
 
 
 	// 비밀번호 찾기 - GET
-    @RequestMapping(value = "/findpassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/findPassword", method = RequestMethod.GET)
     public String findPasswordGet() {
-        return "/user/findpassword";  // 비밀번호 찾기 페이지로 이동
+        return "/user/findPassword";  // 비밀번호 찾기 페이지로 이동
     }
 
     // 비밀번호 찾기 - POST 
-    @RequestMapping(value = "/findpassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/findPassword", method = RequestMethod.POST)
     public String findPasswordPost(@RequestParam("email") String email,
                                     @RequestParam("name") String name,
                                     Model model) {
@@ -446,13 +364,13 @@ public class UserController {
     	            // 비밀번호가 일치하지 않으면 오류 메시지 추가
     	            logger.info("비밀번호 찾기 실패: 이메일 또는 이름이 일치하지 않음"); // 실패 로그
     	            model.addAttribute("errorMessage", "이메일 또는 이름이 일치하지 않습니다.");
-    	            return "/user/findpassword";  // 비밀번호 찾기 페이지로 다시 이동
+    	            return "/user/findPassword";  // 비밀번호 찾기 페이지로 다시 이동
     	        }
     	    } catch (Exception e) {
     	        e.printStackTrace();
     	        logger.error("비밀번호 찾기 처리 중 오류 발생", e);  // 예외 로그 추가
     	        model.addAttribute("errorMessage", "비밀번호 찾기 처리 중 오류가 발생했습니다.");
-    	        return "/user/findpassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
+    	        return "/user/findPassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
     	    }
     	}
 

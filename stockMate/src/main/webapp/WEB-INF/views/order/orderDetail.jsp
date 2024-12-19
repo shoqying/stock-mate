@@ -36,7 +36,8 @@
                     <td>${order.orderNumber}</td>
                     <td><fmt:formatDate value="${order.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td>${order.orderType}</td>
-                    <td><fmt:formatNumber value="${order.totalPrice}" pattern="#,###.##"/>원</td>
+                    <!-- 포매팅 관련 문제로 인해 잠시 대기 금액에 대해서 다 표 기 할지 올림할지 모르겠음 pattern="#,###.##"  -->
+                    <td><fmt:formatNumber value="${order.totalPrice}" />원</td>
                 </tr>
             </table>
         </div>
@@ -64,8 +65,10 @@
                 <td>${item.warehouseName}</td>
                 <td><fmt:formatNumber value="${item.quantity}" pattern="#,###" /></td>
                 <td>${item.baseUnit}</td>
-                <td><fmt:formatNumber value="${item.unitPrice}" pattern="#,###" />원</td>
-                <td><fmt:formatNumber value="${item.stotalPrice}" pattern="#,###" />원</td>
+                <!-- 포매팅 대기 pattern="#,###" -->
+                <td><fmt:formatNumber value="${item.unitPrice}" />원</td>
+                <!-- 포매팅 대기  pattern="#,###"-->
+                <td><fmt:formatNumber value="${item.stotalPrice}"  />원</td>
                 <td>${item.shipmentStatus}</td>
                 <td>${item.remarks}</td>
             </tr>

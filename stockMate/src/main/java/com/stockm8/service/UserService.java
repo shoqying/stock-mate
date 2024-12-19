@@ -3,6 +3,7 @@ package com.stockm8.service;
 import java.util.List;
 
 import com.stockm8.domain.dto.PendingUserDTO;
+import com.stockm8.domain.dto.UpdateUserStatusDTO;
 import com.stockm8.domain.vo.UserVO;
 
 public interface UserService {
@@ -21,13 +22,17 @@ public interface UserService {
    // 조건에 맞는 pending 회원 리스트와 사업자 정보 가져오기
    public List<PendingUserDTO> getPendingUsersWithBusiness() throws Exception;
    
+   // 같은 회사의 pending 회원 리스트와 사업자 정보 가져오기
+   public List<PendingUserDTO> getStaffByBusinessId(int businessId) throws Exception;
+   
    // 회원정보 수정
    public void updateUser(UserVO user) throws Exception;
    
    public UserVO getUserInfoById(Long userId) throws Exception;
    
    void updatePassword(Long userId, String newPassword) throws Exception;
-
+   
+   public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO);
 
    // 회원정보에서 비밀번호 수정
    public void updateUserBusinessId(Long userId, int businessId) throws Exception;
@@ -55,5 +60,6 @@ public interface UserService {
      * @return 삭제 여부 (1: 삭제됨, 0: 삭제되지 않음)
      */
    int getIsDeleted(Long userId) throws Exception;
+
 
 }
