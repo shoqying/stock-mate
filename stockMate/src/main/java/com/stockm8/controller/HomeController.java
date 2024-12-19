@@ -100,7 +100,7 @@ public class HomeController {
 		}
 	
 	
-	// 상담하기 - /user/consultation (GET)
+	// 상담하기 - /consultation (GET)
 	@RequestMapping(value = "/consultation", method = RequestMethod.GET)
 	public String consultationGET(Model model, HttpSession session) throws Exception {
 		Long userId = (Long) session.getAttribute("id");
@@ -237,5 +237,6 @@ public class HomeController {
 //	               model.addAttribute("resultVO", resultVO);
 			return "/minimap";
 		}
-	
+		
 }
+	

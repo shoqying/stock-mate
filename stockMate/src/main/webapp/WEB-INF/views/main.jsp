@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -17,8 +15,6 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: #121212;
     color: #ffffff;
     line-height: 1.6;
@@ -114,38 +110,33 @@ body {
 
 /* 모달 기본 스타일 */
 .modal {
-    display: none; /* 숨김 처리 */
+    display: none;
     position: fixed;
-    top: 60%; /* 화면 상단에서 20% 아래에 표시 */
-    left: 50%;
-    transform: translate(-50%, -20%);
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    z-index: 999; /* 모달 뒤 배경 */
-    box-shadow: 0 8px 20px 8px rgba(0, 0, 0, 0.4); /* 전체적으로 그림자 효과 추가 */
-     
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 /* 모달 내용 */
 .modal-content {
-    background-color: #f9f9f9; /* 밝고 부드러운 배경색 */
-    color: #1a1a1a; /* 어두운 텍스트 색상 */
-     border: 4px solid #007BFF; /* 파란색 테두리 */
-    margin: auto;
-    padding: 30px; /* 더 넉넉한 내부 여백 */
-    border-radius: 16px; /* 더 둥근 모서리 */
-    width: 40%; /* 적절한 크기 */
-    max-width: 600px; /* 최대 너비 제한 */
+    background-color: #ffffff;
+    color: #333333;
+    padding: 30px;
+    border-radius: 15px;
+    width: 50%;
+    max-width: 600px;
     position: relative;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* 부드러운 그림자 효과 */
-    modal-overlay: rgba(0, 0, 0, 0.6)
-    animation: fadeIn 0.3s ease; /* 팝업 열리는 애니메이션 */
-    transition: all 0.3s ease; /* 부드러운 상태 전환 */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    border: 3px solid #007BFF;
+    transform: translateY(-30px);
+    animation: slideDown 0.3s ease-in-out;
 }
-
-
 
 /* 닫기 버튼 */
 .close {
@@ -160,6 +151,26 @@ body {
 
 .close:hover {
     color: red;
+}
+
+@keyframes fadeIn {
+    from {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 </style>
 </head>
@@ -185,20 +196,21 @@ body {
     <!-- Footer -->
     <div class="footer">
         <a href="javascript:void(0);" onclick="showTerms();">이용약관</a> | 
-        <a href="javascript:void(0);" onclick="showPrivacyPolicy();">개인정보취급방침</a>
+        <a href="javascript:void(0);" onclick="showPrivacyPolicy();">개인정보취급방침</a> | 
+        <a href="javascript:void(0);" onclick="showEmailPolicy();">이메일주소무단수집거부</a>
     </div>
 
     <!-- '이용약관' 모달 -->
     <div id="termsModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal();">&times;</span>
-            <h2>용인창고 이용약관</h2>
+            <span class="close" onclick="closeModal('termsModal');">&times;</span>
+            <h2>이용약관</h2>
             <p>
-                제 1조 총칙<br>
-                이 약관은 stock-mate(이하 "회사")가 제공하는 모든 서비스의 이용조건 및 절차, 기타 필요한 사항을 규정함을 목적으로 합니다.
+                 <strong>제 1조 총칙 </strong><br>
+                이 약관은 stock-mate(이하 "회사")가 제공하는 모든 서비스의 이용조건 및 절차를 규정함을 목적으로 합니다.
             </p>
             <p>
-                제 2조 약관의 효력과 변경<br>
+                 <strong>제 2조 약관의 효력과 변경 </strong><br>
                 (1) 이 약관은 본 사이트에 공지함으로써 효력을 발휘합니다.<br>
                 (2) 회사는 필요 시 약관을 변경할 수 있으며, 변경된 약관은 사이트에 게시하거나 기타 방법으로 공지합니다.
             </p>
@@ -208,7 +220,7 @@ body {
     <!-- '개인정보취급방침' 모달 -->
     <div id="privacyModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closePrivacyModal();">&times;</span>
+            <span class="close" onclick="closeModal('privacyModal');">&times;</span>
             <h2>개인정보취급방침</h2>
             <p>
                 안성창고 회원의 개인 정보 보호를 매우 중요시하며, <br>
@@ -216,32 +228,45 @@ body {
                 고객님의 개인 정보 보호를 위해 최선을 다하겠습니다.
             </p>
             <p>
-                1. 개인정보의 수집 및 이용 목적<br>
-                (주)안성물류터미널(http://www.namsa.kr)은 고객의 정보보호에 대한 <br>
-                이용자의 개별적인 요구를 존중하며 관련법을 준수하기 위해 노력합니다.
-            </p>
-            <p>
-                - 본 방침은 2020년 10월 19일부터 시행됩니다.
+                본 방침은 2020년 10월 19일부터 시행됩니다.
             </p>
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- '이메일주소무단수집거부' 모달 -->
+    <div id="emailPolicyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('emailPolicyModal');">&times;</span>
+            <h2>이메일주소무단수집거부</h2>
+            <p>
+                본 사이트에 게시된 이메일 주소가 전자우편 수집 프로그램이나 그 밖의 기술적 장치를 이용하여 무단으로 
+                수집되는 것을 거부하며, 이를 위반 시 정보통신망 법에 의해 형사처분됨을 유념하시기 바랍니다.
+            </p>
+            <p>
+                정보통신망 법 제50조 2<br>
+                <strong>[전자우편 주소의 무단 수집 행위 등 금지]</strong><br>
+                1. 누구든지 전자우편 주소의 수집을 거부하는 의사가 명시된 인터넷 홈페이지에서 자동으로 전자우편 주소를 수집하는 프로그램 또는 기술적 장치를 이용하여 전자우편 주소를 수집하여서는 아니 된다.<br>
+                2. 누구든지 제1항의 규정을 위반하여 수집된 전자우편 주소를 판매, 유통하여서는 아니 된다.<br>
+                3. 누구든지 제1항 및 2항의 규정에 의하여 수집, 판매 및 유통이 금지된 전자우편 주소임을 알고 이를 정보 전송에 이용하여서는 아니 된다.
+            </p>
+        </div>
+    </div>
+
     <script>
         function showTerms() {
-            document.getElementById("termsModal").style.display = "block";
-        }
-
-        function closeModal() {
-            document.getElementById("termsModal").style.display = "none";
+            document.getElementById("termsModal").style.display = "flex";
         }
 
         function showPrivacyPolicy() {
-            document.getElementById("privacyModal").style.display = "block";
+            document.getElementById("privacyModal").style.display = "flex";
         }
 
-        function closePrivacyModal() {
-            document.getElementById("privacyModal").style.display = "none";
+        function showEmailPolicy() {
+            document.getElementById("emailPolicyModal").style.display = "flex";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
         }
     </script>
 </body>

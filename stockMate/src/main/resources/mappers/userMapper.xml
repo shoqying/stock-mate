@@ -72,23 +72,44 @@
 		WHERE user_id = #{userId}
 	</select>
 	
-   <!-- 역할이 ADMIN 또는 MANAGER이고 상태가 pending이며 isDeleted가 false인 회원 리스트 조회 -->
-    <select id="selectPendingUsersWithBusiness" resultType="com.stockm8.domain.dto.PendingUserDTO">
-        SELECT u.user_id, 
-               u.email, 
-               u.user_name, 
-               u.user_role, 
-               u.tel_number, 
-               u.created_at, 
-               b.business_id, 
-               b.business_number, 
-               b.business_name
-        FROM users u
-        LEFT JOIN business b ON u.business_id = b.business_id
-        WHERE u.user_role IN ('ADMIN', 'MANAGER')
-          AND u.user_status = 'PENDING'
-          AND u.is_deleted = FALSE
-    </select>
+   	<!-- 역할이 ADMIN 또는 MANAGER이고 상태가 pending이며 isDeleted가 false인 회원 리스트 조회 -->
+	<select id="selectPendingUsersWithBusiness" resultType="com.stockm8.domain.dto.PendingUserDTO">
+	    SELECT u.user_id AS approvedUserId, 
+	           u.email, 
+	           u.user_name, 
+	           u.user_role, 
+	           u.tel_number, 
+	           u.created_at, 
+	           u.user_status,
+	           b.business_id, 
+	           b.business_number, 
+	           b.business_name
+	    FROM users u
+	    LEFT JOIN businesses b ON u.business_id = b.business_id
+	    WHERE u.user_role IN ('ADMIN', 'MANAGER')
+	      AND u.user_status = 'PENDING'
+	      AND u.is_deleted = FALSE
+	    ORDER BY u.created_at DESC
+	</select>
+	
+	<select id="selectStaffByBusinessId" parameterType="long" resultType="com.stockm8.domain.dto.PendingUserDTO">
+	    SELECT u.user_id AS approvedUserId, 
+	           u.email, 
+	           u.user_name, 
+	           u.user_role, 
+	           u.tel_number, 
+	           u.created_at, 
+	           u.user_status,
+	           b.business_id, 
+	           b.business_name
+	    FROM users u
+	    JOIN businesses b ON u.business_id = b.business_id
+	    WHERE u.business_id = #{businessId}
+	      AND u.user_role = 'STAFF'
+	      AND u.user_status = 'PENDING' 
+	      AND u.is_deleted = FALSE
+	    ORDER BY u.created_at DESC
+	</select>
 
 	<!-- 회원정보 수정 -->
 	<update id="updateUser">
@@ -100,6 +121,15 @@
 		WHERE
 		user_id = #{userId}
 		AND password = #{password}
+	</update>
+	
+    <!-- 회원 승인 여부 수정 -->
+	<update id="updateUserStatus" parameterType="com.stockm8.domain.dto.UpdateUserStatusDTO">
+	    UPDATE users
+	    SET user_status = #{userStatus},
+	        created_by = #{userId},
+	        updated_at = NOW()
+	    WHERE user_id = #{approvedUserId}
 	</update>
 
 	<select id="getUserInfoById" parameterType="Long"

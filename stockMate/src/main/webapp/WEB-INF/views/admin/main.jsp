@@ -47,13 +47,13 @@
 	
 	<!-- 버튼 영역 -->
     <div class="container">
-        <form action="admin/approve" method="get">
+        <form action="/admin/approve" method="get">
             <button type="submit">가입 승인</button>
         </form>
-        <form action="admin/userList" method="get">
+        <form action="/admin/userList" method="get">
             <button type="submit">회원 목록 조회</button>
         </form>
-		<form action="admin/edit" method="get">
+		<form action="/admin/edit" method="get">
             <button type="submit">회원 수정 및 삭제</button>
         </form>
     </div>

@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.stockm8.domain.enums.UserRole;
 import com.stockm8.domain.vo.UserVO;
@@ -65,10 +67,23 @@ public class AdminInterceptor implements HandlerInterceptor {
 	/**
 	 * 에러 메시지와 함께 리다이렉트 처리
 	 */
-	private boolean sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String message, String redirectUrl) throws IOException {
-	    request.getSession().setAttribute("errorMessage", message);
-	    response.sendRedirect(request.getContextPath() + redirectUrl);
-	    return false; // 요청 중단
+	private boolean sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String message, String redirectUrl)
+	        throws Exception {
+	    
+	    // FlashMap 객체 생성 및 에러 메시지 저장
+	    FlashMap flashMap = new FlashMap();
+	    flashMap.put("errorMessage", message);
+	    
+	    // FlashMap 저장소에 FlashMap 추가
+	    RequestContextUtils.getFlashMapManager(request).saveOutputFlashMap(flashMap, request, response);
+
+	    // 로그 출력
+	    logger.info("FlashMap에 저장된 에러 메시지: {}", message);
+	    logger.info("리다이렉트 대상 URL: {}", redirectUrl);
+
+	    // 리다이렉트 수행
+	    response.sendRedirect(redirectUrl);
+	    return false; // handlerInterceptor 처리 중단
 	}
 
 	/**
