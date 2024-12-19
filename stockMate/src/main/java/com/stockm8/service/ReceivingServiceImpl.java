@@ -24,8 +24,8 @@ public class ReceivingServiceImpl implements ReceivingService {
 	@Inject
 	private ReceivingDAO rdao;
 	
-//	@Inject
-//	private OrderProcessor opService;
+	@Inject
+	private OrderProcessor opService;
 	
 
 	// 메인 입고 리스트
@@ -122,11 +122,11 @@ public class ReceivingServiceImpl implements ReceivingService {
 	}
 	
 	@Override
-	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo) {
+	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo,int orderId, List<OrderItemVO> completedItems) {
 	    try {
 	        // MyBatis 매퍼 호출
 	        rdao.updateReceivingStatusToComplete(businessId, barcode, receivingShipmentNo);
-//	        opService.processInboundAfterInspection(orderId, completedItems);
+	        opService.processInboundAfterInspection(orderId, completedItems);
 	    } catch (Exception e) {
 	        // 예외 처리
 	        logger.error("입고 상태 업데이트 오류: " + e.getMessage());

@@ -139,7 +139,10 @@ public class OrderDAOImpl implements OrderDAO {
 	public int getTotalOrderCount(int businessId) {
 		return sqlSession.selectOne(NAMESPACE + "getTotalOrderCount", businessId);	}
 	
-	
+	@Override
+    public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + "getOrderIdByOrderItemId", orderItemId);
+    }
 
 	
 } // OrderImpl
