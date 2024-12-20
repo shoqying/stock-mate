@@ -128,5 +128,10 @@ public class OrderServiceImpl implements OrderService {
 	    return odao.getOrderIdByOrderItemId(orderItemId);
 	}
 	
+	@Override
+	   public int getStockIdByOrderItemId(Integer orderItemId) throws Exception {
+	       return odao.getStockIdByOrderItemId(orderItemId);
+	}
+	
 
 } //OrderServiceImpl

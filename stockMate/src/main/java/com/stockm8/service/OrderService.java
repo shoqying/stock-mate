@@ -42,4 +42,7 @@ public interface OrderService {
     
     public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception;
     
+    // 스톡 아이디 가져오는 메소드
+    public int getStockIdByOrderItemId(Integer orderItemId) throws Exception;
+    
 } //OrderService

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
@@ -51,12 +52,8 @@ public class ReceivingController {
 	
 	// http://localhost:8088/receiving/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void mainGET(Model model, HttpServletRequest request) throws Exception {
+	public void mainGET(@SessionAttribute("userId") Long userId, Model model, HttpServletRequest request) throws Exception {
 		logger.info("mainGET() 호출");
-		
-		// 세션에서 userId 가져오기
-	    HttpSession session = request.getSession(false);
-	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
 	    
 	    // userId로 사용자 정보 조회
 	    UserVO user = uService.getUserById(userId);
@@ -160,54 +157,42 @@ public class ReceivingController {
 	
 	// 새로고침
 	@RequestMapping(value = "/insert1", method = RequestMethod.POST)
-	public String insert1POST(HttpServletRequest request) throws Exception {
+	public String insert1POST(@SessionAttribute("userId") Long userId, HttpServletRequest request) throws Exception {
 		logger.info("insertPOST() 호출");
-		
-		// 세션에서 userId 가져오기
-	    HttpSession session = request.getSession(false);
-	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
 	    
 	    // userId로 사용자 정보 조회
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
 		
-		rService.insertReceiving(businessId);
+		rService.insertReceiving(businessId, userId);
 		
 		return "redirect:/receiving/main";
 	}
 	
 	// 새로고침
 	@RequestMapping(value = "/insert2", method = RequestMethod.POST)
-	public String insert2POST(HttpServletRequest request) throws Exception {
+	public String insert2POST(@SessionAttribute("userId") Long userId, HttpServletRequest request) throws Exception {
 		logger.info("insertPOST() 호출");
-		
-		// 세션에서 userId 가져오기
-	    HttpSession session = request.getSession(false);
-	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
 	    
 	    // userId로 사용자 정보 조회
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
 		
-		rService.insertReceiving(businessId);
+		rService.insertReceiving(businessId, userId);
 		
 		return "redirect:/receiving/history";
 	}	
 	
 	// 새로고침
 	@RequestMapping(value = "/insert3", method = RequestMethod.POST)
-	public String insert3POST(HttpServletRequest request) throws Exception {
+	public String insert3POST(@SessionAttribute("userId") Long userId, HttpServletRequest request) throws Exception {
 		logger.info("insertPOST() 호출");
-		
-		// 세션에서 userId 가져오기
-	    HttpSession session = request.getSession(false);
-	    Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
 	    
 	    // userId로 사용자 정보 조회
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
 		
-		rService.insertReceiving(businessId);
+		rService.insertReceiving(businessId, userId);
 		
 		return "redirect:/receiving/search";
 	}
@@ -268,6 +253,10 @@ public class ReceivingController {
 	        List<OrderItemVO> completedItems = new ArrayList<>();
 	        OrderItemVO item = new OrderItemVO();
 	        item.setOrderItemId(orderItemId);
+	        // stockId 설정 추가
+	        int stockId = orderService.getStockIdByOrderItemId(orderItemId);
+	        item.setStockId(stockId);
+           
 	        completedItems.add(item);
 	        
 	        // OrderService를 통해 orderId 가져오기

@@ -238,4 +238,12 @@
 	    FROM order_items   
 	    WHERE order_item_id = #{orderItemId}
 	</select>
+	
+	<select id="getStockIdByOrderItemId" parameterType="int" resultType="int">
+    SELECT s.stock_id
+    FROM order_items oi
+    JOIN stocks s ON oi.product_id = s.product_id 
+        AND oi.warehouse_id = s.warehouse_id
+    WHERE oi.order_item_id = #{orderItemId}
+   </select>
 </mapper>

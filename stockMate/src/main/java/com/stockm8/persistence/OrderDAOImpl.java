@@ -144,5 +144,9 @@ public class OrderDAOImpl implements OrderDAO {
         return sqlSession.selectOne(NAMESPACE + "getOrderIdByOrderItemId", orderItemId);
     }
 
+	@Override
+	   public int getStockIdByOrderItemId(Integer orderItemId) throws Exception {
+	       return sqlSession.selectOne(NAMESPACE + "getStockIdByOrderItemId", orderItemId);
+	}
 	
 } // OrderImpl

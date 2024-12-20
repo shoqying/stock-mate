@@ -97,9 +97,12 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	}
 
 	@Override
-	public void insertReceiving(int businessId) throws Exception {
+	public void insertReceiving(int businessId, Long userId) throws Exception {
 		logger.info("insertReceiving() 호출");
-		sqlSession.insert(NAMESPACE + "insertReceiving", businessId);
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("businessId", businessId);
+		paramMap.put("userId", userId);
+		sqlSession.insert(NAMESPACE + "insertReceiving", paramMap);
 	}
 	
   @Override

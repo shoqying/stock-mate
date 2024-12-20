@@ -35,7 +35,7 @@ public interface ReceivingService {
 	public int getTotalCount(int businessId) throws Exception;
 	
 	// rs 테이블 insert
-	public void insertReceiving(int businessId) throws Exception;
+	public void insertReceiving(int businessId, Long userId) throws Exception;
 	
 	// 바코드 찍은 후 재고수량 증가
 	public int increseStockByBarcode(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception;

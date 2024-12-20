@@ -24,11 +24,12 @@
     <result property="productDescription" column="product_description"/>
     <result property="productPrice" column="product_price"/>   
     <result property="businessId" column="business_id"/>   
+    <result property="userId" column="user_id"/>   
   </resultMap>
   
 
 <!-- 테이블에 입고 데이터 입력 -->
-<insert id="insertReceiving">
+<insert id="insertReceiving" parameterType="com.stockm8.domain.vo.ReceivingShipmentVO">
 INSERT INTO receiving_shipment (
     transaction_type, 
     status, 
@@ -47,7 +48,7 @@ SELECT DISTINCT
     o.order_item_id,
     s.stock_id,
     o.warehouse_id,
-    #{createdBy}
+    #{userId}
 FROM products p
 JOIN order_items o ON o.product_id = p.product_id
 JOIN stocks s ON s.product_id = p.product_id
@@ -61,7 +62,7 @@ WHERE NOT EXISTS (
     AND rs.product_id = p.product_id
     AND rs.order_item_id = o.order_item_id
     AND rs.stock_id = s.stock_id
-);
+)AND u.business_id = #{businessId}
 </insert>
 	
 <!-- 오늘 입고 예정 리스트 -->
@@ -149,7 +150,8 @@ WHERE NOT EXISTS (
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
 	JOIN users u on u.created_by = r.created_by
-	where transaction_type = 'INBOUND' AND u.business_id = #{businessId}
+	where transaction_type = 'INBOUND' 
+	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
 	limit #{cri.startPage},#{cri.pageSize};
 </select>
@@ -287,8 +289,7 @@ AND r.order_item_id = #{orderItemId}
     JOIN products p ON r.product_id = p.product_id
     JOIN stocks s ON s.product_id = p.product_id
     JOIN order_items o ON s.product_id = o.product_id
-    SET r.status = 'COMPLETED',
-        s.reserved_quantity = s.reserved_quantity - o.quantity
+    SET r.status = 'COMPLETED'
     WHERE p.product_barcode = #{barcode}
     AND o.change_quantity = 1
     AND r.status = 'PENDING'
@@ -316,7 +317,8 @@ AND r.order_item_id = #{orderItemId}
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
 	JOIN users u on u.created_by = r.created_by
-	where transaction_type = 'INBOUND' AND u.business_id = #{businessId} 
+	where transaction_type = 'INBOUND' 
+	AND u.business_id = #{businessId} 
 	AND r.receiving_shipment_no = #{receivingShipmentNo}
 </select>
 

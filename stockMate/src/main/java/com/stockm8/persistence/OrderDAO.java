@@ -44,5 +44,8 @@ public interface OrderDAO {
     // 오더아이디 
     public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception;
     
+    // 스톡아이디
+    public int getStockIdByOrderItemId(Integer orderItemId) throws Exception;
+    
     
 } // OrderDAO

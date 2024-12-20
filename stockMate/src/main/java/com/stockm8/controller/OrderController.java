@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
@@ -77,7 +78,8 @@ public class OrderController {
                    method = RequestMethod.POST,
                    produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, String> orderRegisterPOST(@RequestBody OrderVO order, HttpServletRequest request) throws Exception {
+    public Map<String, String> orderRegisterPOST(@SessionAttribute("userId") Long userId, 
+    											@RequestBody OrderVO order, HttpServletRequest request) throws Exception {
         logger.info("orderRegisterPOST() 호출");
         logger.info("주문 정보: " + order);
         
@@ -85,7 +87,7 @@ public class OrderController {
         int businessId = currentUser.getBusinessId();
 	    
 
-        return orderProcessor.process(order, businessId);
+        return orderProcessor.process(order, businessId, userId);
     }
     
     /**

@@ -31,7 +31,7 @@ public interface ReceivingDAO {
 	public int selectTotalCount(int businessId) throws Exception;
 	
 	// recevingShipment 테이블 insert
-	public void insertReceiving(int businessId) throws Exception;
+	public void insertReceiving(int businessId, Long userId) throws Exception;
 	
     // 바코드로 재고 조회
   	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode, Integer receivingShipmentNo) throws Exception;
