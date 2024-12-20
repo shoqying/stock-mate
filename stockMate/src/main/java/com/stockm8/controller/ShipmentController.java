@@ -166,7 +166,7 @@ public class ShipmentController {
 		
 		sService.insertShipment(businessId, userId);
 		
-		return "redirect:/Shipment/main";
+		return "redirect:/shipment/main";
 	}
 	
 	// 새로고침
@@ -180,7 +180,7 @@ public class ShipmentController {
 		
 		sService.insertShipment(businessId, userId);
 		
-		return "redirect:/Shipment/history";
+		return "redirect:/shipment/history";
 	}	
 	
 	// 새로고침
@@ -194,7 +194,7 @@ public class ShipmentController {
 		
 		sService.insertShipment(businessId, userId);
 		
-		return "redirect:/Shipment/search";
+		return "redirect:/shipment/search";
 	}
 	
 	// http://localhost:8088/Shipment/scan

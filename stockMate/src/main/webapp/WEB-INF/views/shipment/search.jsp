@@ -13,14 +13,14 @@
 
 	<h1>출고 내역</h1>
 	<nav>
-	<a href="/receiving/main">출고 메인</a><br><br>
-	<form action="/receiving/insert3" method="POST">
+	<a href="/shipment/main">출고 메인</a><br><br>
+	<form action="/shipment/insert3" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
 	</nav>
 
 	<!-- 기간별 검색 및 키워드 검색 폼 -->
-	<form action="/receiving/search" method="get"
+	<form action="/shipment/search" method="get"
 		onsubmit="return validateForm()" id="searchForm">
 		<label for="startDate">시작 날짜:</label> <input type="date"
 			id="startDate" name="startDate" value="${param.startDate}"> <label
@@ -59,9 +59,9 @@
 				<th>창고 위치</th>
 				<th>작업 메모</th>
 			</tr>
-			<c:forEach var="vo" items="${ReceivingList }">
+			<c:forEach var="vo" items="${ShipmentList }">
 				<tr>
-					<td><a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}" id="list">
+					<td><a href="/shipment/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}" id="list">
 			                ${vo.receivingShipmentNo}
 			            </a></td>
 					<td>     
@@ -100,7 +100,7 @@
 	</form>
 
 	<c:choose>
-		<c:when test="${empty ReceivingList}">
+		<c:when test="${empty ShipmentList}">
         <h1>검색 결과가 없습니다.</h1>
     </c:when>
 	</c:choose>
@@ -109,17 +109,17 @@
 	    <ul class="pagination">
 	        <c:if test="${pageVO.prev}">
 	            <li class="paginate_button previous">
-	                <a href="/receiving/history?page=${pageVO.startPage - 10}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+	                <a href="/shipment/history?page=${pageVO.startPage - 10}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
 	            </li>
 	        </c:if>
 	        <c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage}">
 	            <li class="paginate_button ${(i == pageVO.cri.page) ? 'active' : ''}">
-	                <a href="/receiving/history?page=${i}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="1" tabindex="0">${i}</a>
+	                <a href="/shipment/history?page=${i}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="1" tabindex="0">${i}</a>
 	            </li>
 	        </c:forEach>
 	        <c:if test="${pageVO.next}">
 	            <li class="paginate_button">
-	                <a href="/receiving/history?page=${pageVO.startPage + 1}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
+	                <a href="/shipment/history?page=${pageVO.startPage + 1}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
 	            </li>
 	        </c:if>
 	    </ul>
