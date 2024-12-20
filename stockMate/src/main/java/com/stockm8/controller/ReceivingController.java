@@ -212,6 +212,11 @@ public class ReceivingController {
 	    UserVO user = uService.getUserById(userId);
 	    int businessId = user.getBusinessId();
 	    
+	    if(receivingShipmentNo == null || orderItemId == null) {
+	    	receivingShipmentNo = 0;
+	    	orderItemId = 0;
+	    }
+	    
 	    List<ReceivingShipmentVO> rsn = rService.getReceivingShipmentNo(businessId, receivingShipmentNo, orderItemId);
 	    
 	    model.addAttribute("rsn", rsn);
@@ -261,7 +266,7 @@ public class ReceivingController {
 	        // OrderService에 해당 메소드 추가 필요
 	        int orderId = orderService.getOrderIdByOrderItemId(orderItemId);
 
-	        rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderItemId);
+	        rService.ReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderItemId, userId);
 
 
 	        int remainingStock = rService.increseStockByBarcode(businessId, barcode, receivingShipmentNo, orderItemId);

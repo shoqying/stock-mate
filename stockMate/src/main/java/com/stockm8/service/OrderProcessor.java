@@ -57,7 +57,7 @@ public class OrderProcessor {
         // 4. 입출고 처리
         // 수주(출고)는 바로 처리
         if (order.getOrderType() == OrderType.OUTBOUND) {
-            shipmentService.insertShipment(businessId);
+            shipmentService.insertShipment(businessId, userId);
         } else {
             // 발주(입고)는 pending 상태로만 처리
             receivingService.insertReceiving(businessId, userId);
