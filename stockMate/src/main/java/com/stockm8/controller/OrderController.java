@@ -73,10 +73,11 @@ public class OrderController {
         
         UserVO currentUser = getCurrentUser(request);
         int businessId = currentUser.getBusinessId();
+        Long userId = currentUser.getUserId();
 	    
         
         // 주문 등록을 OrderProcessor에 위임
-        Map<String, String> response = orderProcessor.process(order, currentUser.getBusinessId());
+        Map<String, String> response = orderProcessor.process(order, businessId, userId);
         
         // Map을 JSON 문자열로 변환하여 반환
         ObjectMapper objectMapper = new ObjectMapper();
