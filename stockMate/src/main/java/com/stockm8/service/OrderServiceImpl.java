@@ -38,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
      * 주문 및 주문 항목을 한번에 처리
      * 수주(OUTBOUND)인 경우 재고도 함께 처리
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems, int businessId) throws Exception {
     	logger.info("insertOrderWithItems() 호출");

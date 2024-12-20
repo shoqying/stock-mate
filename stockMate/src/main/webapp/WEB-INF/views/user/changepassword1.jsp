@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/passwordStyle.css' />">
 </head>
 <body>
+<!--  -->
+ 	<script type="text/javascript"> 
+     
+	    <c:if test="${not empty errorMessage}">
+	        alert("${errorMessage}");
+	    </c:if>
+	    
+	   </script>
+	   
     <!-- Container -->
     <div class="container">
         <div class="back-button">
