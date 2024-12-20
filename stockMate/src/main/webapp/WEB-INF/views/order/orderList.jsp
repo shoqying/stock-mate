@@ -48,8 +48,9 @@
                </td>
                <td>
                    <c:choose>
-                       <c:when test="${not empty order.orderType}">${order.orderType}</c:when>
-                       <c:otherwise>값이 없습니다</c:otherwise>
+                       <c:when test="${order.orderType =='INBOUND'}">발주</c:when>
+                       <c:when test="${order.orderType =='OUTBOUND'}">수주</c:when>
+                     <%--   <c:otherwise>값이 없습니다</c:otherwise> --%>
                    </c:choose>
                </td>
                <td>

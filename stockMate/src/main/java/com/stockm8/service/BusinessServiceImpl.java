@@ -63,10 +63,10 @@ public class BusinessServiceImpl implements BusinessService {
 
 	// 비즈니스 정보를 사업자 등록 번호와 회사명으로 조회
 	@Override
-	public BusinessVO getBusinessByNumberAndName(String businessNumber, String companyName) throws Exception {
+	public BusinessVO getBusinessByNumberAndName(String businessNumber, String businessName) throws Exception {
 	    logger.info("getBusinessByNumberAndName() 호출");
 
-		return businessDAO.selectBusinessByNumberAndName(businessNumber, companyName);
+		return businessDAO.selectBusinessByNumberAndName(businessNumber, businessName);
 	}
 	
 }

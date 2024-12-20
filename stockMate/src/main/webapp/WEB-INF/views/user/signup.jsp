@@ -135,9 +135,6 @@
       	 	top: -35px;
          
         } 
-        
-     
-		
 		
     </style>
 </head>
@@ -146,15 +143,11 @@
 <div class="container">
 	<div class="logo">
 			<a href="http://localhost:8088/">
-				<img alt="" src="../resources/css/stockmate-removebg-preview.png">
+				<img alt="" src="../resources/img/stockmate-removebg-preview.png">
 			</a>
 		</div>
 		
-		
     <div class="signup-container">
-    
-    
-	
 		
         <h2>회원가입</h2>
 

@@ -9,8 +9,22 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/passwordStyle.css' />">
 </head>
 <body>
+
+	<!--  -->
+		 <script type="text/javascript">
+     
+	    <c:if test="${not empty errorMessage}">
+	        alert("${errorMessage}");
+	    </c:if>
+
+	   </script>
+	
+		
     <!-- Container -->
     <div class="container">
+    
+    
+		
         <div class="back-button">
             <a href="/dashboard">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -26,6 +40,8 @@
             <button type="submit">내 정보 수정하기</button>
         </form>
     </div>
+    
+    
 
     <!-- Footer -->
     <div class="footer">

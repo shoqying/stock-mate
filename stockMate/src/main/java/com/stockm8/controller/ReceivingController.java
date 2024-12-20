@@ -309,8 +309,4 @@ public class ReceivingController {
         return "/receiving/allScan";
 	}
 
-   
-
-	
-
 } // ReceivingController end
