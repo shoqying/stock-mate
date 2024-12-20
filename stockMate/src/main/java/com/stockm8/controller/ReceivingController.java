@@ -253,7 +253,7 @@ public class ReceivingController {
 	        List<OrderItemVO> completedItems = new ArrayList<>();
 	        OrderItemVO item = new OrderItemVO();
 	        item.setOrderItemId(orderItemId);
-	        // stockId 설정 추가
+
            
 	        completedItems.add(item);
 	        
