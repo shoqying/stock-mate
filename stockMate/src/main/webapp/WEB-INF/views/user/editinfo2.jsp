@@ -33,7 +33,7 @@
 			<div class="form-group">
 				<label for="email">이메일</label> <input type="email" id="email"
 					name="email" value="${userVO.email}" placeholder="이메일을 입력하세요"
-					required>
+					required readonly="readonly">
 			</div>
 			<div class="form-group">
 				<label for="name">이름</label> <input type="text" id="userName"
