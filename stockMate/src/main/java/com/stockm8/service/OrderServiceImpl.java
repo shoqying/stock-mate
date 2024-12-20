@@ -147,8 +147,7 @@ public class OrderServiceImpl implements OrderService {
         logger.info("getTotalOrderCount() 호출 - businessId: {}", businessId);
         return odao.getTotalOrderCount(businessId);
     }
-
-
+    
     /**
      * 주문 상세 항목 ID로 주문 ID 조회
      * 이 메서드는 ReceivingService로 이동 예정
