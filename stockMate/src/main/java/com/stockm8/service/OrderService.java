@@ -48,5 +48,4 @@ public interface OrderService {
     // 입고 검수 처리시 사용
     public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception;
     
-    
 } //OrderService
