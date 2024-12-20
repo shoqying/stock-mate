@@ -10,7 +10,7 @@
 <title>QR 코드 스캔 및 상품 정보</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.2.1/html5-qrcode.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/resources/css/receivingScanStyle.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/shipmentScanStyle.css">
 <script>
 $(document).ready(function () {
     $("#barcodeInput").on("keyup", function (e) {
@@ -20,7 +20,7 @@ $(document).ready(function () {
             let orderItemId = $("#orderItemId").val().trim();
             if ((barcode && receivingShipmentNo && orderItemId)) {
                 $.ajax({
-                    url: "/receiving/scan",
+                    url: "/shipment/scan",
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({
@@ -75,8 +75,8 @@ $(document).ready(function () {
     <header>
         <nav>
         <h1>실시간 출고 관리 시스템</h1>
-        <a href="/receiving/main">출고 메인</a>
-        <a href="/receiving/history">출고 내역</a>
+        <a href="/shipment/main">출고 메인</a>
+        <a href="/shipment/history">출고 내역</a>
         <a href="/dashboard">대쉬보드</a>
            </nav>
     </header>

@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>출고 메인</title>
-<link rel="stylesheet" type="text/css" href="/resources/css/receivingMainStyle.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/shipmentMainStyle.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -16,9 +16,9 @@
 <h1>출고 메인</h1>
 
 <nav>
-<a href="/receiving/history">출고 내역</a>
+<a href="/shipment/history">출고 내역</a>
 <a href="/dashboard">대쉬보드</a><br><br>
-<form action="/receiving/insert1" method="POST">
+<form action="/shipment/insert1" method="POST">
     <input type="submit" value="새로고침">
 </form>
 </nav>
@@ -38,7 +38,7 @@
         <th>출고 수량</th>
         <th>작업 메모</th>
     </tr>
-    <c:forEach var="vo" items="${ReceivingList}">
+    <c:forEach var="vo" items="${shipmentList}">
         <tr>
             <td>${vo.receivingShipmentNo}</td>
             <td>     
@@ -79,7 +79,7 @@
         <th>출고 수량</th>
         <th>작업 메모</th>
     </tr>
-    <c:forEach var="vo" items="${YesterdayReceivingList}">
+    <c:forEach var="vo" items="${YesterdayshipmentList}">
         <tr>
             <td>${vo.receivingShipmentNo}</td>
             <td>     
@@ -120,7 +120,7 @@
         <th>출고 수량</th>
         <th>작업 메모</th>
     </tr>
-    <c:forEach var="vo" items="${TDBYReceivingList}">
+    <c:forEach var="vo" items="${TDBYshipmentList}">
         <tr>
             <td>${vo.receivingShipmentNo}</td>
             <td>     
