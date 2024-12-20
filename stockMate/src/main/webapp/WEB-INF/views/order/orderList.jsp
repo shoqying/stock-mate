@@ -53,7 +53,7 @@
                    </c:choose>
                </td>
                <td>
-                   <a href="/order/detail?orderId=${order.orderId}">상세</a>
+                   <a href="/order/orderDetail?orderId=${order.orderId}">상세</a>
                </td>
            </tr>
        </c:forEach>
