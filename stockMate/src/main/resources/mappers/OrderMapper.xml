@@ -131,7 +131,7 @@
     <!-- 재고 예약 수량 업데이트 -->
     <update id="updateStockQuantity">
         UPDATE stocks 
-        SET reserved_quantity = reserved_quantity + #{quantity}
+        SET reserved_quantity = reserved_quantity - #{quantity}
         WHERE stock_id = #{stockId}
     </update>
 

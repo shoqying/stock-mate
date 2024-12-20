@@ -38,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
      * 주문 및 주문 항목을 한번에 처리
      * 수주(OUTBOUND)인 경우 재고도 함께 처리
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems, int businessId) throws Exception {
     	logger.info("insertOrderWithItems() 호출");
@@ -52,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     	//  수주(OUTBOUND)인 경우에만 재고 처리  ==> 발주는 process에서 처리
         if (order.getOrderType() == OrderType.OUTBOUND) {
             for (OrderItemVO item : order.getOrderItems()) {
-                updateStockQuantity(item.getStockId(), item.getQuantity());
+                updateStockQuantity(item.getStockId(), -item.getQuantity());
             }
         }
 	}
