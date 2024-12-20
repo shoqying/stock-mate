@@ -148,6 +148,7 @@ public class OrderServiceImpl implements OrderService {
         return odao.getTotalOrderCount(businessId);
     }
 
+
     /**
      * 주문 상세 항목 ID로 주문 ID 조회
      * 이 메서드는 ReceivingService로 이동 예정
@@ -157,5 +158,6 @@ public class OrderServiceImpl implements OrderService {
         logger.info("getOrderIdByOrderItemId() 호출 - orderItemId: {}", orderItemId);
         return odao.getOrderIdByOrderItemId(orderItemId);
     }
+
 
 } //OrderServiceImpl

@@ -19,7 +19,6 @@ import com.stockm8.domain.vo.OrderVO;
 
 @Service
 public class OrderProcessor {
-    
     @Inject
     private OrderService orderService;
     @Inject
@@ -132,3 +131,4 @@ public class OrderProcessor {
     }
     
 }// OrderProcessor
+

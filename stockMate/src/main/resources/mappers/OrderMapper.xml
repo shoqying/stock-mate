@@ -225,6 +225,7 @@
             AND w.is_deleted = false
     </select>
     
+
     <!-- 주문 전체 개수 조회 (페이징 계산용) -->
     <select id="getTotalOrderCount" resultType="int">
         SELECT COUNT(*)
@@ -242,4 +243,5 @@
         FROM order_items   
         WHERE order_item_id = #{orderItemId}
     </select>
+
 </mapper>

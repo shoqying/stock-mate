@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stockm8.domain.enums.OrderStatus;
@@ -71,6 +72,8 @@ public class OrderController {
         logger.debug("주문 데이터: {}", order);
         
         UserVO currentUser = getCurrentUser(request);
+        int businessId = currentUser.getBusinessId();
+	    
         
         // 주문 등록을 OrderProcessor에 위임
         Map<String, String> response = orderProcessor.process(order, currentUser.getBusinessId());
@@ -79,7 +82,6 @@ public class OrderController {
         ObjectMapper objectMapper = new ObjectMapper();
         
         return objectMapper.writeValueAsString(response);  // JSON 문자열로 변환하여 반환
-        
         
     }
     

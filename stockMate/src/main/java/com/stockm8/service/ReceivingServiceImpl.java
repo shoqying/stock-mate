@@ -72,9 +72,9 @@ public class ReceivingServiceImpl implements ReceivingService {
 	}
 
 	@Override
-	public void insertReceiving(int businessId) throws Exception {
+	public void insertReceiving(int businessId, Long userId) throws Exception {
 		logger.info("insertReceiving() 호출");
-		rdao.insertReceiving(businessId);
+		rdao.insertReceiving(businessId, userId);
 	}
 
 	
@@ -110,7 +110,7 @@ public class ReceivingServiceImpl implements ReceivingService {
 	@Override
 	public int decreaseReservedQuantity(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId, int orderId, List<OrderItemVO> completedItems) throws Exception {
 		logger.info("decreaseReservedQuantity() 호출");
-		opService.processInboundAfterInspection(orderId, completedItems);
+//		opService.processInboundAfterInspection(orderId, completedItems);
 		return rdao.selectReservedQuantity(businessId, barcode, receivingShipmentNo, orderItemId);
 	}
 

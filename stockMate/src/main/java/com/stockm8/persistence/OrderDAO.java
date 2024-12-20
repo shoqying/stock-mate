@@ -50,5 +50,8 @@ public interface OrderDAO {
     //             OrderDAO보다는 ReceivingDAO에 위치하는 것이 더 적절 한수씨랑 의논
     public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception;
     
+    // 스톡아이디
+    public int getStockIdByOrderItemId(Integer orderItemId) throws Exception;
+    
     
 } // OrderDAO

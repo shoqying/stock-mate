@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>입고 메인</title>
+<link rel="stylesheet" type="text/css" href="/resources/css/receivingMainStyle.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -14,11 +15,14 @@
 
 <h1>입고 메인</h1>
 
+<nav>
 <a href="/receiving/history">입고 내역</a>
-<a href="/dashboard">대쉬보드</a>
+<a href="/dashboard">대쉬보드</a><br><br>
 <form action="/receiving/insert1" method="POST">
     <input type="submit" value="새로고침">
 </form>
+</nav>
+
 
 <!-- 오늘 입고 리스트 -->
 <h2>오늘 입고 리스트</h2>
