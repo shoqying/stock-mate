@@ -40,7 +40,7 @@ public class OrderProcessor {
     
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, String> process(OrderVO order, int businessId) throws Exception {
+    public Map<String, String> process(OrderVO order, int businessId, Long userId) throws Exception {
     	
     	
         // 1. 유효성 검사
@@ -60,7 +60,7 @@ public class OrderProcessor {
             shipmentService.insertShipment(businessId);
         } else {
             // 발주(입고)는 pending 상태로만 처리
-            receivingService.insertReceiving(businessId);
+            receivingService.insertReceiving(businessId, userId);
         }
         
         // 5. 응답 생성
