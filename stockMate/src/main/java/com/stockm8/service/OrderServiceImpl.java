@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     	//  수주(OUTBOUND)인 경우에만 재고 처리  ==> 발주는 process에서 처리
         if (order.getOrderType() == OrderType.OUTBOUND) {
             for (OrderItemVO item : order.getOrderItems()) {
-                updateStockQuantity(item.getStockId(), item.getQuantity());
+                updateStockQuantity(item.getStockId(), -item.getQuantity());
             }
         }
 	}
