@@ -36,7 +36,7 @@ import com.stockm8.service.UserService;
 import com.stockm8.domain.vo.OrderItemVO;
 
 @Controller
-@RequestMapping(value = "/Shipment/*")
+@RequestMapping(value = "/shipment/*")
 public class ShipmentController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShipmentController.class);
@@ -50,7 +50,7 @@ public class ShipmentController {
 	@Inject
 	private OrderService orderService;
 	
-	// http://localhost:8088/Shipment/main
+	// http://localhost:8088/shipment/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void mainGET(@SessionAttribute("userId") Long userId, Model model, HttpServletRequest request) throws Exception {
 		logger.info("mainGET() 호출");
