@@ -137,6 +137,12 @@
         <input type="tel" id="telNumber" name="telNumber" 
                value="${userVO.telNumber}" placeholder="전화번호를 입력하세요" required>
     </div>
+    
+     <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" 
+               value="${userVO.password}" placeholder="비밀번호를 입력하세요" readonly="readonly">
+    </div>
     <button type="submit">내 정보 수정하기</button>
 </form>       
        
@@ -147,5 +153,6 @@
     <div class="footer">
         회사 정보 - 사업자 번호, 연락처 등 유의 내용
     </div>
+    
 </body>
 </html>
