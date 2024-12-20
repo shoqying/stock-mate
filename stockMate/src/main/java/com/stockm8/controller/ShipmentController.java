@@ -50,7 +50,7 @@ public class ShipmentController {
 	@Inject
 	private OrderService orderService;
 	
-	// http://localhost:8088/Shipment/main
+	// http://localhost:8088/shipment/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void mainGET(@SessionAttribute("userId") Long userId, Model model, HttpServletRequest request) throws Exception {
 		logger.info("mainGET() 호출");
