@@ -164,13 +164,14 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	}
 
 	@Override
-	public void updateReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo, int orderItemId) throws Exception {
+	public void updateReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo, int orderItemId, Long userId) throws Exception {
 		logger.info("updateReceivingStatusToComplete() 호출");
 		Map<String, Object> params = new HashMap<>();
 		params.put("businessId", businessId);
 		params.put("barcode", barcode);
 		params.put("receivingShipmentNo", receivingShipmentNo);
 		params.put("orderItemId", orderItemId);
+		params.put("userId", userId);		
 		sqlSession.update(NAMESPACE + "updateReceivingStatusToComplete", params);
 		
 	}

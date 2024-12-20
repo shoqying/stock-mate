@@ -80,7 +80,7 @@ WHERE NOT EXISTS (
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where Date(r.created_at) = CURRENT_DATE and r.status = 'PENDING' and r.transaction_type = 'INBOUND'
 	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
@@ -102,7 +102,7 @@ WHERE NOT EXISTS (
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -1 DAY) 
 	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
@@ -124,7 +124,7 @@ WHERE NOT EXISTS (
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -2 DAY) 
 	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
@@ -149,7 +149,7 @@ WHERE NOT EXISTS (
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where transaction_type = 'INBOUND' 
 	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
@@ -173,7 +173,7 @@ WHERE NOT EXISTS (
     FROM receiving_shipment r
     JOIN products p ON r.product_id = p.product_id
     JOIN warehouses w ON w.warehouse_id = r.warehouse_id
-    JOIN users u on u.created_by = r.created_by
+    JOIN users u on u.user_id = r.created_by
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -196,7 +196,7 @@ WHERE NOT EXISTS (
     SELECT COUNT(*) 
     FROM receiving_shipment r
     JOIN products p ON r.product_id = p.product_id
-    JOIN users u on u.created_by = r.created_by
+    JOIN users u on u.user_id = r.created_by
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -217,7 +217,7 @@ WHERE NOT EXISTS (
 <select id="getTotalCount" resultType="int">
 SELECT COUNT(DISTINCT r.receiving_shipment_no)
 FROM receiving_shipment r
-JOIN users u ON u.created_by = r.created_by
+JOIN users u ON u.user_id = r.created_by
 WHERE r.transaction_type = 'INBOUND'
   AND u.business_id = #{business_id};
 </select>
@@ -290,6 +290,7 @@ AND r.order_item_id = #{orderItemId}
     JOIN stocks s ON s.product_id = p.product_id
     JOIN order_items o ON s.product_id = o.product_id
     SET r.status = 'COMPLETED'
+    r.created_by = #{userId}
     WHERE p.product_barcode = #{barcode}
     AND o.change_quantity = 1
     AND r.status = 'PENDING'
@@ -316,7 +317,7 @@ AND r.order_item_id = #{orderItemId}
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where transaction_type = 'INBOUND' 
 	AND u.business_id = #{businessId} 
 	AND r.receiving_shipment_no = #{receivingShipmentNo}

@@ -15,7 +15,7 @@ $(document).ready(function () {
             let barcode = $(this).val().trim();
             if (barcode) {
                 $.ajax({
-                    url: "/shipment/scan",
+                    url: "/receiving/scan",
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ barcode: barcode }),
@@ -203,10 +203,9 @@ td {
 <body>
     <header>
         <h1>실시간 출고 관리 시스템</h1>
-        <a href="/shipment/main">출고 메인</a>
-        <a href="/shipment/history">출고 내역</a>
+        <a href="/receiving/main">출고 메인</a>
+        <a href="/receiving/history">출고 내역</a>
         <a href="/dashboard">대쉬보드</a>
-        <a href="/shipment/allScan">다중 스캔</a>
     </header>
     <main>
         <div>
@@ -218,124 +217,5 @@ td {
         </div>
     </main>
 
-    <!-- 카메라 선택 및 제어 버튼 -->
-    <div class="scanner-container">
-        <select id="cameraSelect"></select>
-        <button id="toggleScannerBtn">웹캠 시작</button>
-        <div id="reader"></div>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>상품명</th>
-                <th>바코드</th>
-                <th>단가</th>
-                <th>수량</th>
-            </tr>
-        </thead>
-        <tbody id="productList"></tbody>
-    </table>
-
-    <script>
-    const cameraSelect = document.getElementById('cameraSelect');
-    const toggleScannerBtn = document.getElementById('toggleScannerBtn');
-    const productList = document.getElementById('productList');
-    const beepSound = new Audio("${pageContext.request.contextPath}/resources/audio/beep.mp3"); // 비프 소리 경로
-    let reader = new Html5Qrcode("reader");
-    let scannerRunning = false;
-    const scannedProducts = {}; // 스캔된 상품 수량 추적 객체
-    let isScanning = false; // 스캔 중복 방지 플래그
-
-    // 카메라 목록 불러오기
-    Html5Qrcode.getCameras().then(devices => {
-        if (devices && devices.length) {
-            devices.forEach((device, index) => {
-                const option = document.createElement('option');
-                option.value = device.id;
-                option.textContent = device.label || `Camera ${index + 1}`;
-                cameraSelect.appendChild(option);
-            });
-        }
-    }).catch(err => console.error("카메라 목록 불러오기 오류:", err));
-
-    // 스캐너 시작/종료 버튼 이벤트
-    toggleScannerBtn.addEventListener('click', () => {
-        if (scannerRunning) stopScanner();
-        else startScanner();
-    });
-
-    // 스캐너 시작
-    function startScanner() {
-        const cameraId = cameraSelect.value || { facingMode: "environment" }; // 기본 카메라 설정
-        reader.start(
-            cameraId,
-            { fps: 10, qrbox: 250 },
-            onScanSuccess,
-            onScanError
-        ).then(() => {
-            scannerRunning = true;
-            toggleScannerBtn.textContent = "웹캠 끄기";
-        }).catch(err => console.error("웹캠 시작 오류:", err));
-    }
-
-    // 스캐너 종료
-    function stopScanner() {
-        reader.stop().then(() => {
-            scannerRunning = false;
-            toggleScannerBtn.textContent = "웹캠 시작";
-        }).catch(err => console.error("웹캠 종료 오류:", err));
-    }
-
-    // 스캔 성공 시 호출
-    function onScanSuccess(decodedText) {
-        if (isScanning) return; // 중복 호출 방지
-        isScanning = true;
-
-        beepSound.play(); // 비프 소리 재생
-        if (scannedProducts[decodedText]) {
-            scannedProducts[decodedText].quantity++;
-            updateTableRow(decodedText);
-            isScanning = false; // 스캔 상태 초기화
-        } else {
-            fetch("/api/qrcode/scan", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ productId: decodedText })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    scannedProducts[decodedText] = { ...data, quantity: 1 };
-                    addTableRow(scannedProducts[decodedText]);
-                } else {
-                    alert("상품 정보를 불러올 수 없습니다.");
-                }
-            })
-            .catch(error => console.error("오류:", error))
-            .finally(() => isScanning = false); // 상태 초기화
-        }
-    }
-
-    function onScanError(errorMessage) {
-        console.warn("스캔 오류:", errorMessage);
-    }
-
-    function addTableRow(product) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${product.productName}</td>
-            <td>${product.productBarcode}</td>
-            <td>${product.productPrice}</td>
-            <td id="quantity-${product.productId}">1</td>
-        `;
-        productList.appendChild(row);
-    }
-
-    function updateTableRow(productId) {
-        const quantityCell = document.getElementById(`quantity-${productId}`);
-        quantityCell.textContent = scannedProducts[productId].quantity;
-    }
-    </script>
 </body>
 </html>

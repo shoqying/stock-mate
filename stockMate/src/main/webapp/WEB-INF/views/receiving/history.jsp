@@ -12,10 +12,12 @@
 <body>
 
 	<h1>입고 내역</h1>
+	<nav>
 	<a href="/receiving/main">입고 메인</a><br><br>
 	<form action="/receiving/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
+	</nav>
 	
 
 	<!-- 기간별 검색 및 키워드 검색 폼 -->
@@ -29,7 +31,7 @@
         <input type="text" id="keyword" name="keyword" value="${param.keyword}">
 
         <button type="submit">검색</button>
-        <button type="button" onclick="resetForm()">초기화</button>
+        <button type="button" onclick="resetForm()">검색 초기화</button>
     </form>
 		<script>
 			// 폼 초기화 함수
@@ -48,7 +50,6 @@
 		<table border="1">
 			<tr>
 				<th>입고 번호</th>
-				<th>주문 번호</th>
 				<th>입고 출고</th>
 				<th>입고 일자</th>
 				<th>입고 상태</th>
@@ -63,11 +64,10 @@
 			<c:forEach var="vo" items="${ReceivingList }">
 				<tr>
 					<td>
-			            <a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}">
+			            <a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}" id="list">
 			                ${vo.receivingShipmentNo}
 			            </a>
 			        </td>
-			        <td>${vo.orderItemId}</td>
 					<td>     
 		                 <c:choose>
 		                    <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>
@@ -101,11 +101,9 @@
 			</c:forEach>
 		</table>
 
-	</form>
-
 	<c:choose>
 		<c:when test="${empty ReceivingList}">
-        검색 결과가 없습니다.
+        <h1>검색 결과가 없습니다.</h1>
     </c:when>
 	</c:choose>
 

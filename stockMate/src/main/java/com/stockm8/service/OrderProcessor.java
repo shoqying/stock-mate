@@ -68,6 +68,7 @@ public class OrderProcessor {
         } catch (Exception e) {
             logger.error("주문 처리 실패", e);
             throw e;
+
         }
     }
 
