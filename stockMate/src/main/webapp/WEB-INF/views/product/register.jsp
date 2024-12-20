@@ -8,9 +8,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>상품 등록</title>
 <link rel="stylesheet" href="<c:url value='/resources/css/registerStyle2.css' />">
+<link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css' />">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="<c:url value='/resources/scripts/toast.js' />"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -90,6 +92,17 @@
 	    document.getElementById('generateBarcode').addEventListener('click', function () {
 	        const randomBarcode = generateEAN13Barcode();
 	        document.getElementById('productBarcode').value = randomBarcode;
+	    });
+	    
+	    document.addEventListener("DOMContentLoaded", () => {
+	        // 서버에서 전달된 토스트 메시지 읽기
+	        const toastMessage = "${toastMessage}";
+	        const toastType = "${toastType}";
+
+	        // 메시지가 존재하면 토스트 표시
+	        if (toastMessage) {
+	            showToast(toastMessage, toastType);
+	        }
 	    });
 	</script>
 </body>

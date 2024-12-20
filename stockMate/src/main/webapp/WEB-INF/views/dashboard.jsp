@@ -175,10 +175,10 @@
             
         <c:choose>
 	        <c:when test="${userRole == 'ADMIN'}">
-	            <a href="/admin/main">관리자 페이지</a>
+	            <a href="/admin/approve">관리자 페이지</a>
 	        </c:when>
 	        <c:when test="${userRole == 'MANAGER'}">
-	            <a href="/manager/main">매니저 페이지</a>
+	            <a href="/manager/approve">매니저 페이지</a>
 	        </c:when>
     	</c:choose>
         </div>

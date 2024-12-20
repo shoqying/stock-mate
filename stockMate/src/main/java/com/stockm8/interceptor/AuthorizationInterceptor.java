@@ -148,7 +148,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
             if (user.getBusinessId() != null) {
                 logger.info("PENDING 상태의 사용자({})가 businessId({})를 가지고 있습니다. 메인 페이지로 이동합니다.", user.getUserId(), user.getBusinessId());
-                sendErrorMessage(request, response, "승인 절차가 완료될 때까지 기다려주세요.", "/main");
+                sendErrorMessage(request, response, "승인 절차가 완료될 때까지 기다려주세요.", "/");
                 return false;
             }
         }

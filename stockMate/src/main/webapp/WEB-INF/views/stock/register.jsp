@@ -7,18 +7,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>재고 등록</title>
 <link rel="stylesheet" href="<c:url value='/resources/css/registerStyle2.css' />">
+<link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css' />">
+<link rel="stylesheet" href="<c:url value='/resources/css/modalStyle.css' />">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<c:url value='/resources/css/modalStyle.css' />">
+<script src="<c:url value='/resources/scripts/toast.js' />"></script>
 </head>
 <body>
     <div class="container fade-in">
         <button class="dashboard-btn" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
         <button class="dashboard-btn" onclick="location.href='/stock/list';">재고 리스트</button>
         <h1>재고 등록</h1>
-        <form id="stockForm" method="post" action="/stock/register">
-            <!-- 창고 선택 -->
+		<form action="<c:url value='/stock/register' />" method="post">            <!-- 창고 선택 -->
             <div class="form-group">
                 <label for="warehouseSelect">창고 선택</label>
                 <select id="warehouseSelect" name="warehouseId" required>
@@ -90,11 +91,20 @@
 	        </div>
 	    </div>
 	</div>
-
+	<c:if test="${not empty toastMessage}">
+	    <script>
+	        const toastMessage = "${toastMessage}";
+	        const toastType = "${toastType}";
+	        document.addEventListener("DOMContentLoaded", () => {
+	            showToast(toastMessage, toastType);
+	        });
+	    </script>
+	</c:if>
 	<script>
 	document.addEventListener('DOMContentLoaded', () => {
     loadWarehouses();
 
+    const contextPath = "${pageContext.request.contextPath}";
     const productSelectBtn = document.getElementById('productSelectBtn');
     const productModal = document.getElementById('productModal');
     const closeProductModal = document.getElementById('closeProductModal');
@@ -103,6 +113,7 @@
     const productSpinner = document.getElementById('productSpinner');
     const noProductMsg = document.getElementById('noProductMsg');
     const productSearch = document.getElementById('productSearch');
+    const form = document.querySelector("form");
 
     productSelectBtn.addEventListener('click', () => {
         productModal.classList.add('active');
@@ -215,9 +226,12 @@ function loadProducts() {
                     productListBody.appendChild(tr);
                 });
                 productTable.classList.remove('hidden'); // 테이블 표시
+                // 성공 토스트 메시지
+                showToast("상품 목록이 성공적으로 불러왔습니다.", "success");
             } else {
                 noProductMsg.classList.remove('hidden');
                 noProductMsg.textContent = '상품이 없습니다.';
+                showToast("상품이 없습니다.", "info");
             }
         })
         .catch(err => {
@@ -225,7 +239,40 @@ function loadProducts() {
             noProductMsg.classList.remove('hidden');
             noProductMsg.textContent = '상품 불러오기 실패';
             console.error("오류 발생:", err);
+
+            // 실패 토스트 메시지
+            showToast("상품 목록을 불러오는 중 오류가 발생했습니다.", "error");
         });
+    
+ 	// 폼 제출 처리
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+        const formData = new FormData(form);
+        const stockData = {};
+
+        // FormData 데이터를 JSON 형식으로 변환
+        formData.forEach((value, key) => stockData[key] = value);
+
+        // 재고 등록 요청
+        fetch(`${contextPath}/stock/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(stockData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, "success"); // 성공 토스트 메시지
+                    form.reset(); // 폼 초기화
+                } else {
+                    showToast(data.message, "error"); // 실패 토스트 메시지
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                showToast("서버 요청 중 오류가 발생했습니다.", "error"); // 요청 실패 메시지
+            });
+    });
 }
 </script>
 </body>

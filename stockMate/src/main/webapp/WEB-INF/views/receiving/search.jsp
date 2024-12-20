@@ -254,7 +254,7 @@ tr:hover {
 			value="${param.keyword}">
 
 		<button type="submit">검색</button>
-		<button type="button" onclick="resetForm()">초기화</button>
+		<button type="button" onclick="resetForm()">검색 초기화</button>
 		<script>
 			// 폼 초기화 함수
 			function resetForm() {

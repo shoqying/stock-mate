@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메인 페이지</title>
+<link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
 <style>
 /* Reset */
 * {
@@ -40,7 +43,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('resources/css/stockmate-removebg-preview.png') no-repeat center center/contain;
+    background: url('resources/img/stockmate-removebg-preview.png') no-repeat center center/contain;
     opacity: 0.1;
     z-index: 0;
 }
@@ -178,6 +181,15 @@ body {
 </style>
 </head>
 <body>
+    	<%-- 에러 메시지 표시 --%>
+		<c:if test="${not empty errorMessage}">
+		    <div class="error-banner">${errorMessage}</div>
+		</c:if>
+		
+		<%-- 성공 메시지 표시 --%>
+		<c:if test="${not empty successMessage}">
+			<div class="success-banner">${successMessage}</div>
+		</c:if>
 
  <!-- Navigation -->
     <div class="nav">
