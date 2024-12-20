@@ -1,19 +1,9 @@
 package com.stockm8.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,159 +11,162 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stockm8.domain.enums.OrderStatus;
 import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
 import com.stockm8.domain.vo.OrderVO;
 import com.stockm8.domain.vo.PageVO;
-import com.stockm8.domain.vo.OrderVO.OrderType;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.OrderProcessor;
 import com.stockm8.service.OrderService;
-import com.stockm8.service.UserService;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping(value = "/order/*")
 public class OrderController {
-	
-	// 현재 로그인한 사용자 정보 가져오기(인터셉터에서 정의됨)
-	private UserVO getCurrentUser(HttpServletRequest request) {
-        return (UserVO) request.getAttribute("currentUser");
-    }
     
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     
     @Inject
     private OrderService orderService;
+    
     @Inject
-    private OrderProcessor orderProcessor; 
-    @Inject
-    private UserService userService;
+    private OrderProcessor orderProcessor;
+    
+    // 현재 로그인한 사용자 정보 가져오기(인터셉터에서 정의됨)
+    private UserVO getCurrentUser(HttpServletRequest request) {
+        return (UserVO) request.getAttribute("currentUser");
+    }
     
     /**
      * 주문 등록 페이지 표시(GET)
      * http://localhost:8088/order/register
-     * @param model Spring MVC 모델 객체
-     * @return 주문 등록 페이지의 뷰 이름
-     * 
      */
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String orderRegisterGET(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String registerGET(HttpServletRequest request) throws Exception {
         logger.info("orderRegisterGET() 호출");
-        
-        UserVO currentUser = getCurrentUser(request);
-        int businessId = currentUser.getBusinessId();
-	    
-	    return "order/register";
+        logger.debug("현재 접속 사용자: {}", getCurrentUser(request).getUserId());
+        return "order/register";
     }
-
+    
     /**
      * 주문 등록 처리(POST)
-     * http://localhost:8088/order/register
-     * @param order 클라이언트에서 전송된 주문 정보
-     * @return 처리 결과를 담은 Map 객체
-     * 
      */
     @RequestMapping(value = "/register", 
                    method = RequestMethod.POST,
                    produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, String> orderRegisterPOST(@SessionAttribute("userId") Long userId, 
-    											@RequestBody OrderVO order, HttpServletRequest request) throws Exception {
+    public String registerPOST(@RequestBody OrderVO order, 
+                           HttpServletRequest request) throws Exception {
         logger.info("orderRegisterPOST() 호출");
-        logger.info("주문 정보: " + order);
+        logger.debug("주문 데이터: {}", order);
         
         UserVO currentUser = getCurrentUser(request);
         int businessId = currentUser.getBusinessId();
 	    
-
-        return orderProcessor.process(order, businessId, userId);
+        
+        // 주문 등록을 OrderProcessor에 위임
+        Map<String, String> response = orderProcessor.process(order, currentUser.getBusinessId());
+        
+        // Map을 JSON 문자열로 변환하여 반환
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        return objectMapper.writeValueAsString(response);  // JSON 문자열로 변환하여 반환
+        
     }
     
     /**
-     * 가용 재고 목록 조회
-     * http://localhost:8088/order/findAvailableStocks
-     */
-    @RequestMapping(value = "/findAvailableStocks",
-                   method = RequestMethod.GET,
-                   produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<StockVO> findAvailableStocks(HttpServletRequest request) throws Exception {
-        logger.info("findAvailableStocks() 호출");
-        
-        UserVO currentUser = getCurrentUser(request);
-        int businessId = currentUser.getBusinessId();
-        
-        return orderService.findAvailableStocks(businessId);
-    }
-    
-    /**
-     * 주문번호 생성
+     * 주문번호 생성 API
      * http://localhost:8088/order/generateOrderNumber
      */
     @RequestMapping(value = "/generateOrderNumber",
-    				method = RequestMethod.GET,
-    				produces = MediaType.APPLICATION_JSON_VALUE)
+                   method = RequestMethod.GET,
+                   produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String generateOrderNumber() throws Exception {
         logger.info("generateOrderNumber() 호출");
-        return orderService.generateOrderNumber();
+        String orderNumber = orderService.generateOrderNumber();
+        logger.debug("생성된 주문번호: {}", orderNumber);
+        return orderNumber;
     }
     
     /**
-     * 주문 목록 조회
-     * http://localhost:8088/order/orderList
+     * 가용 재고 목록 조회 API
+     * http://localhost:8088/order/stocks
      */
-    @RequestMapping(value = "/orderList" , method = RequestMethod.GET)
-    public String orderListGET(Model model, Criteria cri, HttpServletRequest request) throws Exception {
-    	logger.info("orderListGET() 호출");
-    	
-    	// Criteria가 null인 경우 새로 생성
+    @RequestMapping(value = "/findAvailableStocks", method = RequestMethod.GET)
+    @ResponseBody
+    public List<StockVO> getAvailableStocks(HttpServletRequest request) throws Exception {
+        logger.info("getAvailableStocks() 호출");
+        UserVO currentUser = getCurrentUser(request);
+        logger.debug("사업자 ID: {}", currentUser.getBusinessId());
+        return orderService.findAvailableStocks(currentUser.getBusinessId());
+    }
+    
+    /**
+     * 주문 목록 조회 페이지
+     * http://localhost:8088/order/list
+     */
+    @RequestMapping(value = "/orderList", method = RequestMethod.GET)
+    public String listGET(@ModelAttribute Criteria cri, 
+                         Model model, 
+                         HttpServletRequest request) throws Exception {
+        logger.info("orderListGET() 호출");
+        logger.debug("페이지 정보: {}", cri);
+        
+        // 페이징 정보가 없는 경우 기본값 설정
         if (cri == null) {
             cri = new Criteria();
         }
-    	
+        
         UserVO currentUser = getCurrentUser(request);
         int businessId = currentUser.getBusinessId();
         
-    	//서비스 -> DAO(주문 목록)
-    	List<OrderVO> orderList = orderService.getOrderList(cri, businessId);
-    	
-    	// 전체 데이터 개수 조회
+        // 주문 목록 및 페이징 정보 조회
+        List<OrderVO> orderList = orderService.getOrderList(cri, businessId);
         int totalCount = orderService.getTotalOrderCount(businessId);
-    	
-        // 페이징 정보 계산
+        
+        // PageVO 생성 및 설정 수정
         PageVO pageVO = new PageVO();
         pageVO.setCri(cri);
         pageVO.setTotalCount(totalCount);
         
-    	//뷰 페이지 정보 전달(model)
-    	model.addAttribute("orderList",orderList);
-    	model.addAttribute("pageVO", pageVO);
-    	
-    	return "/order/orderList";
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("pageVO", pageVO);
+        
+        logger.debug("조회된 주문 수: {}", orderList.size());
+        return "order/orderList";
     }
     
     /**
      * 주문 상세 정보 조회
-     * http://localhost:8088/order/detail?orderId=1
+     * http://localhost:8088/order/orderDetail?orderId=1
      */
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public String orderDetailGET(@RequestParam("orderId") int orderId, Model model, HttpServletRequest request) throws Exception {
-        logger.info("orderDetailGET() 호출 - orderId: " + orderId);
+    @RequestMapping(value = "/orderDetail", method = RequestMethod.GET)  // URL 수정
+    public String orderDetailGET(@RequestParam("orderId") int orderId, Model model) throws Exception {
+        logger.info("orderDetailGET() 호출 - orderId: {}", orderId);
         
-        UserVO currentUser = getCurrentUser(request);
-        
-        // 주문 기본 정보 조회
+        // 주문 상세 정보 조회
         OrderVO order = orderService.getOrderById(orderId);
-        // 주문 상세 항목 목록 조회
         List<OrderItemVO> orderItems = orderService.getOrderItemsByOrderId(orderId);
         
-        // 모델에 데이터 추가
         model.addAttribute("order", order);
         model.addAttribute("orderItems", orderItems);
         
-        return "order/orderDetail";
+        logger.debug("주문 정보: {}", order);
+        logger.debug("주문 항목 수: {}", orderItems.size());
+        
+        return "order/orderDetail";  // orderDetail.jsp로 이동
     }
     
 } //OrderController

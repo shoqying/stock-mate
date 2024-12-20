@@ -449,7 +449,7 @@
         // 재고 목록 로드
         function loadAvailableStocks() {
             showLoading();
-            $.ajax({
+            $.ajax({ 
                 url: '/order/findAvailableStocks',
                 type: 'GET',
                 dataType: 'json',

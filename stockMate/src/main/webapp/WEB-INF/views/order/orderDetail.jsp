@@ -14,7 +14,6 @@
             <h2>주문 상세 정보</h2>
          <a class="btn btn-success" href="/order/orderList" style="text-decoration: none;">목록으로</a>
         </div>
-        
         <div style="margin: 20px; padding: 10px; background-color: #f8f9fa; border: 1px solid #ddd;">
 	    <h4>디버깅 정보:</h4>
 	    <p>주문 정보 존재 여부: ${not empty order}</p>
@@ -25,6 +24,7 @@
         <!-- 주문 기본 정보 -->
         <div class="order-info">
             <h3>주문 기본 정보</h3>
+            
             <table>
                 <tr>
                     <th>주문번호</th>
@@ -68,7 +68,7 @@
                 <!-- 포매팅 대기 pattern="#,###" -->
                 <td><fmt:formatNumber value="${item.unitPrice}" />원</td>
                 <!-- 포매팅 대기  pattern="#,###"-->
-                <td><fmt:formatNumber value="${item.stotalPrice}"  />원</td>
+                <td><fmt:formatNumber value="${item.subtotalPrice}"  />원</td>
                 <td>${item.shipmentStatus}</td>
                 <td>${item.remarks}</td>
             </tr>
