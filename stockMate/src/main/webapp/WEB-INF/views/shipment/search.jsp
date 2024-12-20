@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>출고 내역</title>
-<link rel="stylesheet" type="text/css" href="/resources/css/shipmentHistoryStyle.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/receivingHistoryStyle.css">
 </head>
 <body>
 
@@ -59,7 +59,7 @@
 				<th>창고 위치</th>
 				<th>작업 메모</th>
 			</tr>
-			<c:forEach var="vo" items="${shipmentList }">
+			<c:forEach var="vo" items="${ShipmentList }">
 				<tr>
 					<td><a href="/shipment/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}" id="list">
 			                ${vo.receivingShipmentNo}
@@ -100,7 +100,7 @@
 	</form>
 
 	<c:choose>
-		<c:when test="${empty shipmentList}">
+		<c:when test="${empty ShipmentList}">
         <h1>검색 결과가 없습니다.</h1>
     </c:when>
 	</c:choose>

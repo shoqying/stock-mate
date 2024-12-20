@@ -10,7 +10,7 @@
 <title>QR 코드 스캔 및 상품 정보</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.2.1/html5-qrcode.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/resources/css/shipmentScanStyle.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/receivingScanStyle.css">
 <script>
 $(document).ready(function () {
     $("#barcodeInput").on("keyup", function (e) {

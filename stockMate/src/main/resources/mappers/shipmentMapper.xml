@@ -18,7 +18,8 @@ INSERT INTO receiving_shipment (
     order_item_id,
     stock_id,
     warehouse_id,
-    created_by
+    created_by,
+    memo
 )
 SELECT DISTINCT 
     ord.order_type, 
@@ -28,7 +29,8 @@ SELECT DISTINCT
     o.order_item_id,
     s.stock_id,
     o.warehouse_id,
-    #{userId}
+    #{userId},
+    o.remarks
 FROM products p
 JOIN order_items o ON o.product_id = p.product_id
 JOIN stocks s ON s.product_id = p.product_id
@@ -269,7 +271,7 @@ AND r.order_item_id = #{orderItemId}
     JOIN products p ON r.product_id = p.product_id
     JOIN stocks s ON s.product_id = p.product_id
     JOIN order_items o ON s.product_id = o.product_id
-    SET r.status = 'COMPLETED'
+    SET r.status = 'COMPLETED',
     r.created_by = #{userId}
     WHERE p.product_barcode = #{barcode}
     AND o.change_quantity = 1
