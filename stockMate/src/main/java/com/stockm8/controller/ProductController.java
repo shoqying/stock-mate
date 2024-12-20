@@ -2,6 +2,7 @@ package com.stockm8.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
@@ -79,25 +80,37 @@ public class ProductController {
 			HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 		logger.info("productRegistPOST() 호출");
 
-		// 전달정보(파라미터) 확인
-		logger.info("product: {}", product);
+	    try {
+	        // 전달정보(파라미터) 확인
+	        logger.info("product: {}", product);
 
-		// 사용자 정보 및 회사정보 가져오기
-		UserVO user = userService.getUserById(userId);
-		int businessId = user.getBusinessId();
-		logger.info("Business ID for user: {}", businessId);
+	        // 사용자 정보 및 회사정보 가져오기
+	        UserVO user = userService.getUserById(userId);
+	        int businessId = user.getBusinessId();
+	        logger.info("Business ID for user: {}", businessId);
 
-		// user의 businessId 설정
-		product.setBusinessId(user.getBusinessId());
+	        // user의 businessId 설정
+	        product.setBusinessId(user.getBusinessId());
 
-		// DB등록처리 / Service -> DAO -> mapper(sql 호출)
-		productService.registerProduct(product);
+	        // DB등록처리 / Service -> DAO -> mapper(sql 호출)
+	        productService.registerProduct(product);
 
-		// DB insert 후 생성된 productId PK
-		int productId = product.getProductId();
+	        // DB insert 후 생성된 productId PK
+	        int productId = product.getProductId();
 
-		logger.info("연결된 뷰페이지(/product/detail.jsp) 이동");
-		return "redirect:/product/detail?productId=" + productId;
+	        // 성공 메시지 설정
+	        rttr.addFlashAttribute("toastMessage", "상품이 성공적으로 등록되었습니다!");
+	        rttr.addFlashAttribute("toastType", "success");
+	    } catch (Exception e) {
+	        // 예외 발생 시 처리
+	        logger.error("상품 등록 중 오류 발생: ", e);
+
+	        // 실패 메시지 설정
+	        rttr.addFlashAttribute("toastMessage", "상품 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+	        rttr.addFlashAttribute("toastType", "error");
+	    }
+        // 등록 페이지로 리다이렉트
+        return "redirect:/product/register";
 	}
 
 	// QR코드 등록 처리
@@ -147,18 +160,18 @@ public class ProductController {
 
 		// 파일 다운로드 설정
 		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+		response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
 		response.setContentLengthLong(qrCodeFile.length());
 
 		// 파일 데이터 출력
-		try (FileInputStream fileInputStream = new FileInputStream(qrCodeFile);
-				OutputStream outputStream = response.getOutputStream()) {
-			byte[] buffer = new byte[1024];
-			int bytesRead;
-			while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, bytesRead);
-			}
-			outputStream.flush();
+		try (InputStream inputStream = new FileInputStream(qrCodeFile);
+			     OutputStream outputStream = response.getOutputStream()) {
+			    byte[] buffer = new byte[1024];
+			    int bytesRead;
+			    while ((bytesRead = inputStream.read(buffer)) != -1) {
+			        outputStream.write(buffer, 0, bytesRead);
+			    }
+			    outputStream.flush();
 		}
 	}
 

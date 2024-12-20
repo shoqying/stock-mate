@@ -80,7 +80,7 @@ public class QRCodeServiceImpl implements QRCodeService {
      */
     private String createJSONContent(ProductVO product) {
         return String.format(
-            "{\"productId\":%d,\"barcode\":\"%s\",\"businessId\":%d,\"baseUnit\":\"%s\",\"setSize\":%d}",
+            "{\"productId\":%d,\"productBarcode\":\"%s\",\"businessId\":%d,\"baseUnit\":\"%s\",\"setSize\":%d}",
             product.getProductId(),
             product.getProductBarcode(),
             product.getBusinessId(),

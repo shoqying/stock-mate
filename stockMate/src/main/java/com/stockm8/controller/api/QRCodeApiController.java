@@ -104,7 +104,7 @@ public class QRCodeApiController {
         
         // Content-Disposition 헤더 설정
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFileName) // UTF-8 호환
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFileName)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .contentLength(qrCodeFile.length())
                 .body(resource);

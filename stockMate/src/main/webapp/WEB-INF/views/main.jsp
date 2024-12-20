@@ -40,7 +40,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('resources/css/stockmate-removebg-preview.png') no-repeat center center/contain;
+    background: url('resources/img/stockmate-removebg-preview.png') no-repeat center center/contain;
     opacity: 0.1;
     z-index: 0;
 }
