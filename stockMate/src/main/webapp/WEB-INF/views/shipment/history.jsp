@@ -64,7 +64,7 @@
 			<c:forEach var="vo" items="${ReceivingList }">
 				<tr>
 					<td>
-			            <a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}" id="list">
+			            <a href="/shipment/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}" id="list">
 			                ${vo.receivingShipmentNo}
 			            </a>
 			        </td>
