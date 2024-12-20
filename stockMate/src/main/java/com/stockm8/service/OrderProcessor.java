@@ -115,7 +115,7 @@ public class OrderProcessor {
      */
     private void processOrderByType(OrderVO order, int businessId, Long userId) throws Exception {
         if (order.getOrderType() == OrderType.OUTBOUND) {
-            shipmentService.insertShipment(businessId);
+            shipmentService.insertShipment(businessId, userId);
             logger.debug("출고 대기 상태 생성 완료");
         } else {
             receivingService.insertReceiving(businessId, userId);

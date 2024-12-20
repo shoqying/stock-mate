@@ -36,7 +36,7 @@ import com.stockm8.service.UserService;
 import com.stockm8.domain.vo.OrderItemVO;
 
 @Controller
-@RequestMapping(value = "/Shipment/*")
+@RequestMapping(value = "/shipment/*")
 public class ShipmentController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ShipmentController.class);
