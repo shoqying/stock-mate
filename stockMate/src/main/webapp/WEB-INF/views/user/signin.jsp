@@ -136,7 +136,7 @@
 		
 		<div class="logo">
 			<a href="http://localhost:8088/">
-				<img alt="" src="../resources/css/stockmate-removebg-preview.png">
+				<img alt="" src="../resources/img/stockmate-removebg-preview.png">
 			</a>
 		</div>
 		

@@ -6,72 +6,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>카테고리 목록</title>
-	<style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #fff;
-            table-layout: fixed;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-            word-break: break-word;
-        }
-
-        th {
-            background-color: #007BFF;
-            color: #fff;
-            position: sticky;
-            top: 0;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .low-stock {
-            color: red;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-    </style>
+	<link rel="stylesheet" href="<c:url value='/resources/css/stockListStyle.css' />">
 </head>
 <body>
     <h1>카테고리 목록</h1>
-
+	   	<!-- 대시보드로 이동 버튼 -->
+    	<button class="dashboard-btn" onclick="location.href='<c:url value="/dashboard" />'">대시보드로 이동</button>
+	    <br>
+	    <a href="/category/register">카테고리 등록</a>
     <table border="1">
         <thead>
             <tr>
@@ -161,6 +103,5 @@
             </c:forEach>
         </tbody>
     </table>
-    <a href="/category/register">카테고리 등록</a>
 </body>
 </html>
