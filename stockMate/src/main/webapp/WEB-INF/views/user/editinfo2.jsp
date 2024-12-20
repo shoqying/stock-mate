@@ -54,7 +54,6 @@
 			<button type="submit">내 정보 수정하기</button>
 		</form>
 
-
 	</div>
 
 	<!-- Footer -->

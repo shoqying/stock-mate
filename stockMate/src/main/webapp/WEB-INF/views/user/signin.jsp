@@ -120,7 +120,7 @@
 <body>
 
 
-    <%-- 에러 메시지 표시 --%>
+    	<%-- 에러 메시지 표시 --%>
 		<c:if test="${not empty errorMessage}">
 		    <div class="error-banner">${errorMessage}</div>
 		</c:if>
