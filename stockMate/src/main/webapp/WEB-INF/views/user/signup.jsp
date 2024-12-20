@@ -132,7 +132,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-       	top: -35px;
+      	 	top: -35px;
          
         } 
         
@@ -183,7 +183,9 @@
         
         </div>
 
-       
+        <div class="footer">
+            회사 정보 - 사업자 번호, 연락처 등 유의 내용
+        </div>
     </div>
 </body>
 </html>
