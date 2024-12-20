@@ -55,7 +55,10 @@ public class OrderController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerGET(HttpServletRequest request) throws Exception {
         logger.info("orderRegisterGET() 호출");
-        logger.debug("현재 접속 사용자: {}", getCurrentUser(request).getUserId());
+        UserVO currentUser = getCurrentUser(request);
+        int businessId = currentUser.getBusinessId();
+        logger.info("Business ID for userId {}: {}", currentUser, businessId);
+
         return "order/register";
     }
     
