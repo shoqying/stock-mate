@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
+
 import javax.mail.internet.MimeMessage;
 import javax.mail.Message;
 import javax.mail.Transport;
@@ -218,6 +219,7 @@ public class UserController {
 	    user.setUserId(userId); // userId 설정
 
 	    try {
+	    	System.out.println(user);
 	        userService.updateUser(user); // 정보 업데이트
 	        logger.info("회원정보 수정 성공");
 
@@ -239,7 +241,7 @@ public class UserController {
 
 
 
-	// 회원정보 수정
+	// 비밀번호 변경
 	@RequestMapping(value = "/changepassword1", method = RequestMethod.GET)
 	public String changepassword1GET(HttpSession session) {
 		Long userId = (Long) session.getAttribute("userId");
@@ -340,6 +342,7 @@ public class UserController {
 
 
 	// 비밀번호 찾기 - GET
+	//
     @RequestMapping(value = "/findpassword", method = RequestMethod.GET)
     public String findPasswordGet() {
         return "/user/findpassword";  // 비밀번호 찾기 페이지로 이동
@@ -351,9 +354,11 @@ public class UserController {
                                     @RequestParam("name") String name,
                                     Model model) {
     	 try {
+    		 System.out.println(email);
+    		 System.out.println(name);
     	        // 이메일과 이름으로 비밀번호 찾기
     	        String password = userService.findPassword(email, name);  // 비밀번호를 String으로 받음
-
+    	       System.out.println(password);
     	        if (password != null) {
     	            // 비밀번호가 일치하면 얼럿창을 통해 비밀번호를 사용자에게 전달
     	            model.addAttribute("password", password);  // 비밀번호를 model에 추가

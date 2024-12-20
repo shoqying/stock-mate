@@ -65,11 +65,11 @@
 	</select>
 
 	<!-- 회원정보 조회 -->
-	<select id="getUser" parameterType="long"
+	<select id="getUser"
 		resultMap="userResultMap">
 		SELECT *
 		FROM users
-		WHERE user_id = #{userId}
+		WHERE user_id = #{userId} and password = #{password}
 	</select>
 	
    	<!-- 역할이 ADMIN 또는 MANAGER이고 상태가 pending이며 isDeleted가 false인 회원 리스트 조회 -->
@@ -117,6 +117,7 @@
 		SET
 		user_name = #{userName},
 		tel_number = #{telNumber},
+		
 		updated_at = NOW()
 		WHERE
 		user_id = #{userId}
@@ -158,8 +159,8 @@
  	<!-- 이메일과 이름으로 비밀번호 찾기 -->
 	<select id="findPassword" resultType="java.lang.String">
     	SELECT password
-    	FROM test_users
-    	WHERE email = #{email} AND name = #{name}
+    	FROM users
+    	WHERE email = #{email} AND user_name = #{name}
 	</select>
 
 
