@@ -22,4 +22,7 @@ public interface ProductDAO {
 
     // 회사 정보를 통해 상품 조회
     public List<ProductVO> selectProductsByBusinessId(@Param("businessId") int businessId) throws Exception;
+    
+    // 바코드 기반으로 상품조회
+    ProductVO getProductByBarcode(String productBarcode) throws Exception;
 }

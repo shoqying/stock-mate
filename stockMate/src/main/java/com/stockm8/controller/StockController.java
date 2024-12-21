@@ -17,10 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.stockm8.domain.dto.StockDTO;
 import com.stockm8.domain.vo.CategoryVO;
+import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.domain.vo.WarehouseVO;
 import com.stockm8.service.CategoryService;
+import com.stockm8.service.ProductService;
 import com.stockm8.service.StockService;
 import com.stockm8.service.UserService;
 import com.stockm8.service.WarehouseService;
@@ -41,6 +43,9 @@ public class StockController {
     
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private ProductService productService;
 
     // 재고 등록 페이지
     // http://localhost:8088/stock/register
@@ -95,8 +100,8 @@ public class StockController {
     @GetMapping("/list")
     public String getStockList(
             @SessionAttribute("userId") Long userId,
-            @RequestParam(required = false, defaultValue = "updated_at") String sortColumn,
-            @RequestParam(required = false, defaultValue = "desc") String sortOrder,
+            @RequestParam(required = false, defaultValue = "available_stock") String sortColumn,
+            @RequestParam(required = false, defaultValue = "asc") String sortOrder,
             Model model) throws Exception {
         
         logger.info(">>> 재고 리스트 요청 sortColumn: {}, sortOrder: {}", sortColumn, sortOrder);
@@ -110,10 +115,14 @@ public class StockController {
         List<CategoryVO> categoryList = categoryService.getCategoriesByBusinessId(businessId);
         model.addAttribute("warehouseList", warehouseList);
         model.addAttribute("categoryList", categoryList);
-
+        
         // 재고 리스트 조회
         List<StockDTO> stockList = stockService.getStockList(businessId, sortColumn, sortOrder);
         model.addAttribute("stockList", stockList);
+        
+		// 비즈니스 ID로 상품 리스트 조회
+//		List<ProductVO> products = productService.getProductsWithQRCode(businessId);
+//		model.addAttribute("products", products);
 
         // 정렬 정보 추가
         model.addAttribute("sortColumn", sortColumn);

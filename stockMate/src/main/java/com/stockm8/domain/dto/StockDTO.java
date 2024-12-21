@@ -14,5 +14,6 @@ public class StockDTO {
     private String warehouseName;      // 창고명
     private int totalQuantity;         // 총 재고 수량
     private int availableStock;        // 사용 가능한 재고
+    private String stockQrCodePath;    // 스캔용 QR코드 경로
     private Timestamp updatedAt;  	   // 최근 수정 시간
 }

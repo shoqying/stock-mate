@@ -173,3 +173,48 @@ a:hover {
 	background-color: #0056b3;
 	transform: scale(1.05); /* 버튼 확대 */
 }
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* 다운로드 버튼 스타일 */
+.btn-download {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none; /* 밑줄 제거 */
+    display: inline-block; /* 링크 스타일 제거를 위해 block/inline-block */
+}
+
+/* 방문 후 및 클릭 후에도 밑줄 제거 */
+.btn-download:visited,
+.btn-download:hover,
+.btn-download:active {
+    text-decoration: none;
+    color: white; /* 링크 색상 유지 */
+}
+
+/* 생성 버튼 스타일 */
+.btn-generate {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.btn-generate:visited,
+.btn-generate:hover,
+.btn-generate:active {
+    text-decoration: none;
+    color: white;
+}

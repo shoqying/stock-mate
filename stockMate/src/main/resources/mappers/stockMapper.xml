@@ -37,6 +37,7 @@
         <result property="totalQuantity" column="total_quantity"/>
         <result property="reservedQuantity" column="reserved_quantity"/>
         <result property="availableStock" column="available_stock"/>
+        <result property="stockQrCodePath" column="stock_qr_code_path" />
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
         <result property="description" column="description"/>
@@ -137,7 +138,8 @@
 	        w.warehouse_name,
 	        s.total_quantity,
 	        s.available_stock,
-	        s.updated_at
+	        s.updated_at,
+	        s.stock_qr_code_path
 	    FROM stocks s
 	    JOIN products p ON s.product_id = p.product_id
 	    JOIN categories c ON p.category_id = c.category_id
@@ -159,7 +161,7 @@
             updated_at AS updatedAt,
             is_deleted AS isDeleted
         FROM test_categories
-        WHERE is_deleted = 0  <!-- 삭제되지 않은 카테고리만 조회 -->
+        WHERE is_deleted = 0
     </select>
 
     <!-- 창고 목록 조회 -->

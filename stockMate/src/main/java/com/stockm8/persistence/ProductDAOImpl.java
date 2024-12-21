@@ -51,5 +51,10 @@ public class ProductDAOImpl implements ProductDAO {
 	    return sqlSession.selectList(NAMESPACE + "selectProductsByBusinessId", businessId);
 	}
 
+
+	@Override
+	public ProductVO getProductByBarcode(String productBarcode) throws Exception {
+	    return sqlSession.selectOne(NAMESPACE + "selectProductByBarcode", productBarcode);
+	}
 	
 }

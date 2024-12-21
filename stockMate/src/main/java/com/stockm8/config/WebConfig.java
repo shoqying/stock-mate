@@ -113,8 +113,14 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 기존 정적 리소스 핸들러
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
+        
+        // QR 코드 업로드 디렉터리 매핑 추가
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:/Users/Insung/Documents/upload/");
+//        		.addResourceLocations("file:/usr/local/tomcat/webapps/upload/");
     }
     
     /**
