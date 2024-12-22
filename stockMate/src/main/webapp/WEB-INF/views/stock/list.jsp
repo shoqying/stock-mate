@@ -44,7 +44,16 @@
                     </th>
 
                     <th>바코드</th>
-                    <th>카테고리명</th>
+                    
+                    <!-- 카테고리명 정렬 -->
+		            <th>
+		                <a href="?sortColumn=category_name&sortOrder=${sortOrder eq 'asc' and sortColumn eq 'category_name' ? 'desc' : 'asc'}">
+		                    카테고리명
+		                    <c:if test="${sortColumn eq 'category_name'}">
+		                        <span class="sort-indicator">${sortOrder eq 'asc' ? '▲' : '▼'}</span>
+		                    </c:if>
+		                </a>
+		            </th>
 
                     <!-- 창고명 정렬 -->
 					<th>
