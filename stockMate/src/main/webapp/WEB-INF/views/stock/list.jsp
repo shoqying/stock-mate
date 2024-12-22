@@ -135,7 +135,8 @@
 								<td>            
 								    <c:choose>
 										<c:when test="${not empty stock.stockQrCodePath}">
-										    <a href="${stock.stockQrCodePath.replace('/Users/Insung/Documents/upload', '/upload')}" 
+<%-- 										<a href="${stock.stockQrCodePath.replace('/Users/Insung/Documents/upload', '/upload')}"  --%>
+										    <a href="${stock.stockQrCodePath.replace('/usr/local/tomcat/webapps/upload', '/upload')}" 
 										       class="btn-download"
 										       download="${stock.stockQrCodePath.substring(stock.stockQrCodePath.lastIndexOf('/') + 1)}">
 										        다운로드
@@ -153,7 +154,8 @@
 								<td>
 								    <c:choose>
 								        <c:when test="${not empty stock.barcodePath}">
-										    <a href="${stock.barcodePath != null ? stock.barcodePath.replace('/Users/Insung/Documents/upload', '/upload') : ''}"
+<%-- 										    <a href="${stock.barcodePath != null ? stock.barcodePath.replace('/Users/Insung/Documents/upload', '/upload') : ''}" --%>
+										    <a href="${stock.barcodePath != null ? stock.barcodePath.replace('/usr/local/tomcat/webapps/upload', '/upload') : ''}"
 										       class="btn-download"
 										       download="${stock.barcodePath != null ? stock.barcodePath.substring(stock.barcodePath.lastIndexOf('/') + 1) : ''}">
 										        다운로드

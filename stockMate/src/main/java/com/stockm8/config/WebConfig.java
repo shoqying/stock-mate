@@ -120,8 +120,8 @@ public class WebConfig implements WebMvcConfigurer {
         
         // QR 코드 업로드 디렉터리 매핑 추가
         registry.addResourceHandler("/upload/**")
-                .addResourceLocations("file:/Users/Insung/Documents/upload/");
-//        		.addResourceLocations("file:/usr/local/tomcat/webapps/upload/");
+//              .addResourceLocations("file:/Users/Insung/Documents/upload/");
+        		.addResourceLocations("file:/usr/local/tomcat/webapps/upload/");
     }
     
     /**
