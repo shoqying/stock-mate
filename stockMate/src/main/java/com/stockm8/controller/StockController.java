@@ -104,7 +104,7 @@ public class StockController {
             @RequestParam(required = false, defaultValue = "asc") String sortOrder,
             Model model) throws Exception {
         
-        logger.info(">>> 재고 리스트 요청 sortColumn: {}, sortOrder: {}", sortColumn, sortOrder);
+        logger.info("재고 리스트 요청 sortColumn: {}, sortOrder: {}", sortColumn, sortOrder);
 
         // 사용자 정보 조회
         UserVO user = userService.getUserById(userId);

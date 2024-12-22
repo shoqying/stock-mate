@@ -17,7 +17,7 @@
 
 <nav>
 <a href="/shipment/history">출고 내역</a>
-<a href="/dashboard">대쉬보드</a><br><br>
+<a href="/dashboard">대시보드</a><br><br>
 <form action="/shipment/insert1" method="POST">
     <input type="submit" value="새로고침">
 </form>

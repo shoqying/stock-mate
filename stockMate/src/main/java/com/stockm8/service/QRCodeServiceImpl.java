@@ -17,7 +17,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.stockm8.domain.dto.QRCodeDTO;
-import com.stockm8.domain.dto.StockBarcodeDTO;
+import com.stockm8.domain.dto.StockQRCodeDTO;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.persistence.CategoryDAO;
 import com.stockm8.persistence.ProductDAO;
@@ -64,7 +64,7 @@ public class QRCodeServiceImpl implements QRCodeService {
         generateQRCodeImage(qrCodeData, filePath);
 
         // QRCodeVO 객체 생성 및 데이터베이스 저장
-        StockBarcodeDTO stockBarcode = new StockBarcodeDTO();
+        StockQRCodeDTO stockBarcode = new StockQRCodeDTO();
         stockBarcode.setProductId(productId);
         stockBarcode.setStockQrCodeData(qrCodeData);
         stockBarcode.setStockQrCodePath(filePath);
@@ -166,12 +166,12 @@ public class QRCodeServiceImpl implements QRCodeService {
      * @throws Exception QR 코드 조회 실패 시 예외
      */
     @Override
-    public StockBarcodeDTO getQRCodeByBarcode(String productBarcode) throws Exception {
+    public StockQRCodeDTO getQRCodeByBarcode(String productBarcode) throws Exception {
         return qrCodeDAO.selectQRCodeByBarcode(productBarcode);
     }
 
 	@Override
-	public StockBarcodeDTO getQRCodeByProductId(Integer productId) throws Exception {
+	public StockQRCodeDTO getQRCodeByProductId(Integer productId) throws Exception {
         return qrCodeDAO.selectQRCodeByProductId(productId);
 	}
     

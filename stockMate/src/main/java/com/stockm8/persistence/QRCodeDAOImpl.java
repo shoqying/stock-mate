@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.stockm8.domain.dto.QRCodeDTO;
-import com.stockm8.domain.dto.StockBarcodeDTO;
+import com.stockm8.domain.dto.StockQRCodeDTO;
 
 @Repository
 public class QRCodeDAOImpl implements QRCodeDAO {
@@ -19,17 +19,17 @@ public class QRCodeDAOImpl implements QRCodeDAO {
     private static final String NAMESPACE = "com.stockm8.mapper.QRCodeMapper.";
 
     @Override
-    public void updateQRCodePathByProductId(StockBarcodeDTO stockBarcode) {
+    public void updateQRCodePathByProductId(StockQRCodeDTO stockBarcode) {
         sqlSession.insert(NAMESPACE + "updateQRCodePathByProductId", stockBarcode);
     }
 
 	@Override
-	public StockBarcodeDTO selectQRCodeByBarcode(String productBarcode) {
+	public StockQRCodeDTO selectQRCodeByBarcode(String productBarcode) {
 		return sqlSession.selectOne(NAMESPACE + "selectQRCodeByBarcode", productBarcode);
 	}    
 	
     @Override
-	public StockBarcodeDTO selectQRCodeByProductId(Integer productId) throws Exception {
+	public StockQRCodeDTO selectQRCodeByProductId(Integer productId) throws Exception {
 		return sqlSession.selectOne(NAMESPACE + "selectQRCodeByProductId", productId);
 	}
 

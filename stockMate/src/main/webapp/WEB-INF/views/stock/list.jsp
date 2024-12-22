@@ -47,14 +47,14 @@
                     <th>카테고리명</th>
 
                     <!-- 창고명 정렬 -->
-                    <th>
-                        <a href="?sortColumn=warehouse_name&sortOrder=${sortOrder eq 'asc' and sortColumn eq 'warehouse_name' ? 'desc' : 'asc'}">
-                            창고명
-                            <c:if test="${sortColumn eq 'warehouse_name'}">
-                                <span class="sort-indicator">${sortOrder eq 'asc' ? '▲' : '▼'}</span>
-                            </c:if>
-                        </a>
-                    </th>
+					<th>
+					    <a href="?sortColumn=warehouse_name&sortOrder=${sortColumn eq 'warehouse_name' and sortOrder eq 'asc' ? 'desc' : 'asc'}">
+					        창고명
+					        <c:if test="${sortColumn eq 'warehouse_name'}">
+					            <span class="sort-indicator">${sortOrder eq 'asc' ? '▲' : '▼'}</span>
+					        </c:if>
+					    </a>
+					</th>
 
                     <th>총 재고</th>
                     <th>
@@ -74,7 +74,10 @@
                         </a>
                     </th>
 					<th>
-						스캔용 QR 코드
+						QR 코드
+					</th>
+					<th>
+						 바코드 
 					</th>
                 </tr>
             </thead>
@@ -126,16 +129,33 @@
 										    <a href="${stock.stockQrCodePath.replace('/Users/Insung/Documents/upload', '/upload')}" 
 										       class="btn-download"
 										       download="${stock.stockQrCodePath.substring(stock.stockQrCodePath.lastIndexOf('/') + 1)}">
-										        QR 코드 다운로드
+										        다운로드
 										    </a>
 										</c:when>
 								        <c:otherwise>
 											<button class="btn-generate"
 											        data-product-id="${stock.productId != null ? stock.productId : 'unknown'}"
 											        data-product-name="${stock.productName != null ? stock.productName : 'unknown'}">
-											    QR 코드 생성
+											    생성
 											</button>							   
 			                            </c:otherwise>
+								    </c:choose>
+								</td>
+								<td>
+								    <c:choose>
+								        <c:when test="${not empty stock.barcodePath}">
+										    <a href="${stock.barcodePath != null ? stock.barcodePath.replace('/Users/Insung/Documents/upload', '/upload') : ''}"
+										       class="btn-download"
+										       download="${stock.barcodePath != null ? stock.barcodePath.substring(stock.barcodePath.lastIndexOf('/') + 1) : ''}">
+										        다운로드
+										    </a>
+										</c:when>
+										<c:otherwise>
+										    <button class="btn-barcode-generate"
+										            data-barcode-number="${stock.productBarcode != null ? stock.productBarcode : '바코드 없음'}">
+										        생성
+										    </button>
+										</c:otherwise>
 								    </c:choose>
 								</td>
                             </tr>
@@ -172,9 +192,6 @@
 			    const productId = button.data("product-id");
 			    const productName = button.data("product-name");
 			
-			    console.log("productId: ", productId);
-			    console.log("productName: ", productName);
-			
 			    if (!productId) {
 			        alert("유효하지 않은 상품 ID입니다.");
 			        return;
@@ -199,9 +216,6 @@
 				        const qrCodePath = data.qrCodePath;
 				        const qrCodeFileName = data.qrCodeFileName;  // 서버에서 받은 파일명 그대로 사용
 				
-				        console.log("QR 코드 경로 수신: ", qrCodePath);
-				        console.log("생성된 파일명: ", qrCodeFileName);
-				
 				        button.data("qrCodePath", qrCodePath);
 				        button.data("fileName", qrCodeFileName);  // 서버에서 받은 파일명 사용
 				
@@ -214,6 +228,50 @@
 	            })
 	            .finally(() => setButtonLoading(button, false));
 	        }
+	     // 바코드 생성 요청
+	        $(".btn-barcode-generate").on("click", function () {
+	            const button = $(this);
+	            let productBarcode = button.data("barcode-number");  // productBarcode 사용
+
+	            console.log("바코드 생성 요청 - 원본 바코드: ", productBarcode);
+
+	            // 공백 및 특수 문자 제거
+	            productBarcode = String(productBarcode).replace(/\s+/g, '').trim();
+
+	            // 바코드 유효성 검사
+	            if (!productBarcode || productBarcode.length !== 13) {
+	                showToast("유효하지 않은 바코드입니다. (13자리 필수): " + productBarcode, "error");
+	                return;
+	            }
+
+	            // 바코드 생성 요청
+	            fetch("/api/barcode/generate", {
+	                method: "POST",
+	                headers: { "Content-Type": "application/json" },
+	                body: JSON.stringify({ productBarcode: productBarcode })
+	            })
+	            .then(response => response.json())
+	            .then(data => {
+	                if (data.success) {
+	                    const barcodePath = data.barcodePath;
+	                    const barcodeFileName = data.barcodeFileName;
+
+	                    const downloadLink = $("<a>")
+	                        .addClass("btn-download")
+	                        .attr("href", barcodePath)
+	                        .attr("download", barcodeFileName)
+	                        .text("다운로드");
+
+	                    button.replaceWith(downloadLink);
+	                    showToast("바코드가 성공적으로 생성되었습니다.", "success");
+	                } else {
+	                    showToast(data.message || "바코드 생성 실패", "error");
+	                }
+	            })
+	            .catch(error => {
+	                showToast("바코드 생성 중 서버 오류 발생", "error");
+	            });
+	        });
 	
 	        // QR 코드 다운로드 요청 (fetch 방식)
 	        function downloadQRCode(productId, barcode = null) {
@@ -260,7 +318,7 @@
 			
 			    const downloadButton = $("<a>")
 			        .addClass("btn-download")
-			        .text("QR 코드 다운로드")
+			        .text("다운로드")
 			        .attr("href", qrCodePath)
 			        .attr("download", fileName);  // 서버에서 받은 파일명 그대로 사용
 			

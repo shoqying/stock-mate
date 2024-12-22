@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class StockBarcodeDTO {
+public class StockQRCodeDTO {
     private int stockId;
     private int productId;
     private String productBarcode;

@@ -200,13 +200,13 @@
                         <table class="stock-table">
                             <thead>
                                 <tr>
-                                    <th>재고ID</th>
+<!--                                     <th>재고ID</th> -->
                                     <th>제품명</th>
                                     <th>바코드</th>
                                     <th>창고명</th>
-                                    <th>창고ID</th>
+<!--                                     <th>창고ID</th> -->
                                     <th>총 재고</th>
-                                    <!-- <th>예약수량</th> -->
+<!--                                     <th>예약수량</th> -->
                                     <th>가용재고</th>
                                     <th>단가</th>
                                     <th>단위</th>
@@ -489,11 +489,11 @@
             const row = $('<tr>');
 
             [
-                stock.stockId,
+//                 stock.stockId,
                 stock.product.productName,
                 stock.product.productBarcode || '-',
                 stock.warehouseName,
-                stock.warehouseId,
+//                 stock.warehouseId,
                 stock.totalQuantity,
                 stock.availableStock,
                 stock.product.productPrice,

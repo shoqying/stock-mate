@@ -133,6 +133,7 @@
 	    	p.product_id,
 	        p.product_name,
 	        p.product_barcode,
+	        p.barcode_path,
 	        c.category_name,
 	        w.warehouse_id,
 	        w.warehouse_name,
@@ -146,7 +147,14 @@
 	    JOIN warehouses w ON s.warehouse_id = w.warehouse_id
 	    WHERE s.business_id = #{businessId} AND s.is_deleted = 0
 	    ORDER BY 
-	        ${sortColumn} ${sortOrder}
+	    <choose>
+	        <when test="sortColumn == 'product_name'">p.product_name ${sortOrder}</when>
+	        <when test="sortColumn == 'warehouse_name'">w.warehouse_name ${sortOrder}</when>
+	        <when test="sortColumn == 'category_name'">c.category_name ${sortOrder}</when>
+	        <when test="sortColumn == 'available_stock'">s.available_stock ${sortOrder}</when>
+	        <when test="sortColumn == 'total_quantity'">s.total_quantity ${sortOrder}</when>
+	        <otherwise>s.updated_at ${sortOrder}</otherwise>
+    	</choose>
 	</select>
 
     <!-- 카테고리 목록 조회 -->

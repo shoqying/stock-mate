@@ -17,7 +17,7 @@
 
 <nav>
 <a href="/receiving/history">입고 내역</a>
-<a href="/dashboard">대쉬보드</a><br><br>
+<a href="/dashboard">대시보드</a><br><br>
 <form action="/receiving/insert1" method="POST">
     <input type="submit" value="새로고침">
 </form>

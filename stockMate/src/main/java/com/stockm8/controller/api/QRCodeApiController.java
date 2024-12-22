@@ -1,7 +1,6 @@
 package com.stockm8.controller.api;
 
 import java.io.File;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.stockm8.domain.dto.ScanProductDTO;
-import com.stockm8.domain.dto.StockBarcodeDTO;
+import com.stockm8.domain.dto.StockQRCodeDTO;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.service.ProductService;
 import com.stockm8.service.QRCodeService;
@@ -97,7 +96,7 @@ public class QRCodeApiController {
         }
 
         // QR 코드 경로 조회
-        StockBarcodeDTO stockBarcode = (productBarcode != null) ? 
+        StockQRCodeDTO stockBarcode = (productBarcode != null) ? 
                 qrCodeService.getQRCodeByBarcode(productBarcode) : 
                 qrCodeService.getQRCodeByProductId(productId);
 
@@ -129,7 +128,7 @@ public class QRCodeApiController {
         Map<String, Object> response = new HashMap<>();
         try {
             // 재고 테이블에서 QR 코드 정보 조회
-            StockBarcodeDTO stockBarcode = qrCodeService.getQRCodeByProductId(productId);
+            StockQRCodeDTO stockBarcode = qrCodeService.getQRCodeByProductId(productId);
             if (stockBarcode != null && stockBarcode.getStockQrCodePath() != null) {
                 response.put("success", true);
                 response.put("qrCodePath", stockBarcode.getStockQrCodePath().replace("/Users/Insung/Documents/upload", "/upload"));

@@ -9,6 +9,7 @@ public class StockDTO {
     private Integer productId;         // 상품 ID
     private String productName;        // 상품명
     private String productBarcode;     // 바코드
+    private String barcodePath;
     private String categoryName;       // 카테고리명
     private Integer warehouseId;       // 창고 ID
     private String warehouseName;      // 창고명

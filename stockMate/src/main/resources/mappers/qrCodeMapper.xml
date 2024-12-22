@@ -5,8 +5,8 @@
 
 <mapper namespace="com.stockm8.mapper.QRCodeMapper">
 
-    <!-- resultMap 정의 (StockBarcodeDTO 기반) -->
-    <resultMap id="qrCodeResultMap" type="com.stockm8.domain.dto.StockBarcodeDTO">
+    <!-- resultMap 정의 (StockQRCodeDTO 기반) -->
+    <resultMap id="qrCodeResultMap" type="com.stockm8.domain.dto.StockQRCodeDTO">
         <id property="stockId" column="stock_id"/>
         <result property="productId" column="product_id"/>
         <result property="productBarcode" column="product_barcode"/>
@@ -16,7 +16,7 @@
     </resultMap>
 
     <!-- QR 코드 데이터 삽입 또는 업데이트 (productId) -->
-    <update id="updateQRCodePathByProductId" parameterType="com.stockm8.domain.dto.StockBarcodeDTO">
+    <update id="updateQRCodePathByProductId" parameterType="com.stockm8.domain.dto.StockQRCodeDTO">
         UPDATE stocks s
         JOIN products p ON s.product_id = p.product_id
         SET 
@@ -41,7 +41,7 @@
     </select>
     
         <!-- productId 기반 QR 코드 조회 -->
-    <select id="selectQRCodeByProductId" parameterType="int" resultType="com.stockm8.domain.dto.StockBarcodeDTO">
+    <select id="selectQRCodeByProductId" parameterType="int" resultType="com.stockm8.domain.dto.StockQRCodeDTO">
         SELECT
             s.stock_id,
             s.product_id,
@@ -58,7 +58,7 @@
     </select>
 
     <!-- 비즈니스 ID로 QR 코드 경로 조회 (바코드 포함) -->
-    <select id="selectQRCodePathsByBusinessId" parameterType="int" resultType="com.stockm8.domain.dto.StockBarcodeDTO">
+    <select id="selectQRCodePathsByBusinessId" parameterType="int" resultType="com.stockm8.domain.dto.StockQRCodeDTO">
         SELECT 
             s.stock_id,
             p.product_barcode AS productBarcode,

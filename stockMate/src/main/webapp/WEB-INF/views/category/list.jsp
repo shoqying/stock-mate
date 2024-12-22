@@ -7,6 +7,8 @@
 	<meta charset="UTF-8">
 	<title>카테고리 목록</title>
 	<link rel="stylesheet" href="<c:url value='/resources/css/stockListStyle.css' />">
+	<link rel="stylesheet" href="<c:url value='/resources/css/categoryListStyle.css' />">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
     <h1>카테고리 목록</h1>
@@ -84,16 +86,25 @@
                                             </c:choose>
                                         </td>
                                         <td><fmt:formatDate value="${childCategory.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                                        <td>
-                                            <form action="/category/edit" method="get" style="display: inline;">
-                                                <input type="hidden" name="categoryId" value="${childCategory.categoryId}" />
-                                                <button type="submit">수정</button>
-                                            </form>
-                                            <form action="/category/delete" method="post" style="display: inline;" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                                                <input type="hidden" name="categoryId" value="${childCategory.categoryId}" />
-                                                <button type="submit">삭제</button>
-                                            </form>
-                                        </td>
+										<td>
+										    <form action="/category/edit" method="get" style="display: inline;">
+										        <input type="hidden" name="categoryId" value="${childCategory.categoryId}" />
+										        <button type="submit" 
+										                class="edit-btn ${childCategory.parentId == null ? 'disabled-btn' : ''}" 
+										                ${childCategory.parentId == null ? 'disabled' : ''}>
+										            수정
+										        </button>
+										    </form>
+										    <form action="/category/delete" method="post" style="display: inline;" 
+										          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+										        <input type="hidden" name="categoryId" value="${childCategory.categoryId}" />
+										        <button type="submit" 
+										                class="delete-btn ${childCategory.parentId == null ? 'disabled-btn' : ''}" 
+										                ${childCategory.parentId == null ? 'disabled' : ''}>
+										            삭제
+										        </button>
+										    </form>
+										</td>
                                     </tr>
                                 </c:if>
                             </c:forEach>
