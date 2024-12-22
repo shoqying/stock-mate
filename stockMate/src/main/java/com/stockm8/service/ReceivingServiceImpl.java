@@ -122,10 +122,10 @@ public class ReceivingServiceImpl implements ReceivingService {
 	}
 	
 	@Override
-	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo, int orderId) {
+	public void ReceivingStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo, int orderId, Long userId) {
 	    try {
 	        // MyBatis 매퍼 호출
-	        rdao.updateReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderId);
+	        rdao.updateReceivingStatusToComplete(businessId, barcode, receivingShipmentNo, orderId, userId);
 	        
 	    } catch (Exception e) {
 	        // 예외 처리

@@ -97,76 +97,93 @@ public class ShipmentDAOImpl implements ShipmentDAO {
 	}
 
 	@Override
-	public void insertShipment(int businessId) throws Exception {
+	public void insertShipment(int businessId, Long userId) throws Exception {
 		logger.info("insertShipment() 호출");
-		sqlSession.insert(NAMESPACE + "insertShipment", businessId);
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("businessId", businessId);
+		paramMap.put("userId", userId);
+		sqlSession.insert(NAMESPACE + "insertShipment", paramMap);
 	}
 	
   @Override
-	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode) throws Exception {
+	public List<StockVO> selectQuantityCheckByBarcode(int businessId, String barcode, Integer receivingShipmentNo) throws Exception {
 		logger.info("selectShipment() 호출");
 		Map<String, Object> paramMap = new HashMap();
 		paramMap.put("businessId", businessId);	   
 		paramMap.put("barcode", barcode);
+		paramMap.put("receivingShipmentNo", receivingShipmentNo);
 		
 		return sqlSession.selectList(NAMESPACE + "selectQuantityCheckByBarcode", paramMap);
 	}
 
 	@Override
-	public int updateIncreseStock(int businessId, String barcode) throws Exception {
+	public int updateIncreseStock(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception {
 		logger.info("updateDecreaseStock() 호출");
 	    // 매개변수 묶기
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("businessId", businessId);
 	    params.put("barcode", barcode);
+	    params.put("receivingShipmentNo", receivingShipmentNo);
+	    params.put("orderItemId", orderItemId);
+	    
 
 	    // SQL 실행
-	    return sqlSession.update(NAMESPACE + "updateDecreaseStock", params);
+	    return sqlSession.update(NAMESPACE + "updateIncreseStock", params);
 	}
 
 	@Override
-	public int selectStockByBarcode(int businessId, String barcode) throws Exception {
+	public int selectStockByBarcode(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception {
 		logger.info("selectStockByBarcode() 호출");
 		Map<String, Object> params = new HashMap<>();
 	    params.put("businessId", businessId);
 	    params.put("barcode", barcode);
+	    params.put("receivingShipmentNo", receivingShipmentNo);
+	    params.put("orderItemId", orderItemId);
 		return sqlSession.selectOne(NAMESPACE + "selectStockByBarcode", params);
 	}
 
 	@Override
-	public int selectReservedQuantity(int businessId, String barcode) throws Exception {
+	public int selectReservedQuantity(int businessId, String barcode, Integer receivingShipmentNo, Integer orderItemId) throws Exception {
 		logger.info("selectReservedQuantity() 호출");
 		Map<String, Object> params = new HashMap<>();
 	    params.put("businessId", businessId);
 	    params.put("barcode", barcode);
+	    params.put("receivingShipmentNo", receivingShipmentNo);
+	    params.put("orderItemId", orderItemId);	    
 		return sqlSession.selectOne(NAMESPACE + "selectReservedQuantity", params);
 	}
 	
 	@Override
-	public ProductVO selectProductNameBarcode(int businessId, String barcode) throws Exception {
+	public ProductVO selectProductNameBarcode(int businessId, String barcode, Integer receivingShipmentNo) throws Exception {
 		logger.info("selectProductNameBarcode() 호출");
 		Map<String, Object> params = new HashMap<>();
 		params.put("businessId", businessId);
 		params.put("barcode", barcode);
+		params.put("receivingShipmentNo", receivingShipmentNo);
 		return sqlSession.selectOne(NAMESPACE + "selectProductNameBarcode", params);
 	}
 
 	@Override
-	public void updateShipmentStatusToComplete(int businessId, String barcode) throws Exception {
+	public void updateShipmentStatusToComplete(int businessId, String barcode, Integer receivingShipmentNo, int orderItemId, Long userId) throws Exception {
 		logger.info("updateShipmentStatusToComplete() 호출");
 		Map<String, Object> params = new HashMap<>();
 		params.put("businessId", businessId);
 		params.put("barcode", barcode);
+		params.put("receivingShipmentNo", receivingShipmentNo);
+		params.put("orderItemId", orderItemId);
+		params.put("userId", userId);
 		sqlSession.update(NAMESPACE + "updateShipmentStatusToComplete", params);
 		
 	}
-	
+
 	@Override
-	public List<ReceivingShipmentVO> selectReceivingShipmentNo(int businessId, Integer receivingShipmentNo) throws Exception {
+	public List<ReceivingShipmentVO> selectShipmentShipmentNo(int businessId, Integer receivingShipmentNo, int orderItemId) throws Exception {
 		logger.info("selecttReceivingShipmentNo() 호출");
 		Map<String, Object> params = new HashMap<>();
 		params.put("businessId", businessId);
 		params.put("receivingShipmentNo", receivingShipmentNo);
+		params.put("orderItemId", orderItemId);
+		
 		return sqlSession.selectList(NAMESPACE + "getReceivingShipmentNo", params);
 	}
 	

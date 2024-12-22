@@ -26,7 +26,7 @@ body {
 .header {
     position: relative;
     height: 400px;
-    background: url('resources/css/9950253.jpg') no-repeat center center/cover;
+    background: url('resources/img/9950253.jpg') no-repeat center center/cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -151,7 +151,7 @@ body {
     <div class="container">
         <!-- Image Box -->
         <div class="image-box">
-            <img src="resources/css/9950253.jpg" alt="창고 이미지">
+            <img src="resources/img/9950253.jpg" alt="창고 이미지">
         </div>
 
         <!-- Text Box -->

@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>출고 메인</title>
+<link rel="stylesheet" type="text/css" href="/resources/css/receivingMainStyle.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -14,11 +15,14 @@
 
 <h1>출고 메인</h1>
 
+<nav>
 <a href="/shipment/history">출고 내역</a>
-<a href="/dashboard">대쉬보드</a>
+<a href="/dashboard">대쉬보드</a><br><br>
 <form action="/shipment/insert1" method="POST">
     <input type="submit" value="새로고침">
 </form>
+</nav>
+
 
 <!-- 오늘 출고 리스트 -->
 <h2>오늘 출고 리스트</h2>
@@ -37,7 +41,7 @@
     <c:forEach var="vo" items="${ShipmentList}">
         <tr>
             <td>${vo.receivingShipmentNo}</td>
-             <td>     
+            <td>     
                  <c:choose>
                     <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>
                     <c:when test="${vo.transactionType == 'OUTBOUND'}">출고</c:when>
@@ -77,8 +81,8 @@
     </tr>
     <c:forEach var="vo" items="${YesterdayShipmentList}">
         <tr>
-            <td>${vo.receivingShipmentNO}</td>
-             <td>     
+            <td>${vo.receivingShipmentNo}</td>
+            <td>     
                  <c:choose>
                     <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>
                     <c:when test="${vo.transactionType == 'OUTBOUND'}">출고</c:when>
@@ -114,13 +118,12 @@
         <th>제품명</th>
         <th>옵션명</th>
         <th>출고 수량</th>
-        <th>수량 단위</th>
         <th>작업 메모</th>
     </tr>
     <c:forEach var="vo" items="${TDBYShipmentList}">
         <tr>
-            <td>${vo.receivingShipmentNO}</td>
-             <td>     
+            <td>${vo.receivingShipmentNo}</td>
+            <td>     
                  <c:choose>
                     <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>
                     <c:when test="${vo.transactionType == 'OUTBOUND'}">출고</c:when>

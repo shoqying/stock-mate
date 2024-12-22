@@ -23,7 +23,7 @@
 
     <script>
         // Example: Fetch data and update the table dynamically
-        function updateShipmentList(transaction) {
+        function updateshipmentList(transaction) {
             const tableBody = document.getElementById("shipmentList").getElementsByTagName("tbody")[0];
             const row = tableBody.insertRow();
             row.innerHTML = `
@@ -35,7 +35,7 @@
         }
 
         // Example: Simulate new transaction data
-        updateShipmentList({ productId: 1, warehouseId: 2, quantity: 50, transactionType: 'OUTBOUND' });
+        updateSeceivingList({ productId: 1, warehouseId: 2, quantity: 50, transactionType: 'INBOUND' });
     </script>
 </body>
 </html>

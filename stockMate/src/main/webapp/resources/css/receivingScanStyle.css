@@ -55,23 +55,6 @@ form input[type="submit"]:hover {
     background-color: #357ab7; /* 어두운 파란색 */
 }
 
-/* 새로고침 버튼 스타일 */
-#list {
-    font-size: 1.1em;
-    color: white;
-    background-color: #4a90e2; /* 파란색 */
-    padding: 10px 20px;
-    margin: 0 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#list:hover {
-    background-color: #357ab7; /* 어두운 파란색 */
-}
-
 /* 검색 폼 스타일 - 수평 배치 */
 #searchForm {
     display: flex;
