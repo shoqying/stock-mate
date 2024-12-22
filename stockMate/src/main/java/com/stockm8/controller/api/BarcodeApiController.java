@@ -70,7 +70,15 @@ public class BarcodeApiController {
             throw new IllegalArgumentException("유효하지 않은 바코드 경로입니다.");
         }
 
-        File barcodeFile = new File(barcodePath);
+        // Define the base directory for barcode files
+        File baseDir = new File("/path/to/barcode/files").getCanonicalFile();
+        File barcodeFile = new File(baseDir, barcodePath).getCanonicalFile();
+
+        // Ensure the barcode file is within the base directory
+        if (!barcodeFile.getPath().startsWith(baseDir.getPath())) {
+            throw new IllegalArgumentException("유효하지 않은 바코드 경로입니다.");
+        }
+
         if (!barcodeFile.exists()) {
             throw new IllegalArgumentException("바코드 파일이 존재하지 않습니다.");
         }
