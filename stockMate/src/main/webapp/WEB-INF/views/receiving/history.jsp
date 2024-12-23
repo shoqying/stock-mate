@@ -14,6 +14,7 @@
 	<h1>입고 내역</h1>
 	<nav>
 	<a href="/receiving/main">입고 메인</a><br><br>
+	<a href="/dashboard">대시보드</a><br><br>
 	<form action="/receiving/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
