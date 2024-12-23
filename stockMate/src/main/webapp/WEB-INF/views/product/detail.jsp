@@ -78,19 +78,19 @@
             <c:if test="${product.productQrCodePath == null}">
                 <form action="/product/generateQR" method="get" style="display:inline;">
                     <input type="hidden" name="productId" value="${product.productId}">
-                    <button type="submit" class="btn btn-green">QR 코드 생성</button>
+                    <button type="submit" class="btn btn-green">상품정보 QR 코드 생성</button>
                 </form>
             </c:if>
             <c:if test="${product.productQrCodePath != null}">
                 <form action="/product/downloadQr" method="get" style="display:inline;">
                     <input type="hidden" name="productId" value="${product.productId}">
-                    <button type="submit" class="btn btn-blue">QR 코드 다운로드</button>
+                    <button type="submit" class="btn btn-blue">상품정보 QR 코드 다운로드</button>
                 </form>
             </c:if>
         </div>
 
         <!-- 목록으로 돌아가기 버튼 -->
-        <button class="dashboard-btn" onclick="location.href='/product/list';" style="margin-top: 15px;">상품 목록으로 돌아가기</button>
+        <button class="dashboard-btn" onclick="location.href='/stock/list';" style="margin-top: 15px;">목록으로 돌아가기</button>
     </div>
 </body>
 </html>

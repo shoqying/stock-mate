@@ -13,64 +13,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="<c:url value='/resources/scripts/toast.js' />"></script>
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-	    const form = document.querySelector("form");
-	    const submitButton = document.querySelector("button[type='submit']");
-	    const spinner = document.querySelector(".spinner");
-	    const parentCategorySelect = document.getElementById("parentCategoryId");
-	    const alertMessage = document.getElementById("alert-message");
-	
-	    // Toast 메시지 표시
-	    const toastMessage = "${toastMessage != null ? toastMessage : ''}";
-	    const toastType = "${toastType != null ? toastType : ''}";
-	    if (toastMessage) {
-	        showToast(toastMessage, toastType);
-	    }
-	
-	    // 실시간 입력 검증
-	    const categoryNameInput = document.getElementById("categoryName");
-	    categoryNameInput.addEventListener("input", function () {
-	        const feedback = document.getElementById("name-feedback");
-	        if (this.value.length < 2) {
-	            feedback.textContent = "카테고리 이름은 최소 2글자 이상이어야 합니다.";
-	            this.style.borderColor = "#ff4d4d";
-	        } else {
-	            feedback.textContent = "";
-	            this.style.borderColor = "#28a745";
-	        }
-	    });
-	
-	    // 상위 카테고리 선택하지 않을 경우 안내 메시지 표시
-	    parentCategorySelect.addEventListener("change", function () {
-	        if (!this.value) {
-	            alertMessage.style.display = "block";
-	        } else {
-	            alertMessage.style.display = "none";
-	        }
-	    });
-	
-	    // 폼 제출 시 로딩 효과 및 상위 카테고리 검증
-	    form.addEventListener("submit", function (event) {
-	        if (!parentCategorySelect.value || parentCategorySelect.value === "") {
-	            // 상위 카테고리가 선택되지 않은 경우
-	            parentCategorySelect.value = null; // parentId를 null로 설정
-	        }
-	
-	        // 카테고리 이름 검증
-	        if (categoryNameInput.value.trim().length < 2) {
-	            alert("카테고리 이름은 최소 2글자 이상이어야 합니다.");
-	            event.preventDefault(); // 폼 제출 중지
-	            return;
-	        }
-	
-	        // 로딩 효과
-	        submitButton.classList.add("loading");
-	        submitButton.textContent = "등록 중...";
-	        spinner.style.display = "block";
-	    });
-	});
-</script>
 <style>
     #alert-message {
         color: #007bff;
@@ -88,7 +30,7 @@
 		<button class="category-link-button" onclick="location.href='/category/list';" >카테고리 리스트</button>
         <h2>카테고리 등록 페이지</h2>
 
-        <form action="/category/register" method="post">
+        <form action="/api/category/register" method="post">
             <!-- 상위 카테고리 선택 -->
             <label for="parentCategoryId">상위 카테고리:</label>
             <select id="parentCategoryId" name="parentId">
@@ -112,5 +54,85 @@
             <div class="spinner"></div>
         </form>
     </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");  // 폼 참조 추가
+    const submitButton = document.querySelector("button[type='submit']");
+    const spinner = document.querySelector(".spinner");
+    const parentCategorySelect = document.getElementById("parentCategoryId");
+    const categoryNameInput = document.getElementById("categoryName");
+
+    // 폼 제출 이벤트
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();  // 기본 폼 제출 방지
+        
+        const formData = new FormData(form);
+        const plainData = Object.fromEntries(formData.entries());  // 여기서 변환 실행
+        
+        submitButton.classList.add("loading");
+        submitButton.textContent = "등록 중...";
+        spinner.style.display = "block";
+
+        // AJAX 요청으로 폼 데이터 전송
+        fetch("/api/category/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(plainData)  // JSON 데이터 전송
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("서버 응답 실패");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                showToast("카테고리 등록 성공!", "success");
+                categoryNameInput.value = "";  // 입력 필드 초기화
+                updateCategoryDropdown();  // 드롭다운 업데이트
+            } else {
+                showToast("등록 실패: " + data.message, "error");
+            }
+        })
+        .catch(error => {
+            console.error("서버 오류:", error);
+            showToast("서버 오류 발생", "error");
+        })
+        .finally(() => {
+            submitButton.classList.remove("loading");
+            submitButton.textContent = "등록";
+            spinner.style.display = "none";
+        });
+    });
+
+    // 카테고리 드롭다운 목록 업데이트
+    function updateCategoryDropdown() {
+        fetch("/api/category/list")  // 새 카테고리 목록 요청
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("목록 갱신 실패");
+            }
+            return response.json();
+        })
+        .then(categories => {
+            const select = document.getElementById("parentCategoryId");
+            select.innerHTML = '<option value="">-- 상위 카테고리 선택 --</option>';  // 초기화
+            
+            categories.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat.categoryId;
+                option.textContent = cat.categoryName;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error("카테고리 목록 갱신 실패:", error);
+            showToast("카테고리 목록 갱신 실패", "error");
+        });
+    }
+});
+</script>
 </body>
 </html>

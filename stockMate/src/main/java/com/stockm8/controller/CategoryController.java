@@ -1,6 +1,8 @@
 package com.stockm8.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -8,10 +10,13 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,53 +61,6 @@ public class CategoryController {
 
         // 카테고리 등록 폼을 보여주는 페이지로 이동
         return "category/register"; 
-    }
-
-    // 카테고리 등록 처리 (POST)
-    @PostMapping("/register")
-    public String registerCategory(@ModelAttribute CategoryVO categoryVO, 
-                                   @SessionAttribute("userId") Long userId, 
-                                   Model model) {
-        try {
-            // 사용자 정보 가져오기
-            UserVO user = userService.getUserById(userId);
-            int businessId = user.getBusinessId();
-            categoryVO.setBusinessId(businessId);
-
-            // 상위 카테고리 체크 및 등록
-            categoryService.registerCategoryWithParentCheck(categoryVO);
-
-            // 성공 메시지 설정
-            model.addAttribute("toastMessage", "카테고리가 성공적으로 등록되었습니다.");
-            model.addAttribute("toastType", "success");
-        } catch (IllegalArgumentException e) {
-            // 입력 데이터 관련 예외 처리
-            logger.error("카테고리 등록 실패 - 잘못된 입력: {}", e.getMessage());
-
-            // 실패 메시지 설정
-            model.addAttribute("toastMessage", e.getMessage());
-            model.addAttribute("toastType", "error");
-        } catch (Exception e) {
-            // 일반적인 예외 처리
-            logger.error("카테고리 등록 중 예외 발생: ", e);
-
-            // 실패 메시지 설정
-            model.addAttribute("toastMessage", "카테고리 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
-            model.addAttribute("toastType", "error");
-        }
-
-        // 등록 페이지로 이동 (현재 페이지 유지)
-        try {
-            // 상위 카테고리 리스트를 다시 불러옴
-            List<CategoryVO> categoryList = categoryService.getParentCategories();
-            model.addAttribute("categoryList", categoryList);
-        } catch (Exception e) {
-            logger.error("카테고리 목록 불러오기 실패: ", e);
-            model.addAttribute("toastMessage", "카테고리 목록을 불러오는 중 오류가 발생했습니다.");
-            model.addAttribute("toastType", "error");
-        }
-
-        return "category/register"; // 현재 페이지 유지
     }
     
     // http://localhost:8088/category/list

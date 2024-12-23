@@ -50,7 +50,7 @@ public class StockServiceImpl implements StockService {
         final String defaultSortOrder = "desc";
 
         // 정렬 컬럼 허용 목록 (SQL 인젝션 방지)
-        List<String> allowedSortColumns = List.of("updated_at", "product_name", "total_quantity", "available_stock");
+        List<String> allowedSortColumns = List.of("updated_at", "product_name", "warehouse_name", "available_stock", "category_name");
         if (sortColumn == null || sortColumn.isBlank() || !allowedSortColumns.contains(sortColumn)) {
             sortColumn = defaultSortColumn; // 기본 정렬 기준
         }
