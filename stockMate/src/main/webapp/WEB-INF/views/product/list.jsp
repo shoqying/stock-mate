@@ -12,6 +12,7 @@
 
 </head>
 <body>
+
 	<div id="toast-container"></div>
 	<!-- 토스트 메시지 컨테이너 -->
 	<div class="container">
