@@ -33,7 +33,7 @@ SELECT DISTINCT
     o.remarks
 FROM products p
 JOIN order_items o ON o.product_id = p.product_id
-JOIN stocks s ON s.product_id = p.product_id
+JOIN stocks s ON s.product_id = p.product_id AND s.warehouse_id = o.warehouse_id
 JOIN users u ON u.business_id = p.business_id
 JOIN orders ord ON ord.order_id = o.order_id
 WHERE NOT EXISTS (
@@ -44,6 +44,7 @@ WHERE NOT EXISTS (
     AND rs.product_id = p.product_id
     AND rs.order_item_id = o.order_item_id
     AND rs.stock_id = s.stock_id
+    AND rs.warehouse_id = o.warehouse_id
 )AND u.business_id = #{businessId}
 </insert>
 	
@@ -222,7 +223,22 @@ WHERE r.transaction_type = 'OUTBOUND'
     JOIN stocks s on o.product_id = s.product_id
     JOIN receiving_shipment r on r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
     SET s.total_quantity = s.total_quantity - 1,
-    o.change_quantity = o.change_quantity - 1
+    o.change_quantity = o.change_quantity - 1,
+    WHERE p.product_barcode = #{barcode}
+    AND s.business_id = #{businessId}
+    AND o.change_quantity > 0
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
+    AND r.order_item_id = #{orderItemId}
+</update>
+
+<update id="updateIncreseStock2">
+    UPDATE order_items o
+    JOIN products p on p.product_id = o.product_id
+    JOIN stocks s on o.product_id = s.product_id
+    JOIN receiving_shipment r on r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
+    SET s.total_quantity = s.total_quantity - 1,
+    o.change_quantity = o.change_quantity - 1,
+    s.reserved_quantity = s.reserved_quantity - 1
     WHERE p.product_barcode = #{barcode}
     AND s.business_id = #{businessId}
     AND o.change_quantity > 0
