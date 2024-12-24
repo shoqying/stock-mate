@@ -32,7 +32,7 @@
         <th>입고 출고</th>
         <th>출고 일자</th>
         <th>출고 상태</th>
-        <th>제품 번호</th>
+<!--         <th>제품 번호</th> -->
         <th>제품명</th>
         <th>옵션명</th>
         <th>출고 수량</th>
@@ -56,7 +56,7 @@
                     <c:otherwise>${vo.status}</c:otherwise>
                 </c:choose>
             </td>
-            <td>${vo.productId}</td>
+<%--             <td>${vo.productId}</td> --%>
             <td>${vo.productName}</td>
             <td>${vo.productDescription}</td>
             <td>${vo.changeQuantity}</td>
@@ -73,7 +73,7 @@
         <th>입고 출고</th>
         <th>출고 일자</th>
         <th>출고 상태</th>
-        <th>제품 번호</th>
+<!--         <th>제품 번호</th> -->
         <th>제품명</th>
         <th>옵션명</th>
         <th>출고 수량</th>
@@ -97,7 +97,7 @@
                     <c:otherwise>${vo.status}</c:otherwise>
                 </c:choose>
             </td>
-            <td>${vo.productId}</td>
+<%--             <td>${vo.productId}</td> --%>
             <td>${vo.productName}</td>
             <td>${vo.productDescription}</td>
             <td>${vo.changeQuantity}</td>
